@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1회차 · 인공지능 데이터 — 2026 경기도 공유학교 · 인공지능 기초</title><style>
+:root{--navy:#1B2A4A;--ink:#1F2937;--gray:#6B7280;--lgray:#D1D5DB;--soft:#F5F6F8;--code:#1E2533;--codefg:#E5E7EB;
+--ok:#0E8C86;--bad:#C0395F;--warn:#D97706;--accent:#4F5BD5;--tint:#ECEDFB}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif;color:var(--ink);background:#EEF0F4;line-height:1.6;font-size:15px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{background:var(--navy);color:#fff;padding:30px 0 24px;border-top:6px solid var(--accent)}
+header .chip{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--accent);color:#fff;margin-right:6px}
+header h1{margin:12px 0 6px;font-size:30px;line-height:1.25}
+header .sub{color:#C5CEDD;font-size:14px}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--lgray);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;padding:8px 20px;flex-wrap:wrap}
+.topbar a{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--lgray);color:var(--gray);text-decoration:none;background:#fff}
+.topbar a:hover{border-color:var(--accent);color:var(--accent)}
+main{padding:24px 0 70px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.box{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:16px 20px;margin:14px 0}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--accent)}
+.box ul{margin:4px 0 0 18px;padding:0}.box li{margin:3px 0}
+section.part{margin:40px 0 12px}
+section.part>h2{margin:0 0 6px;font-size:23px;color:var(--navy);display:flex;align-items:center;gap:10px}
+section.part>h2 .pn{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 8px;border-radius:8px;background:var(--pcol);color:#fff;font-size:14px}
+.pintro{background:#fff;border:1px solid var(--lgray);border-left:5px solid var(--pcol);border-radius:10px;padding:12px 18px;margin:10px 0 18px;font-size:14px}
+h3{font-size:18px;color:var(--navy);margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pcol)}
+p{margin:8px 0}
+.callout{border-radius:10px;padding:12px 16px;margin:14px 0;border:1px solid;font-size:14px}
+.callout b.t{display:block;margin-bottom:4px}
+.callout.key{background:var(--tint);border-color:#C7CAF1;color:#2B2F6B}
+.callout.tip{background:#E3F4F3;border-color:#A9DCD8;color:#0B5F5B}
+.callout.warn{background:#FDF1E1;border-color:#F3CF98;color:#7C4A05}
+.callout.ok{background:#EAF7EF;border-color:#A7DDB9;color:#1A5E36}
+table.tb{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:#fff}
+table.tb th{background:var(--pcol);color:#fff;padding:8px 10px;text-align:left;font-weight:700}
+table.tb td{padding:7px 10px;border-bottom:1px solid var(--lgray);vertical-align:top}
+table.tb tr:nth-child(even) td{background:var(--soft)}
+.code{position:relative;margin:14px 0;border-radius:10px;overflow:hidden;background:var(--code);border:1px solid #2F3A4E}
+.code .bar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:#161C27;color:#C5CEDD;font-size:12px}
+.code .bar .lang{font-weight:700;color:#FCD34D}
+.code .bar button{margin-left:auto;font:inherit;font-size:12px;padding:3px 10px;border-radius:6px;border:1px solid #3A4661;background:#222B3B;color:#E5E7EB;cursor:pointer}
+.code .bar button:hover{background:#2F3A4E}
+.code pre{margin:0;padding:12px 14px;overflow:auto;color:var(--codefg);font-family:Consolas,"D2Coding","Nanum Gothic Coding",Menlo,monospace;font-size:13.5px;line-height:1.5;tab-size:4}
+.code pre .k{color:#FCD34D}.code pre .s{color:#86EFAC}.code pre .c{color:#8B9BB8;font-style:italic}.code pre .n{color:#93C5FD}.code pre .f{color:#F9A8D4}
+.out{margin:-8px 0 14px;border:1px dashed var(--lgray);border-top:none;border-radius:0 0 10px 10px;background:#FAFBFC;padding:10px 14px;font-size:13px}
+.out .lab{font-size:11px;font-weight:700;color:var(--gray);margin-bottom:4px}
+.out pre{margin:0;white-space:pre-wrap;font-family:Consolas,"D2Coding",Menlo,monospace;font-size:12.5px;color:#374151}
+.step{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:16px 20px 12px;margin:18px 0;position:relative}
+.step .sn{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--pcol);font-size:15px;margin-bottom:6px}
+.step .sn i{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--pcol);color:#fff;font-style:normal;font-size:13px}
+.step .why{background:var(--soft);border-radius:8px;padding:10px 14px;font-size:14px;margin:8px 0}
+.step .why b.l{color:var(--pcol)}
+.step details{margin-top:6px}
+.step summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:13px}
+.quiz{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:14px 18px;margin:14px 0}
+.quiz .q{font-weight:700;margin-bottom:8px}
+.quiz label{display:block;padding:6px 10px;border:1px solid var(--lgray);border-radius:8px;margin:5px 0;cursor:pointer;font-size:14px}
+.quiz label:hover{border-color:var(--accent)}
+.quiz label.right{border-color:var(--ok);background:#EAF7EF}.quiz label.wrong{border-color:var(--bad);background:#FBE9EE}
+.quiz .exp{display:none;margin-top:8px;font-size:13.5px;background:var(--soft);padding:8px 12px;border-radius:8px}
+.quiz .exp.show{display:block}
+.btn{font:inherit;font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--lgray);background:#fff;cursor:pointer;margin-top:6px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+figure{margin:14px 0;text-align:center}figure img{max-width:100%;border:1px solid var(--lgray);border-radius:8px;background:#fff}
+figure figcaption{font-size:12.5px;color:var(--gray);margin-top:6px}
+.kbd{font-family:Consolas,Menlo,monospace;background:var(--soft);border:1px solid var(--lgray);border-radius:5px;padding:0 6px;font-size:13px}
+code{font-family:Consolas,"D2Coding",Menlo,monospace;background:var(--soft);border:1px solid #E5E7EB;border-radius:4px;padding:0 5px;font-size:13px}
+.plan td:first-child{white-space:nowrap;font-weight:700;color:var(--navy)}
+footer{color:var(--gray);font-size:12.5px;text-align:center;padding:24px 0 40px}
+.toc{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:12px 18px;margin:16px 0}
+.toc a{display:inline-block;margin:3px 10px 3px 0;color:var(--accent);text-decoration:none;font-size:14px}
+.score{margin-left:auto;font-size:13px;color:var(--gray)}
+</style></head><body>
+<header><div class="wrap"><span class="chip">5주차 · 13–15차시</span><span class="chip" style="background:#0E8C86">2026-09-29</span><span class="chip" style="background:#D97706">2시간 (강의 + Colab 실습)</span>
+<h1>1회차 · 인공지능 데이터</h1><div class="sub">2026 경기도 공유학교 · 인공지능 기초 · 김순찬 교수 &nbsp;|&nbsp; 성취기준 [인일 02-03] 데이터의 통계적인 특성 분석과 시각화를 통하여 인공지능에 필요한 데이터의 통찰을 얻을 수 있다.</div></div></header>
+<div class="topbar"><div class="wrap"><a href="#top">▲ 처음</a><a href="#part1">P1 오늘 배우는 것 — 개념 정리</a><a href="#part2">P2 예제 — 개념마다 짧은 코드 하나</a><a href="#part3">P3 Colab 실습 — 셀 1~16 따라하기</a><a href="#part4">P4 퀴즈 — 개념 확인 5문항</a><a href="#part5">P5 정리 · 평가 기준 · 다음 시간</a><span class="score" id="score">퀴즈 0 / 0 정답</span></div></div>
+<main><div class="wrap" id="top">
+<div class="grid2"><div class="box"><h4>이 수업의 학습 목표</h4><ul><li>표(데이터)의 <b>행·열·변수 유형</b>을 구분한다</li><li>평균·중앙값·표준편차·사분위수로 <b>데이터의 통계적 특성</b>을 설명한다</li><li>목적에 맞는 <b>그래프</b>(히스토그램·상자그림·산점도·막대·히트맵)를 골라 그린다</li><li>결측·이상치·편향을 찾아내고 데이터에서 <b>통찰 3가지</b>를 글로 정리한다</li></ul></div>
+<div class="box"><h4>수업 흐름 (120분)</h4><table class="tb plan"><tbody><tr><td>0:00</td><td>인사 · 오늘의 목표</td><td>강의 5분</td></tr><tr><td>0:05</td><td>PART 1 데이터란 무엇인가</td><td>강의 10분</td></tr><tr><td>0:15</td><td>PART 2 숫자로 요약하기</td><td>강의 15분</td></tr><tr><td>0:30</td><td>PART 3 그림으로 보기</td><td>강의 15분</td></tr><tr><td>0:45</td><td>Colab 실습 (셀 1~16)</td><td>실습 60분</td></tr><tr><td>1:45</td><td>결과 공유 · 퀴즈 · 정리</td><td>15분</td></tr></tbody></table></div></div>
+<div class="grid2"><div class="box"><h4>준비물 · 자료</h4><ul><li>슬라이드: <code>01_인공지능데이터.pptx</code></li><li>실습 노트북: <code>01_인공지능데이터_실습_colab.ipynb</code> (Colab에 업로드)</li><li>데이터: <code>data/student_life.csv</code> (노트북이 코드로 같은 데이터를 만들므로 업로드 불필요)</li><li>구글 계정 · 크롬 브라우저</li></ul></div>
+<div class="box"><h4>탐구 과정(기능) · 평가</h4><ul><li><b>탐구과정:</b> 통계 분석과 시각화 기법을 활용해 데이터의 패턴과 특성을 해석</li><li><b>수업방법:</b> 강의 · 실습 · 질의응답</li><li><b>평가:</b> 실습 결과 평가 — 통계분석 결과를 적절한 방법으로 시각화</li></ul></div></div>
+<div class="callout tip"><b class="t">실습 환경 — Google Colab</b><ol style="margin:4px 0 0 18px;padding:0"><li>구글 계정으로 로그인한 뒤 <a href="https://colab.research.google.com" target="_blank">colab.research.google.com</a> 에 접속합니다.</li><li><b>파일 → 노트 업로드</b>에서 선생님이 나눠 준 <code>.ipynb</code> 파일을 올립니다. (또는 <b>새 노트</b>를 만들고 이 페이지의 코드를 한 셀씩 복사해 붙여 넣어도 됩니다.)</li><li>셀 왼쪽의 ▶ 버튼을 누르거나 <span class="kbd">Shift</span>+<span class="kbd">Enter</span>로 <b>위에서부터 순서대로</b> 실행합니다.</li><li>처음 실행하면 "런타임 연결 중"이 잠깐 뜹니다. 오류가 나면 <b>런타임 → 런타임 다시 시작</b> 후 처음부터 다시 실행하세요.</li></ol></div>
+<div class="toc"><b>목차</b><br><a href="#part1">P1 오늘 배우는 것 — 개념 정리</a><a href="#part2">P2 예제 — 개념마다 짧은 코드 하나</a><a href="#part3">P3 Colab 실습 — 셀 1~16 따라하기</a><a href="#part4">P4 퀴즈 — 개념 확인 5문항</a><a href="#part5">P5 정리 · 평가 기준 · 다음 시간</a></div>
+<section class="part" id="part1" style="--pcol:#4F5BD5;--ptint:#4F5BD522"><h2><span class="pn">PART 1</span>오늘 배우는 것 — 개념 정리</h2>
+<div class="pintro">슬라이드 내용을 글로 정리했습니다. 수업 후 복습용으로 읽고, 모르는 말이 나오면 이 페이지에서 찾아보세요.</div>
+<h3>1. AI는 데이터를 먹고 자란다</h3>
+<p>유튜브 추천, 얼굴 잠금해제, 번역기, 급식 인원 예측 — 모두 <b>수많은 사례(데이터)</b>를 보고 컴퓨터가 규칙을 스스로 찾아낸 결과입니다. 알고리즘이 아무리 좋아도 데이터가 엉망이면 결과도 엉망입니다(<i>Garbage in, garbage out</i>). 그래서 AI를 배우는 첫걸음은 <b>데이터를 읽는 눈</b>을 기르는 것입니다.</p>
+<h3>2. 데이터는 표다 — 행, 열, 변수</h3>
+<table class="tb "><thead><tr><th>용어</th><th>뜻</th><th>실습 데이터에서</th></tr></thead><tbody><tr><td>행 (row)</td><td>가로 한 줄 = <b>사례</b> 하나</td><td>학생 한 명. 200행 = 200명</td></tr><tr><td>열 (column)</td><td>세로 한 줄 = <b>변수</b>(특징) 하나</td><td>수면시간, 공부시간, 스마트폰시간, 운동시간, 아침식사, 성적 …</td></tr><tr><td>셀</td><td>행과 열이 만나는 칸의 값 하나</td><td>3번 학생의 성적 79.5. 비어 있으면 <b>결측</b></td></tr><tr><td>DataFrame</td><td>pandas에서 표를 부르는 이름. 변수 이름은 보통 <code>df</code></td><td><code>df.shape</code> → (200, 8), <code>df.head()</code> → 앞 5행</td></tr></tbody></table>
+<h3>3. 변수의 두 종류 — 수치형과 범주형</h3>
+<table class="tb "><thead><tr><th>종류</th><th>뜻 · 예</th><th>요약 방법</th><th>어울리는 그래프</th></tr></thead><tbody><tr><td>수치형 (숫자)</td><td>크기·양 — 수면시간 6.5, 성적 78</td><td>평균 · 중앙값 · 표준편차 · 최소/최대</td><td>히스토그램 · 상자그림 · 산점도</td></tr><tr><td>범주형 (구분)</td><td>종류·그룹 — 성별, 아침식사(먹음/안먹음), 학년</td><td>개수 세기 · 비율(%)</td><td>막대그래프 · 원그래프</td></tr></tbody></table>
+<div class="callout warn"><b class="t">함정: 숫자로 적힌 범주형</b>"학년"은 1, 2, 3으로 적혀 있지만 <b>평균 2.05학년</b>은 의미가 없습니다. 숫자여도 <b>그룹</b>을 뜻하면 범주형으로 다룹니다. pandas <code>info()</code>의 Dtype이 <code>object</code>면 글자(범주형), <code>float64/int64</code>면 숫자입니다.</div>
+<h3>4. 나쁜 데이터 3종 — 결측 · 이상치 · 편향</h3>
+<table class="tb "><thead><tr><th>문제</th><th>무엇인가</th><th>어떻게 찾나</th><th>어떻게 하나</th></tr></thead><tbody><tr><td>결측 (missing)</td><td>비어 있는 칸</td><td><code>df.isna().sum()</code></td><td>빼기(<code>dropna</code>) 또는 대표값으로 채우기(<code>fillna</code>)</td></tr><tr><td>이상치 (outlier)</td><td>다른 값들과 동떨어진 값 — 입력 실수일 수도, 진짜 특별한 사례일 수도</td><td><code>describe()</code>의 max/min, 상자그림의 ○, IQR 규칙</td><td>입력 실수면 제거, 진짜면 남기고 따로 검토</td></tr><tr><td>편향 (bias)</td><td>표본이 한쪽으로 치우침 — 설문에 답한 사람만 보면 전체를 착각</td><td>"이 데이터는 누구를 대표하나?" 묻기</td><td>데이터로는 못 고침. 한계로 명시</td></tr></tbody></table>
+<figure><img src="figs/bias.png" alt="편향: 성적 상위 학생만 설문에 답했다면, 그 데이터로 전교생을 판단하면 안 된다" style="max-width:560px"><figcaption>편향: 성적 상위 학생만 설문에 답했다면, 그 데이터로 전교생을 판단하면 안 된다</figcaption></figure>
+<h3>5. 숫자로 요약하기 — 대표값과 퍼짐</h3>
+<table class="tb "><thead><tr><th>통계량</th><th>뜻</th><th>언제 쓰나</th></tr></thead><tbody><tr><td>평균 (mean)</td><td>값을 다 더해 개수로 나눔</td><td>대칭이고 이상치가 없을 때</td></tr><tr><td>중앙값 (median)</td><td>크기순으로 세워 한가운데 값</td><td>이상치가 있거나 한쪽으로 치우쳤을 때 (용돈, 소득)</td></tr><tr><td>표준편차 (std)</td><td>평균에서 떨어진 정도의 평균적 크기. 클수록 넓게 퍼짐</td><td>"같은 평균 70점"인 두 반이 얼마나 다른지 비교</td></tr><tr><td>사분위수 (Q1, Q2, Q3)</td><td>25%, 50%, 75% 지점. Q2 = 중앙값. IQR = Q3 − Q1</td><td>상자그림의 상자</td></tr><tr><td>최소/최대 (min/max)</td><td>가장 작은/큰 값</td><td>이상치 의심: 하루 스마트폰 24시간?</td></tr></tbody></table>
+<figure><img src="figs/mean_median.png" alt="용돈 9명 중 1명이 60만원 — 평균 11.1만원, 중앙값 5만원. 평균은 이상치에 끌려간다" style="max-width:560px"><figcaption>용돈 9명 중 1명이 60만원 — 평균 11.1만원, 중앙값 5만원. 평균은 이상치에 끌려간다</figcaption></figure>
+<figure><img src="figs/std.png" alt="평균은 같은 70점, 표준편차 5(고르게) vs 12(넓게)" style="max-width:560px"><figcaption>평균은 같은 70점, 표준편차 5(고르게) vs 12(넓게)</figcaption></figure>
+<div class="callout key"><b class="t">IQR 규칙 (상자그림의 이상치)</b>Q1 − 1.5×IQR 보다 작거나 Q3 + 1.5×IQR 보다 크면 이상치 후보로 봅니다. 상자그림에서 수염 밖의 ○ 점이 바로 이 값들입니다. 실습 셀 6에서 이 규칙을 코드로 씁니다.</div>
+<h3>6. 그림으로 보기 — 질문이 그래프를 정한다</h3>
+<figure><img src="figs/chart_types.png" alt="왼쪽부터 히스토그램 · 상자그림 · 산점도 · 막대그래프" style="max-width:900px"><figcaption>왼쪽부터 히스토그램 · 상자그림 · 산점도 · 막대그래프</figcaption></figure>
+<table class="tb "><thead><tr><th>알고 싶은 것</th><th>변수</th><th>그래프</th><th>코드</th></tr></thead><tbody><tr><td>한 변수가 어떻게 퍼져 있나 (분포)</td><td>수치형 1개</td><td>히스토그램 · 상자그림</td><td><code>plt.hist(df["성적"])</code> / <code>plt.boxplot(...)</code></td></tr><tr><td>두 변수가 관계가 있나</td><td>수치형 2개</td><td>산점도 (+ 상관계수 r)</td><td><code>plt.scatter(x, y)</code> / <code>df.corr()</code></td></tr><tr><td>그룹끼리 크기 비교</td><td>범주형 + 수치형</td><td>막대그래프</td><td><code>df.groupby("아침식사")["성적"].mean().plot(kind="bar")</code></td></tr><tr><td>여러 변수의 관계를 한 번에</td><td>수치형 여러 개</td><td>상관계수 히트맵</td><td><code>sns.heatmap(df.corr(), annot=True)</code></td></tr></tbody></table>
+<h3>7. 상관계수 r — 관계의 방향과 세기</h3>
+<figure><img src="figs/corr_examples.png" alt="r = +0.9 (강한 양) · 0 (관계 없음) · −0.9 (강한 음)" style="max-width:800px"><figcaption>r = +0.9 (강한 양) · 0 (관계 없음) · −0.9 (강한 음)</figcaption></figure>
+<ul><li>r은 −1 ~ +1 사이. 부호는 <b>방향</b>(같이 커지면 +, 반대로 움직이면 −), 크기는 <b>세기</b>.</li><li>|r| 0.7 이상 강함 · 0.3~0.7 중간 · 0.3 이하 약함 (대략의 기준).</li><li>실습 데이터: 공부시간↔성적 <b>+0.63</b>, 스마트폰시간↔성적 <b>−0.35</b>, 운동시간↔성적 ≈ 0.</li></ul>
+<div class="callout warn"><b class="t">상관 ≠ 인과</b>아이스크림 판매량과 물놀이 사고 수는 상관이 높지만, 아이스크림이 사고를 일으키지 않습니다. <b>더운 날씨</b>(숨은 변수)가 둘 다 늘립니다. "공부시간↔성적 r=+0.63"도 "공부가 성적을 올린다"의 증명이 아닙니다. 상관은 "같이 움직인다"까지만 말합니다.</div>
+<h3>8. 통찰(insight)이란 — 숫자가 든 문장</h3>
+<table class="tb "><thead><tr><th>나쁜 통찰 ✗</th><th>좋은 통찰 ✓</th></tr></thead><tbody><tr><td>"공부시간과 성적은 관계가 있다"</td><td>"공부시간과 성적의 <b>상관계수는 +0.63</b>으로, 공부시간이 길수록 성적이 높은 <b>경향</b>이 있다"</td></tr><tr><td>"아침 먹으면 성적이 오른다"</td><td>"아침을 먹은 <b>111명</b>의 평균이 안 먹은 87명보다 <b>2.7점</b> 높지만, 표준편차 11.8점에 비하면 작은 차이다"</td></tr><tr><td>"스마트폰을 24시간 쓰는 학생이 있다"</td><td>"스마트폰 24시간은 <b>입력 실수</b>로 판단해 제외했다 (하루는 24시간)"</td></tr></tbody></table>
+<p>통찰 문장의 4요소: <b>변수 이름 · 숫자 · 근거 그래프 · 조심하는 말</b>("경향이 있다", "인과는 알 수 없다").</p>
+</section>
+<section class="part" id="part2" style="--pcol:#0E8C86;--ptint:#0E8C8622"><h2><span class="pn">PART 2</span>예제 — 개념마다 짧은 코드 하나</h2>
+<div class="pintro">실습 전에 문법을 익히는 미니 예제입니다. Colab 새 노트에 복사해 실행해 보세요(각 예제는 독립적으로 실행됩니다).</div>
+<h3>예제 1 · 표 만들고 살펴보기</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>DataFrame 기초</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import pandas as pd
+df = pd.DataFrame({'이름': ['민수', '지우', '하늘', '서준'],
+                   '수면시간': [7.0, 5.5, 8.0, 6.5],
+                   '성적': [82, 61, 90, 75]})
+print(df.shape)      # (행 개수, 열 개수)
+print(df.dtypes)     # 열마다 자료형
+df                   # 마지막 줄에 변수 이름만 쓰면 표가 예쁘게 출력됨</pre></div><div class="out"><div class="lab">예상 출력</div><pre>(4, 3)
+이름       object
+수면시간    float64
+성적         int64
+dtype: object
+   이름  수면시간  성적
+0  민수   7.0  82
+1  지우   5.5  61
+2  하늘   8.0  90
+3  서준   6.5  75</pre></div>
+<h3>예제 2 · 평균·중앙값·표준편차 — 이상치의 효과</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>대표값 비교</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import numpy as np
+용돈 = np.array([3, 4, 4, 5, 5, 6, 6, 7, 60])     # 마지막 한 명이 60만원
+print('평균  :', 용돈.mean().round(1))
+print('중앙값:', np.median(용돈))
+print('표준편차:', 용돈.std(ddof=1).round(1))
+print('60 빼면 평균:', 용돈[:-1].mean().round(1))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>평균  : 11.1
+중앙값: 5.0
+표준편차: 18.4
+60 빼면 평균: 5.0</pre></div>
+<h3>예제 3 · 결측 찾고 채우기</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>결측 처리</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import pandas as pd, numpy as np
+s = pd.Series([7.0, np.nan, 8.0, 6.5, np.nan])   # np.nan = 빈칸
+print('빈칸 개수:', s.isna().sum())
+print('평균(빈칸 무시):', s.mean())
+print(s.fillna(s.median()).tolist())             # 중앙값 7.0으로 채움</pre></div><div class="out"><div class="lab">예상 출력</div><pre>빈칸 개수: 2
+평균(빈칸 무시): 7.166666666666667
+[7.0, 7.0, 8.0, 6.5, 7.0]</pre></div>
+<h3>예제 4 · 히스토그램과 산점도</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>그래프 두 개 나란히</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import matplotlib.pyplot as plt, numpy as np
+rng = np.random.default_rng(0)
+x = rng.normal(6.5, 1.0, 100)         # 평균 6.5, 표준편차 1.0인 값 100개
+y = 50 + 5 * x + rng.normal(0, 5, 100)
+fig, ax = plt.subplots(1, 2, figsize=(9, 3.5))
+ax[0].hist(x, bins=12); ax[0].set_title('histogram')
+ax[1].scatter(x, y); ax[1].set_title(f'r = {np.corrcoef(x, y)[0,1]:.2f}')
+plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>(그림 2개: 종 모양 히스토그램, 오른쪽 위로 향하는 산점도, r ≈ 0.7)</pre></div>
+<h3>예제 5 · groupby로 그룹 비교</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>groupby</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import pandas as pd
+df = pd.DataFrame({'아침식사': ['먹음', '안먹음', '먹음', '먹음', '안먹음'],
+                   '성적': [82, 61, 90, 75, 70]})
+print(df.groupby('아침식사')['성적'].agg(['mean', 'count']))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>           mean  count
+아침식사
+먹음    82.333333      3
+안먹음  65.500000      2</pre></div>
+</section>
+<section class="part" id="part3" style="--pcol:#D97706;--ptint:#D9770622"><h2><span class="pn">PART 3</span>Colab 실습 — 셀 1~16 따라하기</h2>
+<div class="pintro">노트북 <code>01_인공지능데이터_실습_colab.ipynb</code>의 셀과 같은 코드입니다. 각 셀마다 <b>무엇을 하는지 · 왜 하는지 · 출력에서 무엇을 볼지</b>를 적었고, "예상 출력"은 실제로 실행한 결과입니다(그림은 Colab에서 확인). <b>반드시 위에서부터 순서대로</b> 실행하세요.</div>
+<div class="step"><div class="sn"><i>1</i>준비: 도구 불러오기</div><div class="why"><b>라이브러리</b>는 미리 만들어진 도구 상자입니다. <code>pandas</code>(표), <code>numpy</code>(숫자 계산), <code>matplotlib</code>(그래프)를 불러옵니다. <code>as pd</code>는 "앞으로 pd라고 짧게 부르겠다"는 뜻입니다.<br>Colab의 기본 글꼴에는 한글이 없어서 그래프 제목의 한글이 □□로 깨집니다. <code>apt-get install fonts-nanum</code>으로 나눔 글꼴을 설치하고 matplotlib에 등록합니다(20~30초). <code>try/except</code>는 "설치가 안 되어도 오류로 멈추지 말고 넘어가라"는 안전장치입니다.<br><b>볼 것:</b> 마지막 줄 "준비 완료!"와 버전 번호.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 1</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import matplotlib.pyplot as plt, matplotlib as mpl, numpy as np, pandas as pd
+import subprocess, sys
+try:
+    subprocess.run(['apt-get','-qq','install','-y','fonts-nanum'], check=False, capture_output=True)   # Colab 한글 폰트 설치
+    import matplotlib.font_manager as fm; fm.fontManager.addfont('/usr/share/fonts/truetype/nanum/NanumGothic.ttf'); plt.rcParams['font.family']='NanumGothic'
+except Exception:
+    plt.rcParams['font.family'] = 'Noto Sans CJK JP'   # 로컬 검증용
+plt.rcParams['axes.unicode_minus'] = False
+pd.set_option('display.width', 120)
+print('준비 완료! numpy', np.__version__, '/ pandas', pd.__version__)</pre></div><div class="out"><div class="lab">예상 출력</div><pre>준비 완료! numpy 2.4.3 / pandas 2.3.3</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>"준비 완료! numpy 2.x / pandas 2.x"가 보이나요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">아무것도 안 나오고 오래 걸린다 → 왼쪽 위 "런타임 연결 중"이 끝날 때까지 기다리세요. 첫 연결은 10~20초.<br>그래프 한글이 □로 나온다 → 이 셀을 다시 실행한 뒤 <b>런타임 → 런타임 다시 시작</b> 후 처음부터.</div></details></div>
+<div class="step"><div class="sn"><i>2</i>데이터 만들기</div><div class="why"><code>make_student_data()</code> 함수는 가상의 고등학생 200명 데이터를 만듭니다. <code>np.random.default_rng(seed)</code>에서 seed(씨앗값)를 2026으로 고정했기 때문에 <b>누가 실행해도 똑같은 표</b>가 나옵니다(실험 재현의 기본). 성적은 공부시간↑·스마트폰↓·수면 적당·아침식사에 따라 만들어졌고 잡음(noise)을 더했습니다.<br>마지막 6줄이 중요합니다: 수면시간 6칸·운동시간 4칸을 일부러 비우고(<code>np.nan</code>), 17번 학생 스마트폰 24시간, 93번 학생 공부 15시간이라는 <b>말도 안 되는 값</b>을 심었습니다. 현실 데이터에 늘 있는 문제를 연습하기 위해서입니다.<br><b>볼 것:</b> <code>df.shape</code>가 (200, 8) — 200명, 변수 8개. <code>df.head(10)</code>은 앞 10명. 빈칸은 <code>NaN</code>으로 표시됩니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 2</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">def make_student_data(n=200, seed=2026):
+    rng = np.random.default_rng(seed)                     # 난수 생성기 (seed 고정 → 누구나 같은 데이터)
+    sleep = np.clip(rng.normal(6.5, 1.0, n), 3.5, 9.5)      # 수면시간(시간)
+    study = np.clip(rng.normal(2.5, 1.2, n), 0, 7)          # 하루 공부시간(시간)
+    phone = np.clip(rng.normal(3.5, 1.3, n), 0.3, 8)        # 스마트폰 사용시간(시간)
+    exercise = np.clip(rng.normal(2.0, 1.5, n), 0, 8)       # 주당 운동시간(시간)
+    breakfast = rng.choice(['먹음', '안먹음'], n, p=[0.6, 0.4])   # 아침식사 여부
+    gender = rng.choice(['남', '여'], n)
+    grade = rng.choice([1, 2, 3], n)                        # 학년
+    # 성적: 공부시간 ↑, 수면 적당 ↑, 스마트폰 ↑ 이면 ↓ + 잡음
+    score = 55 + 6.0 * study - 2.5 * phone + 2.0 * (sleep - 6.5) - 1.5 * (sleep - 7) ** 2 \
+            + 3.0 * (breakfast == '먹음') + rng.normal(0, 7, n)
+    score = np.clip(score, 20, 100).round(1)
+    df = pd.DataFrame({'학년': grade, '성별': gender, '수면시간': sleep.round(1), '공부시간': study.round(1),
+                       '스마트폰시간': phone.round(1), '운동시간': exercise.round(1), '아침식사': breakfast, '성적': score})
+    # 현실처럼 결측(빈칸)과 이상치(잘못 입력된 값)를 몇 개 심는다
+    df.loc[rng.choice(n, 6, replace=False), '수면시간'] = np.nan
+    df.loc[rng.choice(n, 4, replace=False), '운동시간'] = np.nan
+    df.loc[17, '스마트폰시간'] = 24.0      # 하루 24시간? → 입력 실수
+    df.loc[93, '공부시간'] = 15.0         # 하루 15시간 공부? → 의심스러운 값
+    df.index.name = '학생번호'
+    return df
+
+df = make_student_data()          # 표 만들기
+print('표의 크기 (행, 열):', df.shape)
+df.head(10)                       # 앞에서 10명만 보기</pre></div><div class="out"><div class="lab">예상 출력</div><pre>표의 크기 (행, 열): (200, 8)
+      학년 성별  수면시간  공부시간  스마트폰시간  운동시간 아침식사    성적
+학생번호                                            
+0      1  여   5.7   2.7     1.5   3.4  안먹음  62.6
+1      2  남   6.7   3.0     2.1   1.8   먹음  72.3
+2      2  여   4.6   2.5     3.7   3.1  안먹음  57.9
+3      3  남   7.9   2.7     4.3   0.0  안먹음  79.5
+4      3  남   7.1   2.8     5.6   1.6   먹음  64.3
+5      2  여   6.2   3.6     4.0   2.4   먹음  72.6
+6      1  남   6.2   1.9     4.1   2.0   먹음  56.2
+7      1  남   6.8   3.4     5.7   5.1   먹음  76.0
+8      2  남   NaN   3.3     2.5   2.5  안먹음  65.7
+9      1  여   6.3   2.6     2.3   2.5  안먹음  67.0</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>표에서 NaN이 보이는 칸이 있나요? 어느 열인가요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><code>NameError: name 'np' is not defined</code> → 셀 1을 실행하지 않은 것. 셀 1부터 다시.</div></details></div>
+<div class="step"><div class="sn"><i>3</i>표 살펴보기</div><div class="why"><code>info()</code>는 표의 <b>설계도</b>입니다. 열 이름(Column), 비어 있지 않은 값의 개수(Non-Null Count), 자료형(Dtype)을 보여 줍니다.<br>읽는 법: 전체가 200명(200 entries)인데 Non-Null이 <b>194</b>인 열은 6칸이 빈 것입니다. Dtype이 <code>float64</code>(소수)·<code>int64</code>(정수)면 수치형, <code>object</code>면 글자(범주형)입니다.<br><b>볼 것:</b> 결측이 있는 열 2개, 범주형 열 2개(성별·아침식사)를 찾으세요. 학년은 int64지만 실제로는 범주형이라는 점도 기억.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 3</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">df.info()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 200 entries, 0 to 199
+Data columns (total 8 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   학년      200 non-null    int64  
+ 1   성별      200 non-null    object 
+ 2   수면시간    194 non-null    float64
+ 3   공부시간    200 non-null    float64
+ 4   스마트폰시간  200 non-null    float64
+ 5   운동시간    196 non-null    float64
+ 6   아침식사    200 non-null    object 
+ 7   성적      200 non-null    float64
+dtypes: float64(5), int64(1), object(2)
+memory usage: 12.6+ KB</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>Non-Null이 200보다 작은 열은? (수면시간 194, 운동시간 196)</div></div>
+<div class="step"><div class="sn"><i>4</i>요약통계</div><div class="why"><code>describe()</code>는 숫자 열마다 8가지 요약통계를 한꺼번에 계산합니다. count(개수) · mean(평균) · std(표준편차) · min · 25% · 50%(중앙값) · 75% · max. <code>.round(2)</code>는 소수 둘째 자리까지.<br>읽는 법 ① count: 200이 아니면 결측. ② mean vs 50%: 많이 다르면 치우침·이상치. ③ min/max: 말이 되는 값인가?<br><b>볼 것:</b> 스마트폰시간 max <b>24.0</b>, 공부시간 max <b>15.0</b> — 하루 24시간 스마트폰? 15시간 공부? 이런 값이 이상치 후보입니다. 학년의 mean 2.05는 범주형이라 의미가 없습니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 4</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">df.describe().round(2)</pre></div><div class="out"><div class="lab">예상 출력</div><pre>학년    수면시간    공부시간  스마트폰시간    운동시간      성적
+count  200.00  194.00  200.00  200.00  196.00  200.00
+mean     2.05    6.57    2.59    3.64    2.11   60.85
+std      0.83    1.09    1.46    2.00    1.31   11.80
+min      1.00    3.50    0.00    0.30    0.00   24.20
+25%      1.00    5.80    1.80    2.50    1.18   52.80
+50%      2.00    6.60    2.55    3.60    2.00   61.25
+75%      3.00    7.30    3.30    4.50    3.00   68.72
+max      3.00    9.50   15.00   24.00    5.50   92.20</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>성적의 평균과 중앙값(50%)은 각각 얼마이고, 얼마나 가까운가요?</div></div>
+<div class="step"><div class="sn"><i>5</i>결측 찾기</div><div class="why"><code>df.isna()</code>는 모든 칸에 대해 비었으면 True, 아니면 False를 만들고, <code>.sum()</code>은 열마다 True(=1)의 개수를 셉니다. <code>df[df.isna().any(axis=1)]</code>는 "한 칸이라도 빈 행만 골라라"(axis=1 = 행 방향).<br>결측 처리: 원본 <code>df</code>는 그대로 두고 <b>복사본 <code>df_clean</code></b>을 만들어 고칩니다(원본을 망치지 않는 습관). <code>fillna(중앙값)</code>으로 빈칸을 채우는데, 평균 대신 <b>중앙값</b>을 쓰는 이유는 이상치(24시간 등)의 영향을 덜 받기 때문입니다.<br><b>볼 것:</b> 채운 뒤 빈칸 개수 0.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 5</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">print('열마다 빈칸 개수:')
+print(df.isna().sum())
+print('\n빈칸이 있는 학생 (일부):')
+display(df[df.isna().any(axis=1)].head())
+
+df_clean = df.copy()                                   # 원본은 그대로 두고 복사본을 고친다
+for col in ['수면시간', '운동시간']:
+    df_clean[col] = df_clean[col].fillna(df_clean[col].median())   # 중앙값으로 채우기
+print('\n채운 뒤 빈칸 개수:', int(df_clean.isna().sum().sum()))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>열마다 빈칸 개수:
+학년        0
+성별        0
+수면시간      6
+공부시간      0
+스마트폰시간    0
+운동시간      4
+아침식사      0
+성적        0
+dtype: int64
+
+빈칸이 있는 학생 (일부):
+      학년 성별  수면시간  공부시간  스마트폰시간  운동시간 아침식사    성적
+학생번호                                            
+8      2  남   NaN   3.3     2.5   2.5  안먹음  65.7
+17     3  여   NaN   1.8    24.0   3.0   먹음  56.6
+21     2  여   NaN   1.8     5.4   1.7  안먹음  61.8
+25     1  여   8.3   2.3     2.1   NaN  안먹음  59.3
+71     2  여   NaN   4.3     3.7   0.0  안먹음  68.9
+채운 뒤 빈칸 개수: 0</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>빈칸이 있던 학생은 몇 명이었나요? 채운 뒤 df_clean의 빈칸은 0인가요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><code>display</code>는 Colab/Jupyter에서 표를 예쁘게 보여 주는 함수입니다. 일반 파이썬에서는 <code>print</code>를 쓰세요.</div></details></div>
+<div class="step"><div class="sn"><i>6</i>이상치 찾기</div><div class="why"><code>find_outliers</code> 함수는 <b>IQR 규칙</b>을 코드로 옮긴 것입니다. <code>quantile(0.25)</code>=Q1, <code>quantile(0.75)</code>=Q3, <code>iqr = q3 − q1</code>. 정상 범위는 [Q1 − 1.5×IQR, Q3 + 1.5×IQR]이고 그 밖의 값을 돌려줍니다. <code>(s < low) | (s > high)</code>에서 <code>|</code>는 "또는".<br>출력을 보면 스마트폰시간 이상치 2개(24.0과 7.7), 공부시간 2개(15.0과 6.1), 성적 1개(24.2)가 나옵니다. <b>모두 지우면 안 됩니다.</b> 7.7시간, 6.1시간, 24.2점은 드물지만 <i>가능한</i> 값이라 진짜 학생일 수 있습니다. 반면 24시간·15시간은 물리적으로 불가능하므로 입력 실수로 보고 제거합니다.<br><code>df_clean.drop(bad.index)</code>로 두 행을 지우면 198명이 됩니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 6</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">def find_outliers(s):
+    q1, q3 = s.quantile(0.25), s.quantile(0.75)
+    iqr = q3 - q1
+    low, high = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+    return s[(s &lt; low) | (s &gt; high)]
+
+for col in ['스마트폰시간', '공부시간', '성적']:
+    out = find_outliers(df_clean[col])
+    print(f'{col}: 이상치 {len(out)}개 →', out.round(1).to_dict())
+
+# 하루는 24시간! 공부+수면+스마트폰이 24시간을 넘는 학생은 입력 실수로 보고 제거
+bad = df_clean[(df_clean['스마트폰시간'] &gt;= 20) | (df_clean['공부시간'] &gt;= 12)]
+print('\n제거할 학생:'); display(bad)
+df_clean = df_clean.drop(bad.index)
+print('정리 후 학생 수:', len(df_clean))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>스마트폰시간: 이상치 2개 → {17: 24.0, 111: 7.7}
+공부시간: 이상치 2개 → {93: 15.0, 97: 6.1}
+성적: 이상치 1개 → {139: 24.2}
+
+제거할 학생:
+      학년 성별  수면시간  공부시간  스마트폰시간  운동시간 아침식사    성적
+학생번호                                            
+17     3  여   6.6   1.8    24.0   3.0   먹음  56.6
+93     2  여   5.2  15.0     4.7   0.5   먹음  50.5정리 후 학생 수: 198</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>이상치로 잡힌 값 중 "지우면 안 되는" 값은 무엇이고, 왜인가요?</div></div>
+<div class="step"><div class="sn"><i>7</i>평균·중앙값·표준편차</div><div class="why">정리 전(df)과 후(df_clean)의 스마트폰시간을 비교합니다. <code>f"..."</code>는 문자열 안에 <code>{s.mean():.2f}</code>처럼 값을 소수 둘째 자리로 끼워 넣는 문법입니다.<br><b>볼 것:</b> 이상치 1명(24시간)을 빼자 <b>평균은 3.64→3.53</b>, <b>표준편차는 2.00→1.38</b>로 크게 바뀌지만 <b>중앙값은 3.60→3.60</b> 그대로입니다. 이것이 "중앙값은 이상치에 강하다"의 증거입니다.<br>성적의 사분위수: 25% 52.8 · 50% 61.3 · 75% 68.7 → 가운데 절반의 학생이 52.8~68.7점 사이.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 7</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">for name, d in [('정리 전', df), ('정리 후', df_clean)]:
+    s = d['스마트폰시간']
+    print(f"[{name}] 스마트폰시간  평균 {s.mean():.2f}  중앙값 {s.median():.2f}  표준편차 {s.std():.2f}  최댓값 {s.max():.1f}")
+
+print('\n성적 사분위수:')
+print(df_clean['성적'].quantile([0.25, 0.5, 0.75]).round(1))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[정리 전] 스마트폰시간  평균 3.64  중앙값 3.60  표준편차 2.00  최댓값 24.0
+[정리 후] 스마트폰시간  평균 3.53  중앙값 3.60  표준편차 1.38  최댓값 7.7
+
+성적 사분위수:
+0.25    53.1
+0.50    61.4
+0.75    68.8
+Name: 성적, dtype: float64</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>표준편차가 2.00에서 1.38로 준 이유를 말할 수 있나요?</div></div>
+<div class="step"><div class="sn"><i>8</i>히스토그램</div><div class="why"><code>plt.subplots(1, 2, figsize=(11, 4))</code>는 가로로 그래프 2칸을 만듭니다. <code>zip(axes, [...])</code>로 칸과 변수를 짝지어 반복합니다. <code>ax.hist(s, bins=15)</code>가 히스토그램, <code>axvline</code>은 세로선(평균 빨강 점선, 중앙값 초록).<br><b>볼 것:</b> ① 봉우리가 하나인가? ② 왼쪽/오른쪽 꼬리? ③ 빨강선과 초록선이 얼마나 떨어져 있나(가까우면 대칭). 수면시간의 봉우리는 약 6.5시간 — 권장 수면 8시간과 비교해 보세요.<br>실험: <code>bins=15</code>를 5, 40으로 바꿔 다시 실행 — 칸이 너무 적으면 뭉개지고, 많으면 들쭉날쭉합니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 8</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+for ax, col in zip(axes, ['성적', '수면시간']):
+    s = df_clean[col]
+    ax.hist(s, bins=15, color='#4F5BD5', edgecolor='white')
+    ax.axvline(s.mean(), color='#C0395F', ls='--', label=f'평균 {s.mean():.1f}')
+    ax.axvline(s.median(), color='#0E8C86', label=f'중앙값 {s.median():.1f}')
+    ax.set_xlabel(col); ax.set_ylabel('학생 수'); ax.set_title(f'{col} 분포'); ax.legend()
+plt.tight_layout(); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>&lt;Figure size 1100x400 with 2 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>성적 히스토그램의 봉우리는 몇 점 근처인가요?</div></div>
+<div class="step"><div class="sn"><i>9</i>상자그림</div><div class="why"><code>ax.boxplot([리스트, 리스트, ...], tick_labels=[...])</code>는 여러 상자를 나란히 그립니다. <code>patch_artist=True</code>는 상자 색칠, <code>medianprops</code>는 중앙값 선 스타일.<br>왼쪽: 생활 변수 4개 — 상자가 긴(퍼짐이 큰) 변수는? ○ 점(이상치)이 남은 변수는? 오른쪽: <code>df_clean.loc[df_clean["학년"] == g, "성적"]</code>은 "학년이 g인 행의 성적만" 고르는 문법. 학년별 중앙값 선의 높이를 비교하세요.<br><b>볼 것:</b> 상자 = Q1~Q3(가운데 50%), 선 = 중앙값, 수염 = 정상 범위 끝, ○ = 이상치 후보.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 9</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+cols = ['수면시간', '공부시간', '스마트폰시간', '운동시간']
+axes[0].boxplot([df_clean[c] for c in cols], tick_labels=cols, patch_artist=True,
+                boxprops=dict(facecolor='#A9DCD8'), medianprops=dict(color='#C0395F', lw=2))
+axes[0].set_ylabel('시간'); axes[0].set_title('생활 변수 4개의 상자그림')
+
+groups = [df_clean.loc[df_clean['학년'] == g, '성적'] for g in [1, 2, 3]]
+axes[1].boxplot(groups, tick_labels=['1학년', '2학년', '3학년'], patch_artist=True,
+                boxprops=dict(facecolor='#C7CAF1'), medianprops=dict(color='#C0395F', lw=2))
+axes[1].set_ylabel('성적'); axes[1].set_title('학년별 성적')
+plt.tight_layout(); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>&lt;Figure size 1100x400 with 2 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>학년별 성적 중앙값에 뚜렷한 차이가 있나요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><code>tick_labels</code>에서 오류가 나면(옛 matplotlib) <code>labels=</code>로 바꾸세요. Colab 최신 버전은 <code>tick_labels</code>가 맞습니다.</div></details></div>
+<div class="step"><div class="sn"><i>10</i>산점도와 상관계수</div><div class="why"><code>df_clean[[col, "성적"]].corr()</code>은 두 열의 상관계수 표(2×2)를 만들고 <code>.iloc[0, 1]</code>로 그중 한 값을 꺼냅니다. <code>ax.scatter(x, y, s=18, alpha=.7)</code>은 점 크기 18, 투명도 0.7(겹치면 진해짐).<br><b>볼 것:</b> 공부시간 <b>r = +0.63</b> → 점들이 오른쪽 위로. 스마트폰시간 <b>r = −0.35</b> → 살짝 오른쪽 아래로. 수면시간 +0.33 → 약한 양의 관계. 제목의 r과 점의 모양이 일치하는지 눈으로 확인하세요.<br><b>주의:</b> r=+0.63이 "공부가 성적을 올린다"를 증명하지는 않습니다(수업 중 숨은 변수 이야기).</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 10</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">fig, axes = plt.subplots(1, 3, figsize=(13, 4))
+for ax, col in zip(axes, ['공부시간', '스마트폰시간', '수면시간']):
+    r = df_clean[[col, '성적']].corr().iloc[0, 1]          # 상관계수
+    ax.scatter(df_clean[col], df_clean['성적'], s=18, alpha=.7, color='#0E8C86')
+    ax.set_xlabel(col + '(시간)'); ax.set_ylabel('성적'); ax.set_title(f'{col} vs 성적   r = {r:+.2f}')
+plt.tight_layout(); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>&lt;Figure size 1300x400 with 3 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>세 그래프 중 점이 가장 "선처럼" 모인 것은 어느 것인가요?</div></div>
+<div class="step"><div class="sn"><i>11</i>그룹 비교</div><div class="why"><code>groupby("아침식사")["성적"].agg(["mean", "median", "count"])</code> = "아침식사별로 묶어서 성적의 평균·중앙값·인원을 구해라". 결과 표 <code>g</code>의 인덱스는 "먹음/안먹음".<br>왼쪽 막대: <code>ax.bar(g.index, g["mean"])</code>, <code>ax.text</code>로 막대 위에 점수와 n을 적습니다. <code>set_ylim(0, 100)</code>은 y축을 0부터 — 축을 50부터 시작하면 작은 차이가 커 보이는 <b>속이는 그래프</b>가 되기 때문입니다.<br>오른쪽: <code>groupby(["학년", "성별"]).mean().unstack()</code>은 학년×성별 표를 만들고 <code>plot(kind="bar")</code>로 묶음 막대.<br><b>볼 것:</b> 먹음 62.1점(n=111) vs 안먹음 59.4점(n=87) — 차이 2.7점. 표준편차 11.8점과 비교하면 큰 차이인가요?</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 11</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">g = df_clean.groupby('아침식사')['성적'].agg(['mean', 'median', 'count']).round(1)
+print(g)
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].bar(g.index, g['mean'], color=['#C0395F', '#0E8C86'], width=.5)
+for i, (m, c) in enumerate(zip(g['mean'], g['count'])):
+    axes[0].text(i, m + 1, f'{m}점 (n={c})', ha='center')
+axes[0].set_ylim(0, 100); axes[0].set_ylabel('평균 성적'); axes[0].set_title('아침식사 여부별 평균 성적')
+
+g2 = df_clean.groupby(['학년', '성별'])['성적'].mean().unstack()
+g2.plot(kind='bar', ax=axes[1], color=['#4F5BD5', '#D97706'], rot=0)
+axes[1].set_ylabel('평균 성적'); axes[1].set_title('학년 × 성별 평균 성적')
+plt.tight_layout(); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>mean  median  count
+아침식사                     
+먹음    62.1    63.4    111
+안먹음   59.4    58.5     87
+&lt;Figure size 1000x400 with 2 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>두 그룹의 인원(n)이 각각 몇 명인지 막대 위에서 읽을 수 있나요?</div></div>
+<div class="step"><div class="sn"><i>12</i>히트맵</div><div class="why"><code>df_clean[num_cols].corr()</code>은 숫자 열 5개끼리의 상관계수 5×5 표. <code>sns.heatmap(corr, annot=True, fmt=".2f", cmap="RdBu_r", vmin=-1, vmax=1)</code>은 그 표를 색으로: 빨강 = 양(+), 파랑 = 음(−), <code>annot=True</code>는 숫자도 함께 표시.<br><b>볼 것:</b> 맨 아래 <b>성적 행</b>에서 가장 진한 칸 → 공부시간(+0.63). 스마트폰시간은 파랑(−0.35). 운동시간은 거의 흰색(≈0). 대각선 1.00은 자기 자신이니 무시. 히트맵은 "어디를 자세히 볼지" 정하는 지도입니다 — 진한 칸을 산점도로 확인하세요.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 12</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import seaborn as sns
+num_cols = ['수면시간', '공부시간', '스마트폰시간', '운동시간', '성적']
+corr = df_clean[num_cols].corr()
+print(corr.round(2))
+plt.figure(figsize=(6, 5))
+sns.heatmap(corr, annot=True, fmt='.2f', cmap='RdBu_r', vmin=-1, vmax=1, square=True)
+plt.title('상관계수 히트맵'); plt.tight_layout(); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>수면시간  공부시간  스마트폰시간  운동시간    성적
+수면시간    1.00  0.04   -0.05 -0.06  0.33
+공부시간    0.04  1.00    0.00  0.07  0.63
+스마트폰시간 -0.05  0.00    1.00 -0.05 -0.28
+운동시간   -0.06  0.07   -0.05  1.00  0.06
+성적      0.33  0.63   -0.28  0.06  1.00
+&lt;Figure size 600x500 with 2 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>성적과 상관이 가장 높은 변수, 가장 낮은(음의) 변수는?</div></div>
+<div class="step"><div class="sn"><i>13</i>🧩 직접 해보기 1</div><div class="why">🧩 <b>직접 해보기 1.</b> 셀 10을 참고해 <b>운동시간 vs 성적</b> 산점도를 그립니다. 노트북의 <code># TODO</code> 줄에 <code>plt.scatter(df_clean[col], df_clean["성적"])</code>를 채우면 됩니다(아래 코드는 완성본).<br><b>볼 것:</b> r ≈ 0 — 점이 동그랗게 퍼져 방향이 없습니다. "운동시간은 성적과 거의 관계가 없다"는 통찰 한 줄이 나옵니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 13</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">col = '운동시간'
+r = df_clean[[col, '성적']].corr().iloc[0, 1]   # TODO: 상관계수를 구하는 이 줄은 그대로 두고
+# TODO: 아래에 plt.scatter( x , y ) 로 산점도를 그리세요
+plt.scatter(df_clean[col], df_clean['성적'], s=18, color='#D97706')
+plt.xlabel(col); plt.ylabel('성적'); plt.title(f'{col} vs 성적  r = {r:+.2f}'); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>&lt;Figure size 640x480 with 1 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>r 값이 −0.1 ~ +0.1 사이인가요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">제목에 r이 <code>nan</code>으로 나오면 결측이 남은 것 — 셀 5를 실행했는지 확인.</div></details></div>
+<div class="step"><div class="sn"><i>14</i>🧩 직접 해보기 2</div><div class="why">🧩 <b>직접 해보기 2.</b> <code>groupby("성별")["스마트폰시간"]</code>으로 성별 평균·중앙값을 구하고 <code>g["mean"].plot(kind="bar")</code>로 막대를 그립니다. 셀 11과 같은 구조입니다.<br><b>볼 것:</b> 남 3.67 vs 여 3.41 (평균). 차이 0.26시간 = 약 16분. 표준편차 1.38시간에 비하면 작은 차이입니다 — "차이가 있다"고 말하려면 퍼짐과 비교하는 습관!</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 14</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">g = df_clean.groupby('성별')['스마트폰시간'].agg(['mean', 'median']).round(2)   # TODO: '스마트폰시간' 열을 골랐는지 확인
+print(g)
+g['mean'].plot(kind='bar', color=['#4F5BD5', '#C0395F'], rot=0)
+plt.ylabel('평균 스마트폰시간'); plt.title('성별 스마트폰 사용시간'); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>mean  median
+성별              
+남   3.67    3.70
+여   3.41    3.45
+&lt;Figure size 640x480 with 1 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>평균과 중앙값이 비슷한가요? (비슷하면 이상치 영향이 적다는 뜻)</div></div>
+<div class="step"><div class="sn"><i>15</i>보너스: 붓꽃 데이터</div><div class="why">(보너스) <code>load_iris(as_frame=True)</code>는 scikit-learn에 내장된 <b>실제 데이터</b> — 붓꽃 150송이의 꽃받침/꽃잎 길이·너비와 품종(setosa · versicolor · virginica). 인터넷 없이도 됩니다.<br><code>X["품종"] = [iris.target_names[t] for t in X["target"]]</code>는 숫자 0/1/2를 품종 이름으로 바꾸는 줄. 품종별로 색을 달리해 꽃잎 길이 vs 너비 산점도를 그립니다.<br><b>볼 것:</b> 세 품종이 꽃잎 크기로 <b>뚜렷이 갈라집니다</b>. 다음 시간(지도학습)에는 이 패턴을 컴퓨터가 배워서 새 꽃의 품종을 <b>예측</b>하게 만듭니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 15</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.datasets import load_iris
+iris = load_iris(as_frame=True)
+X = iris.frame
+X['품종'] = [iris.target_names[t] for t in X['target']]
+display(X.groupby('품종')[['petal length (cm)', 'petal width (cm)']].mean().round(2))
+
+for name, color in zip(iris.target_names, ['#4F5BD5', '#0E8C86', '#D97706']):
+    m = X['품종'] == name
+    plt.scatter(X.loc[m, 'petal length (cm)'], X.loc[m, 'petal width (cm)'], s=20, color=color, label=name)
+plt.xlabel('꽃잎 길이(cm)'); plt.ylabel('꽃잎 너비(cm)'); plt.title('붓꽃 품종별 꽃잎 크기'); plt.legend(); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>petal length (cm)  petal width (cm)
+품종                                             
+setosa                   1.46              0.25
+versicolor               4.26              1.33
+virginica                5.55              2.03&lt;Figure size 640x480 with 1 Axes&gt;</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>setosa의 꽃잎 길이 평균은 다른 두 품종보다 확실히 작나요?</div></div>
+<div class="step"><div class="sn"><i>16</i>📝 결과물 제출</div><div class="why">📝 <b>오늘의 결과물.</b> <code>이름</code>, <code>학번</code>을 본인 것으로 바꾸고, <code>통찰</code> 리스트의 세 문장을 채운 뒤 실행합니다. 각 문장에는 <b>변수 이름 + 숫자 + 근거 셀 번호 + 조심하는 말</b>이 들어가야 합니다.<br>출력에는 분석 인원(198명, 이상치 2명 제거)과 성적과의 상관계수가 자동으로 붙습니다. 이 화면을 <b>캡처</b>하거나 <b>파일 → 다운로드 → .ipynb</b>로 저장해 제출하세요.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 16</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">이름 = '홍길동'        # ← 본인 이름
+학번 = '10101'        # ← 본인 학번
+통찰 = [
+    '1. (예) 공부시간과 성적의 상관계수는 +0.xx로 ...',
+    '2. ',
+    '3. ',
+]
+print(f'=== 1회차 실습 결과물 · {이름}({학번}) ===')
+print(f'분석한 학생 수: {len(df_clean)}명 (원본 {len(df)}명, 이상치 {len(df)-len(df_clean)}명 제거)')
+print('성적과의 상관계수:', df_clean[num_cols].corr()['성적'].drop('성적').round(2).to_dict())
+print('\n내가 찾은 통찰:')
+for t in 통찰: print(' ', t)</pre></div><div class="out"><div class="lab">예상 출력</div><pre>=== 1회차 실습 결과물 · 홍길동(10101) ===
+분석한 학생 수: 198명 (원본 200명, 이상치 2명 제거)
+성적과의 상관계수: {'수면시간': 0.33, '공부시간': 0.63, '스마트폰시간': -0.28, '운동시간': 0.06}
+
+내가 찾은 통찰:
+  1. (예) 공부시간과 성적의 상관계수는 +0.xx로 ...
+  2. 
+  3.</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>세 문장 모두에 숫자가 들어 있나요? 예시를 그대로 베끼지 않았나요?</div></div>
+<div class="callout tip"><b class="t">다 한 사람은 — 더 해보기</b>① 셀 8의 <code>bins</code>를 5·40으로 바꿔 보기 ② 학년별 스마트폰시간 상자그림 ③ 수면시간 7시간 이상/미만 두 그룹의 성적 비교: <code>df_clean.groupby(df_clean["수면시간"] >= 7)["성적"].mean()</code> ④ 성적 상위 20%(<code>quantile(0.8)</code> 이상) 학생들의 공부·스마트폰 시간 평균은?</div>
+</section>
+<section class="part" id="part4" style="--pcol:#C0395F;--ptint:#C0395F22"><h2><span class="pn">PART 4</span>퀴즈 — 개념 확인 5문항</h2>
+<div class="pintro">보기를 클릭하면 바로 정답과 해설이 나옵니다. 상단 바에서 점수를 확인하세요.</div>
+<div class="quiz"><div class="q">Q1. 용돈 데이터 [3, 4, 4, 5, 5, 6, 6, 7, 60]에서 "대부분 학생의 용돈"을 가장 잘 나타내는 값은?</div><label onclick="pick(this,1,0)">① 평균</label><label onclick="pick(this,1,1)">② 중앙값</label><label onclick="pick(this,1,2)">③ 최댓값</label><label onclick="pick(this,1,3)">④ 표준편차</label><div class="exp"><b>정답: ②</b> — 60이라는 이상치가 평균을 11.1로 끌어올립니다. 크기순 한가운데인 중앙값 5가 대부분 학생을 대표합니다.</div></div>
+<div class="quiz"><div class="q">Q2. "학년별 평균 성적을 비교"하고 싶다. 가장 알맞은 그래프는?</div><label onclick="pick(this,2,0)">① 히스토그램</label><label onclick="pick(this,2,1)">② 산점도</label><label onclick="pick(this,2,2)">③ 막대그래프</label><label onclick="pick(this,2,3)">④ 히트맵</label><div class="exp"><b>정답: ③</b> — 범주형(학년) × 수치형(성적 평균)의 그룹 비교 → 막대그래프. 히스토그램은 한 변수의 분포, 산점도는 수치형 두 변수의 관계, 히트맵은 여러 변수의 상관.</div></div>
+<div class="quiz"><div class="q">Q3. 아이스크림 판매량과 물놀이 사고 수의 상관계수가 +0.8이다. 옳은 해석은?</div><label onclick="pick(this,2,0)">① 아이스크림이 사고를 일으킨다</label><label onclick="pick(this,2,1)">② 사고가 아이스크림 판매를 늘린다</label><label onclick="pick(this,2,2)">③ 더운 날씨 같은 숨은 변수가 둘 다 늘렸을 수 있다</label><label onclick="pick(this,2,3)">④ 상관계수가 높으므로 인과관계가 증명된다</label><div class="exp"><b>정답: ③</b> — 상관은 "같이 움직인다"까지만 말합니다. 원인은 실험이나 추가 근거로 따로 밝혀야 합니다.</div></div>
+<div class="quiz"><div class="q">Q4. describe() 결과에서 스마트폰시간의 max가 24.0으로 나왔다. 가장 먼저 해야 할 일은?</div><label onclick="pick(this,1,0)">① 평균을 다시 계산한다</label><label onclick="pick(this,1,1)">② 그 값이 가능한 값인지 따져 보고 입력 실수인지 판단한다</label><label onclick="pick(this,1,2)">③ 무조건 삭제한다</label><label onclick="pick(this,1,3)">④ 표준편차를 키운다</label><div class="exp"><b>정답: ②</b> — 이상치는 입력 실수일 수도, 진짜 특별한 사례일 수도 있습니다. 하루는 24시간이므로 이 경우는 입력 실수로 보고 제거하는 것이 합리적이지만, "따져 보는" 단계가 먼저입니다.</div></div>
+<div class="quiz"><div class="q">Q5. 두 반 모두 평균 70점인데 A반은 표준편차 5, B반은 12다. 옳은 것은?</div><label onclick="pick(this,0,0)">① A반 학생들의 점수가 평균 근처에 더 몰려 있다</label><label onclick="pick(this,0,1)">② B반이 더 잘했다</label><label onclick="pick(this,0,2)">③ 두 반은 완전히 같다</label><label onclick="pick(this,0,3)">④ A반에 이상치가 더 많다</label><div class="exp"><b>정답: ①</b> — 표준편차가 작을수록 값이 평균 근처에 몰려 있습니다(고르다). 평균이 같으므로 "더 잘했다"고 말할 수 없습니다.</div></div>
+</section>
+<section class="part" id="part5" style="--pcol:#1B2A4A;--ptint:#1B2A4A22"><h2><span class="pn">PART 5</span>정리 · 평가 기준 · 다음 시간</h2>
+<h3>오늘의 핵심 3줄</h3>
+<div class="callout key"><b class="t">1. 데이터는 표다</b>행 = 사례, 열 = 변수. 수치형은 평균·중앙값·표준편차로, 범주형은 개수·비율로 요약한다. 분석 전에 결측·이상치·편향부터 검사한다.</div>
+<div class="callout key"><b class="t">2. 질문이 그래프를 정한다</b>분포 → 히스토그램·상자그림, 관계 → 산점도·상관계수·히트맵, 그룹 비교 → 막대그래프. 평균만 보지 말고 모양을 보라.</div>
+<div class="callout key"><b class="t">3. 통찰은 숫자가 든 문장이다</b>"r = +0.63으로 … 경향이 있다". 상관은 인과가 아니다 — 숨은 변수를 항상 의심한다.</div>
+<h3>실습 결과 평가 기준 (통계분석 결과를 적절한 방법으로 시각화)</h3>
+<table class="tb "><thead><tr><th>항목</th><th>우수</th><th>보통</th><th>노력 필요</th></tr></thead><tbody><tr><td>데이터 정리</td><td>결측·이상치를 찾고 처리 이유를 설명</td><td>결측·이상치를 찾음</td><td>찾지 못함</td></tr><tr><td>통계 요약</td><td>평균·중앙값·표준편차를 구하고 차이를 해석</td><td>값을 구함</td><td>구하지 못함</td></tr><tr><td>시각화 선택</td><td>질문에 맞는 그래프 4종 이상, 축·제목 있음</td><td>그래프 2~3종</td><td>그래프 1종 이하</td></tr><tr><td>통찰 문장</td><td>3개 모두 변수·숫자·근거·조심하는 말 포함</td><td>2개 이상, 숫자 포함</td><td>숫자 없는 문장</td></tr><tr><td>직접 해보기</td><td>🧩 셀 13·14 모두 성공</td><td>하나 성공</td><td>미완</td></tr></tbody></table>
+<p>제출물: 셀 16 출력 화면 캡처 또는 저장한 <code>.ipynb</code> 파일 + 근거 그래프. 예시 문장을 그대로 베낀 통찰은 "보통" 이하.</p>
+<h3>다음 시간 (10/6) · 지도학습 1</h3>
+<p>오늘 본 "공부시간 → 성적", "꽃잎 크기 → 품종" 패턴을 컴퓨터가 <b>스스로 배워서 예측</b>하게 만듭니다. 회귀 vs 분류, 선형회귀·kNN·결정트리 — 문제에 맞는 알고리즘 고르기. 오늘의 <code>df_clean</code>과 iris가 다시 등장합니다.</p>
+<h3>용어 정리</h3>
+<table class="tb "><thead><tr><th>용어</th><th>영어</th><th>한 줄 뜻</th></tr></thead><tbody><tr><td>데이터프레임</td><td>DataFrame</td><td>pandas의 표. 행(사례)과 열(변수)</td></tr><tr><td>결측치</td><td>missing value / NaN</td><td>비어 있는 칸</td></tr><tr><td>이상치</td><td>outlier</td><td>다른 값들과 동떨어진 값</td></tr><tr><td>편향</td><td>bias</td><td>표본이 한쪽으로 치우쳐 전체를 대표하지 못함</td></tr><tr><td>평균 · 중앙값</td><td>mean · median</td><td>합÷개수 · 크기순 가운데 값</td></tr><tr><td>표준편차</td><td>standard deviation</td><td>평균에서 떨어진 정도의 평균적 크기</td></tr><tr><td>사분위수 · IQR</td><td>quartile · interquartile range</td><td>25/50/75% 지점 · Q3−Q1</td></tr><tr><td>상관계수</td><td>correlation coefficient (r)</td><td>−1~+1, 두 변수가 같이 움직이는 방향과 세기</td></tr><tr><td>히스토그램 · 상자그림 · 산점도 · 히트맵</td><td>histogram · box plot · scatter plot · heatmap</td><td>분포 · 요약+이상치 · 관계 · 여러 변수의 상관</td></tr></tbody></table>
+</section></div></main><footer>2026 경기도 공유학교 · 인공지능 기초 · 1회차 인공지능 데이터 · 김순찬 교수 · 이 페이지는 오프라인에서도 열립니다(외부 연결 없음).</footer>
+<script>
+function copyCode(btn){var pre=btn.closest('.code').querySelector('pre');var t=pre.innerText;
+ function done(){btn.textContent='복사됨 ✓';setTimeout(function(){btn.textContent='복사'},1500);}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fallback()});}else{fallback();}
+ function fallback(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(ta);}}
+function hl(){document.querySelectorAll('.code pre[data-lang="python"]').forEach(function(pre){
+ var s=pre.textContent; var out='';var i=0;
+ var kw=/^(import|from|as|def|return|if|elif|else|for|while|in|not|and|or|is|None|True|False|class|with|try|except|lambda|print|break|continue|pass|yield|global|del|range|len)\b/;
+ while(i<s.length){var ch=s[i];
+  if(ch==='#'){var j=s.indexOf('\n',i);if(j<0)j=s.length;out+='<span class="c">'+esc(s.slice(i,j))+'</span>';i=j;continue;}
+  if(ch==='"'||ch==="'"){var q=ch;var j=i+1;if(s.substr(i,3)===q+q+q){j=s.indexOf(q+q+q,i+3);j=j<0?s.length:j+3;}else{while(j<s.length&&s[j]!==q&&s[j]!=='\n'){if(s[j]==='\\')j++;j++;}j++;}out+='<span class="s">'+esc(s.slice(i,j))+'</span>';i=j;continue;}
+  if(/[A-Za-z_]/.test(ch)){var j=i;while(j<s.length&&/[A-Za-z0-9_]/.test(s[j]))j++;var w=s.slice(i,j);
+   if(kw.test(w)&&kw.exec(w)[0]===w){out+='<span class="k">'+w+'</span>';}else if(s[j]==='('){out+='<span class="f">'+w+'</span>';}else{out+=w;}i=j;continue;}
+  if(/[0-9]/.test(ch)){var j=i;while(j<s.length&&/[0-9.]/.test(s[j]))j++;out+='<span class="n">'+s.slice(i,j)+'</span>';i=j;continue;}
+  out+=esc(ch);i++;}
+ pre.innerHTML=out;});}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+var SCORE={ok:0,n:0};
+function pick(lbl,ans,idx){var q=lbl.closest('.quiz');if(q.dataset.done)return;q.dataset.done=1;SCORE.n++;
+ q.querySelectorAll('label').forEach(function(l,k){if(k===ans)l.classList.add('right');else if(k===idx)l.classList.add('wrong');});
+ if(idx===ans)SCORE.ok++;q.querySelector('.exp').classList.add('show');
+ var sc=document.getElementById('score');if(sc)sc.textContent='퀴즈 '+SCORE.ok+' / '+SCORE.n+' 정답';}
+document.addEventListener('DOMContentLoaded',hl);
+</script></body></html>

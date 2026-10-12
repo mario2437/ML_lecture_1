@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3회차 · 지도학습 2 및 모델 평가 — 2026 경기도 공유학교 · 인공지능 기초</title><style>
+:root{--navy:#1B2A4A;--ink:#1F2937;--gray:#6B7280;--lgray:#D1D5DB;--soft:#F5F6F8;--code:#1E2533;--codefg:#E5E7EB;
+--ok:#0E8C86;--bad:#C0395F;--warn:#D97706;--accent:#4F5BD5;--tint:#ECEDFB}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif;color:var(--ink);background:#EEF0F4;line-height:1.6;font-size:15px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{background:var(--navy);color:#fff;padding:30px 0 24px;border-top:6px solid var(--accent)}
+header .chip{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--accent);color:#fff;margin-right:6px}
+header h1{margin:12px 0 6px;font-size:30px;line-height:1.25}
+header .sub{color:#C5CEDD;font-size:14px}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--lgray);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;padding:8px 20px;flex-wrap:wrap}
+.topbar a{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--lgray);color:var(--gray);text-decoration:none;background:#fff}
+.topbar a:hover{border-color:var(--accent);color:var(--accent)}
+main{padding:24px 0 70px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.box{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:16px 20px;margin:14px 0}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--accent)}
+.box ul{margin:4px 0 0 18px;padding:0}.box li{margin:3px 0}
+section.part{margin:40px 0 12px}
+section.part>h2{margin:0 0 6px;font-size:23px;color:var(--navy);display:flex;align-items:center;gap:10px}
+section.part>h2 .pn{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 8px;border-radius:8px;background:var(--pcol);color:#fff;font-size:14px}
+.pintro{background:#fff;border:1px solid var(--lgray);border-left:5px solid var(--pcol);border-radius:10px;padding:12px 18px;margin:10px 0 18px;font-size:14px}
+h3{font-size:18px;color:var(--navy);margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pcol)}
+p{margin:8px 0}
+.callout{border-radius:10px;padding:12px 16px;margin:14px 0;border:1px solid;font-size:14px}
+.callout b.t{display:block;margin-bottom:4px}
+.callout.key{background:var(--tint);border-color:#C7CAF1;color:#2B2F6B}
+.callout.tip{background:#E3F4F3;border-color:#A9DCD8;color:#0B5F5B}
+.callout.warn{background:#FDF1E1;border-color:#F3CF98;color:#7C4A05}
+.callout.ok{background:#EAF7EF;border-color:#A7DDB9;color:#1A5E36}
+table.tb{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:#fff}
+table.tb th{background:var(--pcol);color:#fff;padding:8px 10px;text-align:left;font-weight:700}
+table.tb td{padding:7px 10px;border-bottom:1px solid var(--lgray);vertical-align:top}
+table.tb tr:nth-child(even) td{background:var(--soft)}
+.code{position:relative;margin:14px 0;border-radius:10px;overflow:hidden;background:var(--code);border:1px solid #2F3A4E}
+.code .bar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:#161C27;color:#C5CEDD;font-size:12px}
+.code .bar .lang{font-weight:700;color:#FCD34D}
+.code .bar button{margin-left:auto;font:inherit;font-size:12px;padding:3px 10px;border-radius:6px;border:1px solid #3A4661;background:#222B3B;color:#E5E7EB;cursor:pointer}
+.code .bar button:hover{background:#2F3A4E}
+.code pre{margin:0;padding:12px 14px;overflow:auto;color:var(--codefg);font-family:Consolas,"D2Coding","Nanum Gothic Coding",Menlo,monospace;font-size:13.5px;line-height:1.5;tab-size:4}
+.code pre .k{color:#FCD34D}.code pre .s{color:#86EFAC}.code pre .c{color:#8B9BB8;font-style:italic}.code pre .n{color:#93C5FD}.code pre .f{color:#F9A8D4}
+.out{margin:-8px 0 14px;border:1px dashed var(--lgray);border-top:none;border-radius:0 0 10px 10px;background:#FAFBFC;padding:10px 14px;font-size:13px}
+.out .lab{font-size:11px;font-weight:700;color:var(--gray);margin-bottom:4px}
+.out pre{margin:0;white-space:pre-wrap;font-family:Consolas,"D2Coding",Menlo,monospace;font-size:12.5px;color:#374151}
+.step{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:16px 20px 12px;margin:18px 0;position:relative}
+.step .sn{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--pcol);font-size:15px;margin-bottom:6px}
+.step .sn i{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--pcol);color:#fff;font-style:normal;font-size:13px}
+.step .why{background:var(--soft);border-radius:8px;padding:10px 14px;font-size:14px;margin:8px 0}
+.step .why b.l{color:var(--pcol)}
+.step details{margin-top:6px}
+.step summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:13px}
+.quiz{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:14px 18px;margin:14px 0}
+.quiz .q{font-weight:700;margin-bottom:8px}
+.quiz label{display:block;padding:6px 10px;border:1px solid var(--lgray);border-radius:8px;margin:5px 0;cursor:pointer;font-size:14px}
+.quiz label:hover{border-color:var(--accent)}
+.quiz label.right{border-color:var(--ok);background:#EAF7EF}.quiz label.wrong{border-color:var(--bad);background:#FBE9EE}
+.quiz .exp{display:none;margin-top:8px;font-size:13.5px;background:var(--soft);padding:8px 12px;border-radius:8px}
+.quiz .exp.show{display:block}
+.btn{font:inherit;font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--lgray);background:#fff;cursor:pointer;margin-top:6px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+figure{margin:14px 0;text-align:center}figure img{max-width:100%;border:1px solid var(--lgray);border-radius:8px;background:#fff}
+figure figcaption{font-size:12.5px;color:var(--gray);margin-top:6px}
+.kbd{font-family:Consolas,Menlo,monospace;background:var(--soft);border:1px solid var(--lgray);border-radius:5px;padding:0 6px;font-size:13px}
+code{font-family:Consolas,"D2Coding",Menlo,monospace;background:var(--soft);border:1px solid #E5E7EB;border-radius:4px;padding:0 5px;font-size:13px}
+.plan td:first-child{white-space:nowrap;font-weight:700;color:var(--navy)}
+footer{color:var(--gray);font-size:12.5px;text-align:center;padding:24px 0 40px}
+.toc{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:12px 18px;margin:16px 0}
+.toc a{display:inline-block;margin:3px 10px 3px 0;color:var(--accent);text-decoration:none;font-size:14px}
+.score{margin-left:auto;font-size:13px;color:var(--gray)}
+</style></head><body>
+<header><div class="wrap"><span class="chip">7주차 · 19–21차시</span><span class="chip" style="background:#0E8C86">2026-10-13</span><span class="chip" style="background:#D97706">2시간 (강의 + Colab 실습)</span>
+<h1>3회차 · 지도학습 2 및 모델 평가</h1><div class="sub">2026 경기도 공유학교 · 인공지능 기초 · 김순찬 교수 &nbsp;|&nbsp; 성취기준 [인일 03-04] 인공지능 모델의 성능을 비교하고 개선할 수 있다.</div></div></header>
+<div class="topbar"><div class="wrap"><a href="#top">▲ 처음</a><a href="#part1">P1 오늘 배우는 것 — 개념 정리</a><a href="#part2">P2 예제 — 개념당 짧은 코드 하나</a><a href="#part3">P3 Colab 실습 — 모델을 비교하고 개선하기</a><a href="#part4">P4 퀴즈 — 오늘 내용 확인</a><a href="#part5">P5 정리 · 평가 기준 · 더 해보기</a><span class="score" id="score">퀴즈 0 / 0 정답</span></div></div>
+<main><div class="wrap" id="top">
+<div class="grid2"><div class="box"><h4>이 수업의 학습 목표</h4><ul><li>훈련·테스트 데이터를 나누어 모델을 <b>공정하게 평가</b>하는 이유를 설명한다.</li><li>정확도·정밀도·재현율·F1·혼동행렬을 읽고, <b>정확도만 믿으면 안 되는 경우</b>를 예로 든다.</li><li>과적합을 그래프로 확인하고 <b>교차검증·하이퍼파라미터 튜닝</b>으로 모델을 개선한다.</li><li>여러 모델의 성능표를 근거로 <b>개선 방향을 결정</b>하고 이유를 쓴다.</li></ul></div>
+<div class="box"><h4>수업 흐름 (120분)</h4><table class="tb plan"><tbody><tr><td>0:00</td><td>인사 · 2회차 복습(지도학습·회귀/분류·3가지 알고리즘) · 오늘의 목표</td><td>강의 5분</td></tr><tr><td>0:05</td><td>PART 1 왜 평가하는가 — 외운 모델 vs 이해한 모델, 훈련/검증/테스트</td><td>강의 15분</td></tr><tr><td>0:20</td><td>PART 2 성능 지표 — 정확도의 함정, 혼동행렬, 정밀도/재현율/F1, 회귀 지표</td><td>강의 15분</td></tr><tr><td>0:35</td><td>PART 3 개선하기 — 교차검증, 하이퍼파라미터 튜닝, 스케일링</td><td>강의 10분</td></tr><tr><td>0:45</td><td>Colab 실습 — 모델 비교표 → 지표 읽기 → 과적합 실험 → 튜닝 → 개선 전후 비교</td><td>실습 60분</td></tr><tr><td>1:45</td><td>결과물 공유 · 퀴즈 · 정리 · 다음 시간 예고</td><td>15분</td></tr></tbody></table></div></div>
+<div class="grid2"><div class="box"><h4>준비물 · 자료</h4><ul><li>구글 계정 + 크롬 브라우저(노트북 또는 태블릿)</li><li>실습 노트북 <code>03_지도학습2_모델평가_실습_colab.ipynb</code> (선생님 배포)</li><li>데이터: scikit-learn 내장 와인 데이터(코드에서 자동 로드) · 참고용 <code>data/wine.csv</code>, <code>data/study_score.csv</code></li><li>강의 슬라이드 <code>03_지도학습2_모델평가.pptx</code></li></ul></div>
+<div class="box"><h4>탐구 과정(기능) · 평가</h4><ul><li><b>탐구과정:</b> 모델 출력과 성능 지표를 비교·평가하여 개선 방향을 도출하고 튜닝 전략을 적용</li><li><b>수업방법:</b> 강의 · 실습 · 질의응답</li><li><b>평가:</b> 실습 결과 평가 — 모델 성능 결과를 바탕으로 개선 방향 결정</li></ul></div></div>
+<div class="callout tip"><b class="t">실습 환경 — Google Colab</b><ol style="margin:4px 0 0 18px;padding:0"><li>구글 계정으로 로그인한 뒤 <a href="https://colab.research.google.com" target="_blank">colab.research.google.com</a> 에 접속합니다.</li><li><b>파일 → 노트 업로드</b>에서 선생님이 나눠 준 <code>.ipynb</code> 파일을 올립니다. (또는 <b>새 노트</b>를 만들고 이 페이지의 코드를 한 셀씩 복사해 붙여 넣어도 됩니다.)</li><li>셀 왼쪽의 ▶ 버튼을 누르거나 <span class="kbd">Shift</span>+<span class="kbd">Enter</span>로 <b>위에서부터 순서대로</b> 실행합니다.</li><li>처음 실행하면 "런타임 연결 중"이 잠깐 뜹니다. 오류가 나면 <b>런타임 → 런타임 다시 시작</b> 후 처음부터 다시 실행하세요.</li></ol></div>
+<div class="toc"><b>목차</b><br><a href="#part1">P1 오늘 배우는 것 — 개념 정리</a><a href="#part2">P2 예제 — 개념당 짧은 코드 하나</a><a href="#part3">P3 Colab 실습 — 모델을 비교하고 개선하기</a><a href="#part4">P4 퀴즈 — 오늘 내용 확인</a><a href="#part5">P5 정리 · 평가 기준 · 더 해보기</a></div>
+<section class="part" id="part1" style="--pcol:#4F5BD5;--ptint:#4F5BD522"><h2><span class="pn">PART 1</span>오늘 배우는 것 — 개념 정리</h2>
+<div class="pintro"><b>지난 시간</b>에는 정답이 있는 데이터로 배우는 <b>지도학습</b>과 세 가지 알고리즘(kNN·결정트리·로지스틱 회귀/선형회귀)을 만들어 보았습니다. 오늘은 <b>"그래서 이 모델이 얼마나 잘하는가?"</b>를 재는 법과, 점수를 <b>올리는</b> 법을 배웁니다.</div>
+<h3>1-1. 왜 평가가 필요한가 — 외운 학생과 이해한 학생</h3>
+<p>문제집 답을 통째로 외운 학생은 그 문제집은 100점이지만 <b>새 문제</b>는 못 풉니다. 모델도 훈련 데이터를 외워 버릴 수 있습니다. 이것을 <b>과적합(overfitting)</b>이라고 합니다. 반대로 너무 단순해서 훈련 데이터조차 못 맞히면 <b>과소적합(underfitting)</b>입니다.</p>
+<figure><img src="figs/fit3.png" alt="같은 점들을 1차·3차·15차 곡선으로 맞춘 결과. 15차 곡선은 훈련 점은 다 지나가지만(외움) 새 점은 엉뚱하게 예측한다."><figcaption>같은 점들을 1차·3차·15차 곡선으로 맞춘 결과. 15차 곡선은 훈련 점은 다 지나가지만(외움) 새 점은 엉뚱하게 예측한다.</figcaption></figure>
+<div class="callout key"><b class="t">핵심</b>모델의 실력은 <b>본 적 없는 데이터</b>로 재야 한다. 그래서 데이터를 나눈다.</div>
+<h3>1-2. 훈련 / 검증 / 테스트 데이터</h3>
+<figure><img src="figs/split.png" alt="문제집(훈련) · 모의고사(검증) · 수능(테스트). 테스트 데이터는 마지막에 딱 한 번만 쓴다." style="max-width:700px"><figcaption>문제집(훈련) · 모의고사(검증) · 수능(테스트). 테스트 데이터는 마지막에 딱 한 번만 쓴다.</figcaption></figure>
+<table class="tb "><thead><tr><th>이름</th><th>역할</th><th>비유</th><th>코드</th></tr></thead><tbody><tr><td>훈련(train)</td><td>모델이 규칙을 배우는 데이터</td><td>문제집 풀기</td><td><code>model.fit(X_train, y_train)</code></td></tr><tr><td>검증(validation)</td><td>설정(하이퍼파라미터)을 고를 때 쓰는 데이터</td><td>모의고사</td><td>교차검증 <code>cross_val_score</code>가 대신함</td></tr><tr><td>테스트(test)</td><td>최종 실력을 재는 데이터 — <b>단 한 번</b></td><td>수능</td><td><code>model.score(X_test, y_test)</code></td></tr></tbody></table>
+<div class="callout warn"><b class="t">주의</b>테스트 데이터를 보고 모델을 고치면, 그 순간 테스트는 더 이상 "본 적 없는 데이터"가 아닙니다. 설정을 고를 땐 <b>검증(교차검증)</b>을 쓰고, 테스트는 마지막에만!</div>
+<h3>1-3. 과적합을 눈으로 — 트리 깊이 실험</h3>
+<figure><img src="figs/depth_curve.png" alt="결정트리 깊이를 늘리면 훈련 정확도는 100%가 되지만 테스트 정확도는 깊이 3 이후 제자리. 깊이 1~2는 과소적합, 4 이상은 과적합." style="max-width:620px"><figcaption>결정트리 깊이를 늘리면 훈련 정확도는 100%가 되지만 테스트 정확도는 깊이 3 이후 제자리. 깊이 1~2는 과소적합, 4 이상은 과적합.</figcaption></figure>
+<h3>1-4. 성능 지표 ① 정확도와 그 함정</h3>
+<p><b>정확도(accuracy)</b> = 맞힌 개수 ÷ 전체 개수. 가장 쉽지만, 정답이 한쪽으로 <b>쏠린(불균형)</b> 데이터에서는 속습니다.</p>
+<figure><img src="figs/imbalance.png" alt="환자가 5%뿐이면 "전부 정상"이라 답해도 정확도 95%. 하지만 환자를 한 명도 못 찾는다(재현율 0%)." style="max-width:620px"><figcaption>환자가 5%뿐이면 "전부 정상"이라 답해도 정확도 95%. 하지만 환자를 한 명도 못 찾는다(재현율 0%).</figcaption></figure>
+<h3>1-5. 성능 지표 ② 혼동행렬 · 정밀도 · 재현율 · F1</h3>
+<div class="grid2">
+<figure><img src="figs/confusion.png" alt="혼동행렬: 행은 실제, 열은 예측. 대각선(TN·TP)이 정답."><figcaption>혼동행렬: 행은 실제, 열은 예측. 대각선(TN·TP)이 정답.</figcaption></figure>
+<figure><img src="figs/prec_recall.png" alt="정밀도는 "헛경보를 줄이고 싶을 때", 재현율은 "놓침을 줄이고 싶을 때"."><figcaption>정밀도는 "헛경보를 줄이고 싶을 때", 재현율은 "놓침을 줄이고 싶을 때".</figcaption></figure>
+</div>
+<table class="tb "><thead><tr><th>지표</th><th>뜻</th><th>식</th><th>중요한 상황</th></tr></thead><tbody><tr><td>정확도</td><td>전체 중 맞힌 비율</td><td>(TP+TN) / 전체</td><td>정답 비율이 비슷할 때</td></tr><tr><td>정밀도(precision)</td><td>"양성"이라 한 것 중 진짜 양성</td><td>TP / (TP+FP)</td><td>스팸 필터(정상 메일을 스팸함에 넣으면 곤란)</td></tr><tr><td>재현율(recall)</td><td>진짜 양성 중 찾아낸 비율</td><td>TP / (TP+FN)</td><td>병 진단, 화재 감지(놓치면 큰일)</td></tr><tr><td>F1</td><td>정밀도와 재현율의 조화 평균</td><td>2·P·R / (P+R)</td><td>둘 다 중요할 때, 불균형 데이터</td></tr></tbody></table>
+<div class="callout tip"><b class="t">시소 관계</b>정밀도와 재현율은 보통 한쪽을 올리면 다른 쪽이 내려갑니다. "조금만 의심돼도 환자"라고 하면 재현율↑ 정밀도↓. 문제의 <b>목적</b>이 어느 쪽이 중요한지 정합니다.</div>
+<h3>1-6. 성능 지표 ③ 회귀 — 얼마나 빗나갔나</h3>
+<table class="tb "><thead><tr><th>지표</th><th>뜻</th><th>읽는 법</th></tr></thead><tbody><tr><td>MAE (평균 절대 오차)</td><td>|실제 − 예측| 의 평균</td><td>"평균 5.5점 틀린다" — 단위가 그대로라 직관적</td></tr><tr><td>RMSE (평균 제곱근 오차)</td><td>오차²의 평균에 √</td><td>큰 오차를 더 무겁게 벌줌. MAE보다 항상 크거나 같음</td></tr><tr><td>R² (결정계수)</td><td>1 − (모델 오차 / 평균으로 찍었을 때 오차)</td><td>1이면 완벽, 0이면 "그냥 평균" 수준, 음수면 평균보다 못함</td></tr></tbody></table>
+<h3>1-7. 개선하기 ① 교차검증 (cross-validation)</h3>
+<figure><img src="figs/cv5.png" alt="5-fold 교차검증: 훈련 데이터를 5조각으로 나눠 5번 시험 → 평균. 한 번 나누기의 "운"이 사라진다." style="max-width:660px"><figcaption>5-fold 교차검증: 훈련 데이터를 5조각으로 나눠 5번 시험 → 평균. 한 번 나누기의 "운"이 사라진다.</figcaption></figure>
+<h3>1-8. 개선하기 ② 하이퍼파라미터 튜닝</h3>
+<p>모델이 데이터에서 스스로 배우는 값(예: 선형회귀의 기울기)은 <b>파라미터</b>, 사람이 미리 정해 주는 값(kNN의 k, 트리의 깊이)은 <b>하이퍼파라미터</b>입니다. 좋은 값은 데이터마다 달라서 <b>후보를 전부 시험</b>해 봐야 합니다. <code>GridSearchCV</code>가 그 일을 교차검증으로 자동으로 해 줍니다.</p>
+<figure><img src="figs/knn_k.png" alt="kNN의 k를 1~25까지 바꾼 교차검증 점수. 이 데이터에서는 k=12가 가장 좋았다." style="max-width:620px"><figcaption>kNN의 k를 1~25까지 바꾼 교차검증 점수. 이 데이터에서는 k=12가 가장 좋았다.</figcaption></figure>
+<h3>1-9. 개선하기 ③ 스케일링 — kNN이 약했던 진짜 이유</h3>
+<p>kNN은 <b>거리</b>로 이웃을 찾습니다. 와인 데이터의 <code>proline</code>은 값이 수백~천 단위, <code>hue</code>는 1 근처라서 거리가 큰 열에만 좌우됩니다. <code>StandardScaler</code>로 모든 열을 평균 0·표준편차 1로 맞추면 kNN 정확도가 <b>0.72 → 0.94</b>로 뜁니다(실습 7단계).</p>
+<figure><img src="figs/before_after.png" alt="개선 전(회색)과 후(초록). kNN은 스케일링+k 튜닝, 로지스틱 회귀는 스케일링으로 개선. 결정트리는 점수는 같지만 깊이 3의 더 단순한 모델이 됨." style="max-width:660px"><figcaption>개선 전(회색)과 후(초록). kNN은 스케일링+k 튜닝, 로지스틱 회귀는 스케일링으로 개선. 결정트리는 점수는 같지만 깊이 3의 더 단순한 모델이 됨.</figcaption></figure>
+<div class="callout key"><b class="t">개선의 순환</b>① 여러 모델을 <b>같은 조건</b>으로 비교 → ② 지표를 <b>목적에 맞게</b> 읽기 → ③ 과적합/과소적합 진단 → ④ 튜닝·전처리 → ⑤ 테스트로 최종 확인 → 근거를 적어 <b>결정</b></div>
+</section>
+<section class="part" id="part2" style="--pcol:#0E8C86;--ptint:#0E8C8622"><h2><span class="pn">PART 2</span>예제 — 개념당 짧은 코드 하나</h2>
+<div class="pintro">실습 전에 핵심 함수만 아주 짧게 맛봅니다. 각 예제는 Colab 새 노트에 붙여 넣어도 바로 돌아갑니다(첫 예제의 import 포함).</div>
+<h3>예제 1. 데이터 나누고 정확도 재기</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>train_test_split + score</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+X, y = load_iris(return_X_y=True)                       # 붓꽃 150송이, 정답 3종
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, random_state=0)
+model = KNeighborsClassifier(n_neighbors=3).fit(X_tr, y_tr)   # 훈련 데이터로 학습
+print('훈련 정확도', round(model.score(X_tr, y_tr), 3))
+print('테스트 정확도', round(model.score(X_te, y_te), 3))    # 본 적 없는 데이터로 시험</pre></div><div class="out"><div class="lab">예상 출력</div><pre>훈련 정확도 0.962
+테스트 정확도 0.978</pre></div>
+<h3>예제 2. 혼동행렬과 분류 리포트</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>confusion_matrix / classification_report</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.metrics import confusion_matrix, classification_report
+y_pred = model.predict(X_te)
+print(confusion_matrix(y_te, y_pred))                 # 행=실제, 열=예측, 대각선=정답
+print(classification_report(y_te, y_pred))            # 정밀도·재현율·F1 한 번에</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[[16  0  0]
+ [ 0 17  1]
+ [ 0  0 11]]
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        16
+           1       1.00      0.94      0.97        18
+           2       0.92      1.00      0.96        11
+
+    accuracy                           0.98        45
+   macro avg       0.97      0.98      0.98        45
+weighted avg       0.98      0.98      0.98        45</pre></div>
+<h3>예제 3. 교차검증 한 줄</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>cross_val_score</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.model_selection import cross_val_score
+scores = cross_val_score(KNeighborsClassifier(n_neighbors=3), X_tr, y_tr, cv=5)   # 5번 시험
+print(scores.round(3), '평균', scores.mean().round(3))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[0.857 1.    1.    0.905 0.952] 평균 0.943</pre></div>
+<h3>예제 4. GridSearchCV로 k 고르기</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>GridSearchCV</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.model_selection import GridSearchCV
+grid = GridSearchCV(KNeighborsClassifier(), {'n_neighbors': [1, 3, 5, 7, 9, 11]}, cv=5)
+grid.fit(X_tr, y_tr)                                  # 후보 6개 × 5번 = 30번 학습
+print(grid.best_params_, round(grid.best_score_, 3))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>{'n_neighbors': 5} 0.962</pre></div>
+<h3>예제 5. 회귀 지표</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>MAE / RMSE / R²</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import numpy as np
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+실제 = np.array([70, 80, 90, 60]); 예측 = np.array([72, 75, 95, 58])
+print('MAE ', mean_absolute_error(실제, 예측))              # |2|,|5|,|5|,|2| 평균
+print('RMSE', np.sqrt(mean_squared_error(실제, 예측)).round(2))
+print('R²  ', round(r2_score(실제, 예측), 3))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>MAE  3.5
+RMSE 3.81
+R²   0.884</pre></div>
+</section>
+<section class="part" id="part3" style="--pcol:#D97706;--ptint:#D9770622"><h2><span class="pn">PART 3</span>Colab 실습 — 모델을 비교하고 개선하기</h2>
+<div class="pintro">노트북 <code>03_지도학습2_모델평가_실습_colab.ipynb</code>의 셀과 <b>완전히 같은 코드</b>입니다. 각 셀이 <b>무엇을 하는지, 함수 인자가 무슨 뜻인지, 출력을 어떻게 읽는지</b>를 노트북보다 자세히 적었습니다. 아래 "예상 출력"은 실제로 실행한 결과입니다(Colab의 라이브러리 버전에 따라 소수점 셋째 자리가 조금 다를 수 있습니다).</div>
+<div class="step"><div class="sn"><i>1</i>준비 — 도구 불러오기와 한글 폰트</div><div class="why"><b>무엇을:</b> 표(<code>pandas</code>)·숫자(<code>numpy</code>)·그림(<code>matplotlib</code>) 도구를 불러오고 한글 폰트를 설치합니다.<br>
+<b>왜:</b> Colab은 새 컴퓨터를 빌려 쓰는 것과 같아 매번 도구를 불러와야 하고, 한글 폰트가 없어 그래프 글자가 □□로 깨집니다.<br>
+<b>줄별 설명:</b> <code>subprocess.run([...apt-get...])</code>은 리눅스 명령으로 나눔 폰트를 설치합니다(<code>check=False</code>: 실패해도 멈추지 않음). <code>fm.fontManager.addfont</code>로 matplotlib에 폰트를 등록하고 <code>rcParams['font.family']</code>로 기본 글꼴을 바꿉니다. <code>axes.unicode_minus=False</code>는 음수 부호(−)가 깨지는 것을 막습니다. <code>warnings.filterwarnings('ignore')</code>는 학습 중 나오는 경고문을 숨깁니다.<br>
+<b>확인:</b> "준비 완료!"와 버전 번호가 찍히면 성공.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 1</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import matplotlib.pyplot as plt, matplotlib as mpl, numpy as np, pandas as pd
+import subprocess, sys
+try:
+    subprocess.run(['apt-get','-qq','install','-y','fonts-nanum'], check=False, capture_output=True)   # Colab 한글 폰트
+    import matplotlib.font_manager as fm; fm.fontManager.addfont('/usr/share/fonts/truetype/nanum/NanumGothic.ttf'); plt.rcParams['font.family']='NanumGothic'
+except Exception:
+    plt.rcParams['font.family'] = 'Noto Sans CJK JP'   # 로컬 검증용
+plt.rcParams['axes.unicode_minus'] = False
+import warnings; warnings.filterwarnings('ignore')
+print('준비 완료! numpy', np.__version__, '| pandas', pd.__version__)</pre></div><div class="out"><div class="lab">예상 출력</div><pre>준비 완료! numpy 2.4.3 | pandas 2.3.3</pre></div>
+<details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><code>ModuleNotFoundError</code>가 나면 런타임 → 런타임 다시 시작 후 다시 실행. 폰트 설치 후에도 한글이 깨지면 <b>런타임 다시 시작</b>(폰트 캐시가 새로 읽힘) 후 이 셀부터 다시 실행하세요.</div></details></div>
+<div class="step"><div class="sn"><i>2</i>데이터 불러오기 — 와인 품종 분류</div><div class="why"><b>무엇을:</b> scikit-learn 안에 들어 있는 와인 178병 데이터를 불러옵니다. 인터넷·파일 업로드가 필요 없습니다.<br>
+<b>인자:</b> <code>as_frame=True</code>는 결과를 numpy 배열 대신 <b>pandas 표</b>로 받겠다는 뜻입니다(열 이름이 보여 편함). <code>wine.data</code>가 입력 13열, <code>wine.target</code>이 정답(품종 0·1·2)입니다.<br>
+<b>출력 읽기:</b> <code>(178, 13)</code> = 178행(병) × 13열(성분). <code>value_counts()</code>로 품종별 개수(59·71·48)를 보면 <b>거의 균형</b>이라 정확도를 써도 괜찮다는 것을 알 수 있습니다. <code>X.head()</code>는 앞 5줄 — 열마다 숫자 크기가 크게 다르다는 점(alcohol 13, proline 1000)을 기억해 두세요(7단계 복선).</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 2</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.datasets import load_wine
+wine = load_wine(as_frame=True)          # as_frame=True → pandas 표로 받기
+X = wine.data                             # 입력: 13개 성분
+y = wine.target                           # 정답: 품종 0/1/2
+print('데이터 크기 (행, 열):', X.shape)
+print('품종별 개수:\n', y.value_counts().sort_index())
+X.head()                                  # 앞 5줄 미리보기</pre></div><div class="out"><div class="lab">예상 출력</div><pre>데이터 크기 (행, 열): (178, 13)
+품종별 개수:
+ target
+0    59
+1    71
+2    48
+Name: count, dtype: int64
+   alcohol  malic_acid   ash  alcalinity_of_ash  magnesium  total_phenols  \
+0    14.23        1.71  2.43               15.6      127.0           2.80   
+1    13.20        1.78  2.14               11.2      100.0           2.65   
+2    13.16        2.36  2.67               18.6      101.0           2.80   
+3    14.37        1.95  2.50               16.8      113.0           3.85   
+4    13.24        2.59  2.87               21.0      118.0           2.80   
+
+   flavanoids  nonflavanoid_phenols  proanthocyanins  color_intensity   hue  \
+0        3.06                  0.28             2.29             5.64  1.04   
+1        2.76                  0.26             1.28             4.38  1.05   
+2        3.24                  0.30             2.81             5.68  1.03   
+3        3.49                  0.24             2.18             7.80  0.86   
+4        2.69                  0.39             1.82             4.32  1.04   
+
+   od280/od315_of_diluted_wines  proline  
+0                          3.92   1065.0  
+1                          3.40   1050.0  
+2                          3.17   1185.0  
+3                          3.45   1480.0  
+4                          2.93    735.0  </pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>품종 1이 몇 병인지 말해 보세요. 열 이름 중 값이 가장 큰 열은 무엇인가요?</div></div>
+<div class="step"><div class="sn"><i>3</i>훈련 / 테스트 데이터 나누기</div><div class="why"><b>무엇을:</b> 178병을 훈련 124병(70%)과 테스트 54병(30%)으로 나눕니다.<br>
+<b>인자:</b> <code>test_size=0.3</code> 테스트 비율 30% · <code>random_state=42</code> 무작위 섞기의 씨앗을 고정해 누구나 같은 결과 · <code>stratify=y</code> 품종 비율이 훈련/테스트에 똑같이 들어가도록(층화 추출).<br>
+<b>반환 순서:</b> <code>X_train, X_test, y_train, y_test</code> — 순서를 바꾸면 조용히 엉뚱한 결과가 나오니 외워 두세요.<br>
+<b>왜 중요:</b> 이 이후로 <b>테스트 데이터는 최종 확인(10단계)까지 건드리지 않습니다.</b></div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 3</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+print('훈련 데이터:', X_train.shape[0], '병 / 테스트 데이터:', X_test.shape[0], '병')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>훈련 데이터: 124 병 / 테스트 데이터: 54 병</pre></div>
+<details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><code>stratify=y</code>에서 오류가 나면 y가 표(DataFrame)가 아닌지 확인 — 여기서는 Series라 괜찮습니다.</div></details></div>
+<div class="step"><div class="sn"><i>4</i>여러 모델 학습 → 정확도 비교표</div><div class="why"><b>무엇을:</b> 세 모델을 딕셔너리에 넣고 <code>for</code>문으로 <b>같은 훈련 데이터로 학습, 같은 테스트로 시험</b>합니다. 공정한 비교의 기본입니다.<br>
+<b>줄별:</b> <code>model.fit(X_train, y_train)</code> 학습 → <code>model.score(X_train, y_train)</code> 훈련 정확도, <code>score(X_test, y_test)</code> 테스트 정확도. <code>rows.append({...})</code>로 한 줄씩 모아 <code>pd.DataFrame(rows)</code>로 표를 만듭니다. <code>max_iter=5000</code>은 로지스틱 회귀가 답을 찾는 반복 횟수 상한입니다.<br>
+<b>출력 읽기:</b> 결정트리는 훈련 1.000 / 테스트 0.963 → <b>외운 흔적(과적합)</b>. kNN은 0.806 / 0.722로 둘 다 낮음 → 과소적합처럼 보이지만 진짜 원인은 7단계에서 밝혀집니다. 로지스틱 회귀 0.992 / 0.963.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 4</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+
+models = {
+    'kNN (k=5)': KNeighborsClassifier(n_neighbors=5),
+    '결정트리 (깊이 제한 없음)': DecisionTreeClassifier(random_state=0),
+    '로지스틱 회귀': LogisticRegression(max_iter=5000),
+}
+rows = []
+for name, model in models.items():
+    model.fit(X_train, y_train)                                   # 학습
+    rows.append({'모델': name,
+                 '훈련 정확도': round(model.score(X_train, y_train), 3),
+                 '테스트 정확도': round(model.score(X_test, y_test), 3)})
+result = pd.DataFrame(rows)
+result</pre></div><div class="out"><div class="lab">예상 출력</div><pre>                모델  훈련 정확도  테스트 정확도
+0        kNN (k=5)   0.806    0.722
+1  결정트리 (깊이 제한 없음)   1.000    0.963
+2          로지스틱 회귀   0.992    0.963</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>훈련 정확도와 테스트 정확도의 <b>차이가 가장 큰</b> 모델은? 그것이 뜻하는 것은?</div></div>
+<div class="step"><div class="sn"><i>5</i>혼동행렬과 분류 리포트</div><div class="why"><b>무엇을:</b> 결정트리의 테스트 예측 <code>y_pred</code>를 실제 <code>y_test</code>와 맞대어 <b>어떤 품종을 어떤 품종으로 착각했는지</b> 봅니다.<br>
+<b>출력 읽기:</b> 행렬 <code>[[17 1 0],[1 20 0],[0 0 15]]</code>: 1행은 "실제 품종0" 18병 중 17병 정답, 1병을 품종1로 착각. 2행은 실제 품종1 21병 중 20병 정답. 품종2는 15병 전부 정답. 대각선 합(52) ÷ 54 = 0.963이 정확도입니다.<br>
+<code>classification_report</code>의 <code>precision</code>은 세로(예측) 기준, <code>recall</code>은 가로(실제) 기준 비율, <code>support</code>는 실제 개수, <code>macro avg</code>는 세 품종 평균입니다.<br>
+<b>그림:</b> <code>ConfusionMatrixDisplay(...).plot(cmap='Blues')</code>가 같은 행렬을 색으로 그립니다(진할수록 많음).</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 5</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay
+model = models['결정트리 (깊이 제한 없음)']
+y_pred = model.predict(X_test)                       # 테스트 데이터 예측
+cm = confusion_matrix(y_test, y_pred)
+print('혼동행렬 (행=실제, 열=예측):\n', cm)
+ConfusionMatrixDisplay(cm, display_labels=['품종0', '품종1', '품종2']).plot(cmap='Blues')
+plt.title('결정트리 혼동행렬 (테스트 데이터)'); plt.show()
+print(classification_report(y_test, y_pred, target_names=['품종0', '품종1', '품종2']))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>혼동행렬 (행=실제, 열=예측):
+ [[17  1  0]
+ [ 1 20  0]
+ [ 0  0 15]]
+[그래프가 표시됩니다]              precision    recall  f1-score   support
+
+         품종0       0.94      0.94      0.94        18
+         품종1       0.95      0.95      0.95        21
+         품종2       1.00      1.00      1.00        15
+
+    accuracy                           0.96        54
+   macro avg       0.97      0.97      0.97        54
+weighted avg       0.96      0.96      0.96        54</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>품종0의 재현율 0.94는 어떻게 계산된 값인가요? (17 ÷ 18)</div></div>
+<div class="step"><div class="sn"><i>6</i>정확도의 함정 — 불균형 데이터</div><div class="why"><b>무엇을:</b> 환자 5%·정상 95%인 가상 체온 데이터를 만들고, "전부 정상"이라 답하는 엉터리 모델(<code>DummyClassifier(strategy='most_frequent')</code>)과 진짜 학습한 로지스틱 회귀를 비교합니다.<br>
+<b>데이터 만들기:</b> <code>rng.random(n) &lt; 0.05</code>로 5%만 True(환자). <code>np.where(sick, 38.5도 근처, 36.8도 근처)</code>로 환자는 체온이 높게. <code>reshape(-1, 1)</code>은 열이 1개인 표 모양으로 바꾸는 것(scikit-learn은 2차원 입력을 요구).<br>
+<b>출력 읽기:</b> 엉터리 모델도 정확도 0.957! 하지만 재현율 0 — 환자를 한 명도 못 찾음. 진짜 모델은 정확도 0.983, 재현율 0.615, 정밀도 1.000. <b>정확도 차이는 작지만 쓸모는 하늘과 땅</b>입니다. <code>zero_division=0</code>은 0÷0일 때 오류 대신 0을 내라는 뜻.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 6</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score, recall_score, precision_score
+
+rng = np.random.default_rng(0)
+n = 1000
+sick = rng.random(n) &lt; 0.05                          # 5%만 환자(True)
+temp = np.where(sick, rng.normal(38.5, 0.6, n), rng.normal(36.8, 0.4, n))   # 체온: 환자는 높음
+Xh = temp.reshape(-1, 1); yh = sick.astype(int)
+Xh_tr, Xh_te, yh_tr, yh_te = train_test_split(Xh, yh, test_size=0.3, random_state=0, stratify=yh)
+
+dummy = DummyClassifier(strategy='most_frequent').fit(Xh_tr, yh_tr)   # "전부 정상" 모델
+real  = LogisticRegression().fit(Xh_tr, yh_tr)                        # 진짜 학습한 모델
+for name, m in [('전부 정상 모델', dummy), ('진짜 학습 모델', real)]:
+    p = m.predict(Xh_te)
+    print(f'{name:10s} 정확도 {accuracy_score(yh_te, p):.3f} | 재현율(환자 찾기) {recall_score(yh_te, p, zero_division=0):.3f} | 정밀도 {precision_score(yh_te, p, zero_division=0):.3f}')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>전부 정상 모델   정확도 0.957 | 재현율(환자 찾기) 0.000 | 정밀도 0.000
+진짜 학습 모델   정확도 0.983 | 재현율(환자 찾기) 0.615 | 정밀도 1.000</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>이 문제에서 정확도 대신 어떤 지표를 봐야 할까요? 왜?</div></div>
+<div class="step"><div class="sn"><i>7</i>과적합 실험 — 트리 깊이 1~15</div><div class="why"><b>무엇을:</b> <code>max_depth</code>를 1부터 15까지 바꾸며 트리를 15번 학습해 훈련/테스트 정확도를 그래프로 그립니다.<br>
+<b>줄별:</b> <code>for d in depths</code> 안에서 매번 새 트리를 만들어 학습(<code>fit</code>)하고 두 점수를 리스트에 추가. <code>plt.plot(x, y, 'o-')</code>는 점+선. <code>np.argmax(test_acc)</code>는 가장 큰 값의 <b>위치(0부터)</b>라서 <code>+1</code>을 해 깊이로 바꿉니다.<br>
+<b>출력 읽기:</b> 깊이 1~2에서는 둘 다 낮음(과소적합). 깊이 3에서 테스트 0.981로 최고. 4 이상은 훈련 1.000, 테스트 0.963으로 제자리(과적합). <b>가장 단순하면서 테스트가 높은 깊이 3</b>이 답입니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 7</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">depths = range(1, 16)
+train_acc, test_acc = [], []
+for d in depths:
+    t = DecisionTreeClassifier(max_depth=d, random_state=0).fit(X_train, y_train)
+    train_acc.append(t.score(X_train, y_train)); test_acc.append(t.score(X_test, y_test))
+
+plt.figure(figsize=(7, 4))
+plt.plot(depths, train_acc, 'o-', label='훈련 정확도'); plt.plot(depths, test_acc, 's-', label='테스트 정확도')
+plt.xlabel('max_depth (트리 깊이)'); plt.ylabel('정확도'); plt.title('깊이에 따른 훈련/테스트 정확도'); plt.legend(); plt.grid(alpha=.3); plt.show()
+best_depth = int(np.argmax(test_acc)) + 1
+print('테스트 정확도가 가장 높은 깊이:', best_depth, '→ 정확도', round(max(test_acc), 3))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그래프가 표시됩니다]테스트 정확도가 가장 높은 깊이: 3 → 정확도 0.981</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>그래프에서 과소적합 구간과 과적합 구간을 손가락으로 가리켜 보세요.</div></div>
+<div class="step"><div class="sn"><i>8</i>kNN이 약했던 이유 — 스케일링</div><div class="why"><b>무엇을:</b> 열마다 숫자 크기가 얼마나 다른지 확인하고, <code>StandardScaler</code>로 크기를 맞춘 kNN과 안 맞춘 kNN을 비교합니다.<br>
+<b>줄별:</b> <code>X.describe().loc[['mean','max'], [...]]</code>는 세 열의 평균·최댓값만 골라 보기. <code>make_pipeline(StandardScaler(), KNeighborsClassifier(...))</code>는 "① 스케일링 → ② kNN"을 <b>한 모델처럼 묶은</b> 파이프라인 — <code>fit</code> 한 번으로 스케일러 학습과 kNN 학습이 순서대로 됩니다(테스트 데이터엔 훈련에서 배운 평균·표준편차를 그대로 적용해 정보 유출 방지).<br>
+<b>출력 읽기:</b> proline 평균 747 vs hue 0.96 → 거리 계산이 proline에만 좌우됨. 스케일링 후 kNN 테스트 정확도 <b>0.722 → 0.944</b>. 모델을 바꾸지 않고 <b>전처리만으로</b> 22%p 개선!</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 8</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+print('열마다 크기가 다르다 →\n', X.describe().loc[['mean', 'max'], ['alcohol', 'hue', 'proline']].round(2))
+
+knn_raw    = KNeighborsClassifier(n_neighbors=5).fit(X_train, y_train)
+knn_scaled = make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=5)).fit(X_train, y_train)
+print('\nkNN 스케일링 전 테스트 정확도:', round(knn_raw.score(X_test, y_test), 3))
+print('kNN 스케일링 후 테스트 정확도:', round(knn_scaled.score(X_test, y_test), 3))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>열마다 크기가 다르다 →
+       alcohol   hue  proline
+mean    13.00  0.96   746.89
+max     14.83  1.71  1680.00
+
+kNN 스케일링 전 테스트 정확도: 0.722
+kNN 스케일링 후 테스트 정확도: 0.944</pre></div>
+<details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">결정트리는 스케일링이 필요 없습니다(열 하나씩 "크다/작다"만 묻기 때문). 거리·기울기를 쓰는 kNN·로지스틱 회귀·선형회귀는 스케일링이 도움이 됩니다.</div></details></div>
+<div class="step"><div class="sn"><i>9</i>교차검증 — 한 번 나누기의 운 없애기</div><div class="why"><b>무엇을:</b> 세 후보 모델을 <code>cross_val_score(모델, X_train, y_train, cv=5)</code>로 5번씩 시험해 평균과 편차를 봅니다. <b>테스트 데이터는 쓰지 않고 훈련 데이터만</b> 5조각으로 돌려 씁니다.<br>
+<b>출력 읽기:</b> 5개 점수가 <code>[0.92 0.96 1. 1. 0.917]</code>처럼 조각마다 다릅니다 — 한 번만 나눴다면 0.917이 나왔을 수도, 1.0이 나왔을 수도 있었다는 뜻. 평균(0.959)과 ±편차(0.037)를 함께 보면 <b>얼마나 안정적인 모델인지</b> 알 수 있습니다. 로지스틱 회귀(스케일링)가 평균 0.984, 편차 0.020으로 가장 높고 안정적입니다.<br>
+<b>f-string:</b> <code>f'{name:22s}'</code>는 22칸 맞춰 출력, <code>{scores.mean():.3f}</code>는 소수 셋째 자리.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 9</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.model_selection import cross_val_score
+cands = {
+    'kNN(k=5, 스케일링)': make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=5)),
+    f'결정트리(깊이 {best_depth})': DecisionTreeClassifier(max_depth=best_depth, random_state=0),
+    '로지스틱 회귀(스케일링)': make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000)),
+}
+for name, m in cands.items():
+    scores = cross_val_score(m, X_train, y_train, cv=5)
+    print(f'{name:22s} 5번 점수 {np.round(scores, 3)} → 평균 {scores.mean():.3f} (±{scores.std():.3f})')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>kNN(k=5, 스케일링)         5번 점수 [0.92  0.96  1.    1.    0.917] → 평균 0.959 (±0.037)
+결정트리(깊이 3)             5번 점수 [0.92  0.88  0.92  0.96  0.792] → 평균 0.894 (±0.057)
+로지스틱 회귀(스케일링)          5번 점수 [1.    0.96  1.    1.    0.958] → 평균 0.984 (±0.020)</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>편차(±)가 크다는 것은 무엇을 뜻할까요?</div></div>
+<div class="step"><div class="sn"><i>10</i>GridSearchCV — 하이퍼파라미터 튜닝</div><div class="why"><b>무엇을:</b> kNN의 k(1~25)와 결정트리의 깊이(1~10)·잎 최소 크기(1,2,4)를 <b>후보 전부 교차검증</b>으로 시험해 최적값을 찾습니다.<br>
+<b>인자:</b> <code>param_grid</code>는 {옵션이름: 후보 목록}. 파이프라인 안 모델의 옵션은 <code>단계이름__옵션</code>(밑줄 두 개)으로 씁니다 — 단계이름은 클래스 이름을 소문자로 쓴 것(<code>kneighborsclassifier</code>). 트리는 후보 10×3 = 30가지 × 5번 = 150번 학습하지만 몇 초면 끝납니다.<br>
+<b>출력 읽기:</b> kNN 최적 k=12(교차검증 0.968), 트리 최적 <code>max_depth=3, min_samples_leaf=4</code>(0.902). <code>cv_results_['mean_test_score']</code>는 후보별 평균 점수 — 그래프로 그리면 k에 따라 점수가 출렁이는 것이 보입니다.<br>
+<b>주의:</b> <code>best_score_</code>는 교차검증 점수(모의고사)입니다. 최종 점수는 10단계에서 테스트로 냅니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 10</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.model_selection import GridSearchCV
+# (1) kNN의 k 튜닝
+grid_knn = GridSearchCV(make_pipeline(StandardScaler(), KNeighborsClassifier()),
+                        param_grid={'kneighborsclassifier__n_neighbors': list(range(1, 26))}, cv=5)
+grid_knn.fit(X_train, y_train)
+print('kNN  최적 k =', grid_knn.best_params_['kneighborsclassifier__n_neighbors'], '| 교차검증 평균', round(grid_knn.best_score_, 3))
+
+# (2) 결정트리의 깊이 튜닝
+grid_tree = GridSearchCV(DecisionTreeClassifier(random_state=0),
+                         param_grid={'max_depth': list(range(1, 11)), 'min_samples_leaf': [1, 2, 4]}, cv=5)
+grid_tree.fit(X_train, y_train)
+print('트리 최적 설정 =', grid_tree.best_params_, '| 교차검증 평균', round(grid_tree.best_score_, 3))
+
+# k별 점수 그래프
+ks = range(1, 26); ms = grid_knn.cv_results_['mean_test_score']
+plt.figure(figsize=(7, 3.5)); plt.plot(list(ks), ms, 'o-'); plt.xlabel('k'); plt.ylabel('교차검증 정확도'); plt.title('kNN: k에 따른 점수'); plt.grid(alpha=.3); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>kNN  최적 k = 12 | 교차검증 평균 0.968
+트리 최적 설정 = {'max_depth': 3, 'min_samples_leaf': 4} | 교차검증 평균 0.902
+[그래프가 표시됩니다]</pre></div>
+<details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">옵션 이름을 모르면 <code>make_pipeline(...).get_params().keys()</code>를 출력해 보세요. 이름을 틀리면 <code>Invalid parameter</code> 오류가 납니다.</div></details></div>
+<div class="step"><div class="sn"><i>11</i>개선 전 → 후 비교표 (테스트로 최종 확인)</div><div class="why"><b>무엇을:</b> 3단계의 기본 모델([전])과 튜닝·전처리한 모델([후])을 <b>아껴 둔 테스트 데이터</b>로 딱 한 번 채점해 한 표에 놓습니다.<br>
+<b>줄별:</b> <code>grid_knn.best_estimator_</code>는 최적 k로 훈련 데이터 전체를 다시 학습한 완성 모델. <code>f1_score(..., average='macro')</code>는 품종 3개의 F1을 단순 평균.<br>
+<b>출력 읽기(실제 값):</b> kNN 0.722 → <b>0.963</b>(가장 큰 개선). 결정트리 0.963 → 0.963(점수는 같지만 깊이 3의 <b>더 단순한 모델</b>이므로 후를 택함 — 단순할수록 새 데이터에 강함). 로지스틱 회귀 0.963 → <b>0.981</b>(최고). 이 표가 오늘의 제출물 근거입니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 11</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.metrics import f1_score
+final = {
+    '[전] kNN (k=5, 스케일 X)': models['kNN (k=5)'],
+    '[후] kNN (스케일 + k 튜닝)': grid_knn.best_estimator_,
+    '[전] 결정트리 (깊이 제한 X)': models['결정트리 (깊이 제한 없음)'],
+    '[후] 결정트리 (깊이·잎 튜닝)': grid_tree.best_estimator_,
+    '[전] 로지스틱 회귀 (스케일 X)': models['로지스틱 회귀'],
+    '[후] 로지스틱 회귀 (스케일 O)': cands['로지스틱 회귀(스케일링)'].fit(X_train, y_train),
+}
+rows = []
+for name, m in final.items():
+    p = m.predict(X_test)
+    rows.append({'모델': name, '테스트 정확도': round(accuracy_score(y_test, p), 3),
+                 'F1(평균)': round(f1_score(y_test, p, average='macro'), 3)})
+compare = pd.DataFrame(rows)
+compare</pre></div><div class="out"><div class="lab">예상 출력</div><pre>                     모델  테스트 정확도  F1(평균)
+0  [전] kNN (k=5, 스케일 X)    0.722   0.717
+1  [후] kNN (스케일 + k 튜닝)    0.963   0.964
+2    [전] 결정트리 (깊이 제한 X)    0.963   0.966
+3    [후] 결정트리 (깊이·잎 튜닝)    0.963   0.965
+4   [전] 로지스틱 회귀 (스케일 X)    0.963   0.961
+5   [후] 로지스틱 회귀 (스케일 O)    0.981   0.983</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>"점수가 같으면 단순한 모델을 고른다"는 원칙을 뭐라고 부를까요? (오컴의 면도날)</div></div>
+<div class="step"><div class="sn"><i>12</i>회귀 모델의 평가 — MAE · RMSE · R²</div><div class="why"><b>무엇을:</b> 2회차와 같은 규칙으로 "공부시간·수면시간 → 성적" 가상 데이터 120명을 만들고 선형회귀·결정트리 회귀(깊이 제한 X / 깊이 3)를 세 지표로 비교합니다.<br>
+<b>데이터:</b> 성적 = 40 + 6.5×공부시간 − 1.2×(수면−7)² + 잡음 → 공부할수록 오르고, 수면은 7시간 근처가 최고인 규칙. <code>np.clip(…, 0, 100)</code>은 0~100점 밖으로 나가지 않게.<br>
+<b>출력 읽기:</b> 선형회귀 MAE 5.53점(평균 5.5점 빗나감), RMSE 7.46, R² 0.747(성적 변동의 75%를 설명). 깊이 제한 없는 트리는 MAE 7.65·R² 0.561로 <b>과적합</b>, 깊이 3으로 제한하면 5.86·0.738로 회복. <b>회귀에서도 과적합 원리는 같습니다.</b> RMSE ≥ MAE인 것도 확인하세요.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 12</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+rng = np.random.default_rng(2026); n = 120
+study = np.round(rng.uniform(0.5, 8, n), 1); sleep = np.round(rng.normal(6.5, 1, n), 1)
+score = np.clip(40 + 6.5*study - 1.2*(sleep-7)**2 + rng.normal(0, 7, n), 0, 100).round(1)
+df = pd.DataFrame({'공부시간': study, '수면시간': sleep, '성적': score})
+Xr, yr = df[['공부시간', '수면시간']], df['성적']
+Xr_tr, Xr_te, yr_tr, yr_te = train_test_split(Xr, yr, test_size=0.3, random_state=1)
+
+for name, m in [('선형회귀', LinearRegression()), ('결정트리 회귀(깊이 제한 X)', DecisionTreeRegressor(random_state=0)),
+                ('결정트리 회귀(깊이 3)', DecisionTreeRegressor(max_depth=3, random_state=0))]:
+    m.fit(Xr_tr, yr_tr); p = m.predict(Xr_te)
+    print(f'{name:20s} MAE {mean_absolute_error(yr_te, p):5.2f}점 | RMSE {np.sqrt(mean_squared_error(yr_te, p)):5.2f}점 | R² {r2_score(yr_te, p):.3f}')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>선형회귀                 MAE  5.53점 | RMSE  7.46점 | R² 0.747
+결정트리 회귀(깊이 제한 X)     MAE  7.65점 | RMSE  9.83점 | R² 0.561
+결정트리 회귀(깊이 3)        MAE  5.86점 | RMSE  7.60점 | R² 0.738</pre></div>
+</div>
+<div class="step"><div class="sn"><i>13</i>🧩 직접 해보기 1 — 로지스틱 회귀 C 튜닝</div><div class="why"><b>과제:</b> 로지스틱 회귀의 하이퍼파라미터 <code>C</code>(작을수록 단순한 모델, 클수록 훈련 데이터에 더 맞춤) 후보 <code>[0.01, 0.1, 1, 10, 100]</code>을 GridSearchCV로 시험합니다. 10단계의 코드를 흉내 내면 됩니다. 옵션 이름은 <code>logisticregression__C</code>.<br>
+<b>예상 결과:</b> 최적 C=1, 교차검증 0.984, 테스트 0.981. (<code>grid.score</code>는 최적 모델로 채점.)</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 13</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">grid_lr = GridSearchCV(make_pipeline(StandardScaler(), LogisticRegression(max_iter=5000)),
+                       param_grid={'logisticregression__C': [0.01, 0.1, 1, 10, 100]},   # TODO: 후보 목록이 맞는지 확인
+                       cv=5)
+grid_lr.fit(X_train, y_train)                        # TODO: 훈련 데이터로 fit
+print('최적 C =', grid_lr.best_params_, '| 교차검증 평균', round(grid_lr.best_score_, 3))
+print('테스트 정확도 =', round(grid_lr.score(X_test, y_test), 3))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>최적 C = {'logisticregression__C': 1} | 교차검증 평균 0.984
+테스트 정확도 = 0.981</pre></div>
+<details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><code>TODO</code> 줄을 지우지 말고 값만 바꾸세요. <code>fit</code>에 테스트 데이터를 넣으면 안 됩니다 — 튜닝은 훈련 데이터로만!</div></details></div>
+<div class="step"><div class="sn"><i>14</i>🧩 직접 해보기 2 — 판정 문턱값 바꾸기</div><div class="why"><b>과제:</b> 6단계의 진짜 모델 <code>real</code>이 "환자"라고 판정하는 <b>확률 문턱값</b>을 0.5 → 0.3 → 0.2 → 0.1로 낮춰 재현율·정밀도가 어떻게 움직이는지 봅니다. <code>predict_proba(...)[:, 1]</code>은 각 사람이 환자일 확률(0~1), <code>(proba &gt;= thr).astype(int)</code>는 문턱값 이상이면 1(환자).<br>
+<b>출력 읽기:</b> 0.5 → 재현율 0.615·정밀도 1.0; 0.1 → 재현율 <b>0.923</b>·정밀도 0.800. 문턱값을 낮추면 <b>환자를 더 많이 찾지만(재현율↑) 헛경보도 늘어남(정밀도↓)</b>. 병 진단이라면 어느 쪽이 나을지 토론해 보세요. (0.3과 0.2에서 값이 같은 것은 그 사이에 확률이 걸린 사람이 없기 때문입니다.)</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 14</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">proba = real.predict_proba(Xh_te)[:, 1]              # 환자일 확률
+for thr in [0.5, 0.3, 0.2, 0.1]:                     # TODO: 다른 문턱값도 넣어 보세요
+    p = (proba &gt;= thr).astype(int)                   # 확률이 문턱값 이상이면 환자(1)
+    print(f'문턱값 {thr:.1f} → 재현율 {recall_score(yh_te, p):.3f} | 정밀도 {precision_score(yh_te, p, zero_division=0):.3f} | 정확도 {accuracy_score(yh_te, p):.3f}')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>문턱값 0.5 → 재현율 0.615 | 정밀도 1.000 | 정확도 0.983
+문턱값 0.3 → 재현율 0.615 | 정밀도 0.889 | 정확도 0.980
+문턱값 0.2 → 재현율 0.615 | 정밀도 0.889 | 정확도 0.980
+문턱값 0.1 → 재현율 0.923 | 정밀도 0.800 | 정확도 0.987</pre></div>
+</div>
+<div class="step"><div class="sn"><i>15</i>📝 오늘의 결과물 제출 — 개선 방향 결정 근거</div><div class="why"><b>무엇을:</b> 이름·학번을 쓰고, 11단계 <code>compare</code> 표를 보며 <b>최종 모델과 그 이유 2~3문장</b>을 <code>선택_근거</code>에 적어 실행합니다. 출력 화면을 캡처해 제출합니다.<br>
+<b>좋은 근거의 조건(평가 기준):</b> ① 표의 <b>숫자를 인용</b>한다(예: "0.722 → 0.963") ② 테스트 점수뿐 아니라 <b>교차검증의 안정성</b>도 언급한다 ③ 점수가 같다면 <b>단순한 모델</b>을 택한 이유를 쓴다 ④ 다음에 볼 지표(정밀도/재현율)를 제안한다.<br>
+<b>주의:</b> 세 따옴표(<code>"""</code>) 안에 여러 줄을 써도 됩니다. 따옴표 짝이 안 맞으면 <code>SyntaxError</code>가 납니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 15</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">이름 = '홍길동'          # TODO: 본인 이름
+학번 = '10101'          # TODO: 본인 학번
+최종_선택_모델 = '[후] 로지스틱 회귀 (스케일 O)'     # TODO: compare 표의 모델 이름 중 하나
+선택_근거 = """
+1. 스케일링한 로지스틱 회귀가 테스트 정확도와 F1이 가장 높았다.
+2. 8단계 교차검증에서도 평균이 가장 높고 편차(±)가 가장 작아, 한 번의 운이 아니라고 판단했다.
+3. kNN은 스케일링+k 튜닝으로 가장 많이 개선됐지만 최종 점수는 로지스틱 회귀가 더 높았다. 다음에는 품종별 재현율을 확인해 약한 품종을 보완하겠다.
+"""                     # TODO: 본인의 근거로 바꾸기
+
+print('=' * 60); print(f'3회차 실습 결과물  |  {이름} ({학번})'); print('=' * 60)
+print(compare.to_string(index=False))
+print('-' * 60); print('최종 선택:', 최종_선택_모델); print('근거:', 선택_근거)</pre></div><div class="out"><div class="lab">예상 출력</div><pre>============================================================
+3회차 실습 결과물  |  홍길동 (10101)
+============================================================
+                  모델  테스트 정확도  F1(평균)
+[전] kNN (k=5, 스케일 X)    0.722   0.717
+[후] kNN (스케일 + k 튜닝)    0.963   0.964
+  [전] 결정트리 (깊이 제한 X)    0.963   0.966
+  [후] 결정트리 (깊이·잎 튜닝)    0.963   0.965
+ [전] 로지스틱 회귀 (스케일 X)    0.963   0.961
+ [후] 로지스틱 회귀 (스케일 O)    0.981   0.983
+------------------------------------------------------------
+최종 선택: [후] 로지스틱 회귀 (스케일 O)
+근거: 
+1. 스케일링한 로지스틱 회귀가 테스트 정확도와 F1이 가장 높았다.
+2. 8단계 교차검증에서도 평균이 가장 높고 편차(±)가 가장 작아, 한 번의 운이 아니라고 판단했다.
+3. kNN은 스케일링+k 튜닝으로 가장 많이 개선됐지만 최종 점수는 로지스틱 회귀가 더 높았다. 다음에는 품종별 재현율을 확인해 약한 품종을 보완하겠다.</pre></div>
+</div>
+</section>
+<section class="part" id="part4" style="--pcol:#C0395F;--ptint:#C0395F22"><h2><span class="pn">PART 4</span>퀴즈 — 오늘 내용 확인</h2>
+<div class="pintro">보기를 누르면 정답과 해설이 바로 나옵니다. 상단의 점수판이 갱신됩니다.</div>
+<div class="quiz"><div class="q">Q1. 훈련 정확도 100%, 테스트 정확도 70%인 모델의 상태로 가장 알맞은 것은?</div><label onclick="pick(this,1,0)">① 과소적합 — 모델이 너무 단순하다</label><label onclick="pick(this,1,1)">② 과적합 — 훈련 데이터를 외웠다</label><label onclick="pick(this,1,2)">③ 데이터가 너무 많다</label><label onclick="pick(this,1,3)">④ 정상 — 테스트는 원래 낮다</label><div class="exp"><b>정답: ②</b> — 훈련은 잘 맞히는데 새 데이터에 약하면 과적합입니다. 깊이 제한·k 늘리기·데이터 늘리기 등으로 완화합니다.</div></div>
+<div class="quiz"><div class="q">Q2. 환자가 2%뿐인 데이터에서 "모두 정상"이라 답하는 모델의 정확도는 약 얼마이며, 이때 꼭 봐야 할 지표는?</div><label onclick="pick(this,1,0)">① 2%, 정확도</label><label onclick="pick(this,1,1)">② 98%, 재현율</label><label onclick="pick(this,1,2)">③ 50%, MAE</label><label onclick="pick(this,1,3)">④ 98%, R²</label><div class="exp"><b>정답: ②</b> — 98%가 정상이므로 정확도 98%. 하지만 환자를 한 명도 못 찾으므로 재현율(진짜 환자 중 찾아낸 비율)이 0입니다.</div></div>
+<div class="quiz"><div class="q">Q3. 스팸 필터에서 "중요한 메일이 스팸함에 들어가는 일"을 줄이고 싶다면 어떤 지표를 높여야 할까?</div><label onclick="pick(this,0,0)">① 정밀도(precision)</label><label onclick="pick(this,0,1)">② 재현율(recall)</label><label onclick="pick(this,0,2)">③ RMSE</label><label onclick="pick(this,0,3)">④ 훈련 정확도</label><div class="exp"><b>정답: ①</b> — 정상 메일을 스팸이라 한 것이 FP(헛경보). 정밀도 = TP/(TP+FP)이므로 정밀도를 높이면 헛경보가 줄어듭니다.</div></div>
+<div class="quiz"><div class="q">Q4. 5-fold 교차검증에 대한 설명으로 옳은 것은?</div><label onclick="pick(this,1,0)">① 테스트 데이터를 5번 반복해 채점한다</label><label onclick="pick(this,1,1)">② 훈련 데이터를 5조각으로 나눠 매번 다른 조각을 검증에 쓰고 평균을 낸다</label><label onclick="pick(this,1,2)">③ 모델을 5개 만들어 투표한다</label><label onclick="pick(this,1,3)">④ 하이퍼파라미터를 5개만 시험한다</label><div class="exp"><b>정답: ②</b> — 한 번 나누기의 운을 없애기 위해 훈련 데이터 안에서 5번 시험합니다. 테스트 데이터는 마지막 확인용으로 아껴 둡니다.</div></div>
+<div class="quiz"><div class="q">Q5. kNN 정확도가 0.72였는데 StandardScaler를 붙였더니 0.94가 되었다. 가장 알맞은 설명은?</div><label onclick="pick(this,1,0)">① k가 자동으로 바뀌었다</label><label onclick="pick(this,1,1)">② 열마다 숫자 크기가 달라 거리가 큰 열에 좌우되던 것이 고쳐졌다</label><label onclick="pick(this,1,2)">③ 테스트 데이터가 바뀌었다</label><label onclick="pick(this,1,3)">④ 트리 깊이가 줄었다</label><div class="exp"><b>정답: ②</b> — kNN은 거리를 쓰므로 값이 큰 열(proline)이 거리를 독점합니다. 스케일링으로 모든 열을 같은 크기로 맞추면 공정한 거리가 됩니다.</div></div>
+</section>
+<section class="part" id="part5" style="--pcol:#1B2A4A;--ptint:#1B2A4A22"><h2><span class="pn">PART 5</span>정리 · 평가 기준 · 더 해보기</h2>
+<h3>핵심 정리 3줄</h3>
+<ul><li>모델의 실력은 <b>본 적 없는 데이터</b>로 잰다 — 훈련/테스트를 나누고, 설정은 <b>교차검증</b>으로 고른다.</li><li><b>정확도만 믿지 말고</b> 문제 목적에 맞는 지표(정밀도·재현율·F1, 회귀는 MAE·RMSE·R²)를 고른다.</li><li>개선은 <b>비교표 → 진단(과적합/과소적합) → 튜닝·전처리 → 최종 확인</b>의 순환이고, 결정에는 <b>숫자 근거</b>가 따라야 한다.</li></ul>
+<h3>실습 결과 평가 기준 (루브릭)</h3>
+<table class="tb "><thead><tr><th>항목</th><th>우수 (3)</th><th>보통 (2)</th><th>미흡 (1)</th></tr></thead><tbody><tr><td>① 비교표 완성</td><td>3개 이상 모델의 전/후 점수를 표로 제시</td><td>일부 모델만 제시</td><td>표 없음</td></tr><tr><td>② 지표 해석</td><td>정확도 외 정밀도/재현율 또는 교차검증 편차를 언급</td><td>정확도만 언급</td><td>해석 없음</td></tr><tr><td>③ 개선 방향 결정</td><td>표의 숫자를 인용해 최종 모델과 이유 2~3문장</td><td>이유가 한 문장·근거 부족</td><td>선택만 있고 이유 없음</td></tr><tr><td>④ 직접 해보기</td><td>2개 모두 실행·결과 설명</td><td>1개 실행</td><td>미실행</td></tr></tbody></table>
+<h3>더 해보기 (선택 과제)</h3>
+<ul><li>와인 데이터 대신 <code>load_breast_cancer()</code>(유방암 진단, 양성/악성)로 같은 과정을 반복하고, 이 문제에서는 <b>재현율</b>이 왜 중요한지 써 보세요.</li><li><code>RandomForestClassifier</code>(결정트리 여러 개의 투표)를 후보에 추가해 비교표를 확장해 보세요.</li><li>11단계 회귀에서 <code>KNeighborsRegressor</code>를 추가하고 스케일링 전후 MAE를 비교해 보세요.</li></ul>
+<div class="callout tip"><b class="t">다음 시간 예고 — 4회차 비지도학습</b>정답(y)이 <b>없는</b> 데이터를 컴퓨터가 스스로 묶는 <b>군집(k-means)</b>과 13개 열을 2개로 줄여 그리는 <b>차원축소(PCA)</b>를 배웁니다. 오늘 쓴 와인 데이터를 정답 없이 다시 만나게 됩니다.</div>
+</section></div></main><footer>2026 경기도 공유학교 · 인공지능 기초 · 3회차 지도학습 2 및 모델 평가 · 김순찬 교수 · 이 페이지는 오프라인에서도 열립니다(외부 연결 없음).</footer>
+<script>
+function copyCode(btn){var pre=btn.closest('.code').querySelector('pre');var t=pre.innerText;
+ function done(){btn.textContent='복사됨 ✓';setTimeout(function(){btn.textContent='복사'},1500);}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fallback()});}else{fallback();}
+ function fallback(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(ta);}}
+function hl(){document.querySelectorAll('.code pre[data-lang="python"]').forEach(function(pre){
+ var s=pre.textContent; var out='';var i=0;
+ var kw=/^(import|from|as|def|return|if|elif|else|for|while|in|not|and|or|is|None|True|False|class|with|try|except|lambda|print|break|continue|pass|yield|global|del|range|len)\b/;
+ while(i<s.length){var ch=s[i];
+  if(ch==='#'){var j=s.indexOf('\n',i);if(j<0)j=s.length;out+='<span class="c">'+esc(s.slice(i,j))+'</span>';i=j;continue;}
+  if(ch==='"'||ch==="'"){var q=ch;var j=i+1;if(s.substr(i,3)===q+q+q){j=s.indexOf(q+q+q,i+3);j=j<0?s.length:j+3;}else{while(j<s.length&&s[j]!==q&&s[j]!=='\n'){if(s[j]==='\\')j++;j++;}j++;}out+='<span class="s">'+esc(s.slice(i,j))+'</span>';i=j;continue;}
+  if(/[A-Za-z_]/.test(ch)){var j=i;while(j<s.length&&/[A-Za-z0-9_]/.test(s[j]))j++;var w=s.slice(i,j);
+   if(kw.test(w)&&kw.exec(w)[0]===w){out+='<span class="k">'+w+'</span>';}else if(s[j]==='('){out+='<span class="f">'+w+'</span>';}else{out+=w;}i=j;continue;}
+  if(/[0-9]/.test(ch)){var j=i;while(j<s.length&&/[0-9.]/.test(s[j]))j++;out+='<span class="n">'+s.slice(i,j)+'</span>';i=j;continue;}
+  out+=esc(ch);i++;}
+ pre.innerHTML=out;});}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+var SCORE={ok:0,n:0};
+function pick(lbl,ans,idx){var q=lbl.closest('.quiz');if(q.dataset.done)return;q.dataset.done=1;SCORE.n++;
+ q.querySelectorAll('label').forEach(function(l,k){if(k===ans)l.classList.add('right');else if(k===idx)l.classList.add('wrong');});
+ if(idx===ans)SCORE.ok++;q.querySelector('.exp').classList.add('show');
+ var sc=document.getElementById('score');if(sc)sc.textContent='퀴즈 '+SCORE.ok+' / '+SCORE.n+' 정답';}
+document.addEventListener('DOMContentLoaded',hl);
+</script></body></html>

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5회차 · 강화학습 기초 — 2026 경기도 공유학교 · 인공지능 기초</title><style>
+:root{--navy:#1B2A4A;--ink:#1F2937;--gray:#6B7280;--lgray:#D1D5DB;--soft:#F5F6F8;--code:#1E2533;--codefg:#E5E7EB;
+--ok:#0E8C86;--bad:#C0395F;--warn:#D97706;--accent:#4F5BD5;--tint:#ECEDFB}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif;color:var(--ink);background:#EEF0F4;line-height:1.6;font-size:15px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{background:var(--navy);color:#fff;padding:30px 0 24px;border-top:6px solid var(--accent)}
+header .chip{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--accent);color:#fff;margin-right:6px}
+header h1{margin:12px 0 6px;font-size:30px;line-height:1.25}
+header .sub{color:#C5CEDD;font-size:14px}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--lgray);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;padding:8px 20px;flex-wrap:wrap}
+.topbar a{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--lgray);color:var(--gray);text-decoration:none;background:#fff}
+.topbar a:hover{border-color:var(--accent);color:var(--accent)}
+main{padding:24px 0 70px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.box{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:16px 20px;margin:14px 0}
+.box h4{margin:0 0 8px;font-size:14px;color:var(--accent)}
+.box ul{margin:4px 0 0 18px;padding:0}.box li{margin:3px 0}
+section.part{margin:40px 0 12px}
+section.part>h2{margin:0 0 6px;font-size:23px;color:var(--navy);display:flex;align-items:center;gap:10px}
+section.part>h2 .pn{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 8px;border-radius:8px;background:var(--pcol);color:#fff;font-size:14px}
+.pintro{background:#fff;border:1px solid var(--lgray);border-left:5px solid var(--pcol);border-radius:10px;padding:12px 18px;margin:10px 0 18px;font-size:14px}
+h3{font-size:18px;color:var(--navy);margin:26px 0 8px;padding-left:10px;border-left:4px solid var(--pcol)}
+p{margin:8px 0}
+.callout{border-radius:10px;padding:12px 16px;margin:14px 0;border:1px solid;font-size:14px}
+.callout b.t{display:block;margin-bottom:4px}
+.callout.key{background:var(--tint);border-color:#C7CAF1;color:#2B2F6B}
+.callout.tip{background:#E3F4F3;border-color:#A9DCD8;color:#0B5F5B}
+.callout.warn{background:#FDF1E1;border-color:#F3CF98;color:#7C4A05}
+.callout.ok{background:#EAF7EF;border-color:#A7DDB9;color:#1A5E36}
+table.tb{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:#fff}
+table.tb th{background:var(--pcol);color:#fff;padding:8px 10px;text-align:left;font-weight:700}
+table.tb td{padding:7px 10px;border-bottom:1px solid var(--lgray);vertical-align:top}
+table.tb tr:nth-child(even) td{background:var(--soft)}
+.code{position:relative;margin:14px 0;border-radius:10px;overflow:hidden;background:var(--code);border:1px solid #2F3A4E}
+.code .bar{display:flex;align-items:center;gap:8px;padding:6px 12px;background:#161C27;color:#C5CEDD;font-size:12px}
+.code .bar .lang{font-weight:700;color:#FCD34D}
+.code .bar button{margin-left:auto;font:inherit;font-size:12px;padding:3px 10px;border-radius:6px;border:1px solid #3A4661;background:#222B3B;color:#E5E7EB;cursor:pointer}
+.code .bar button:hover{background:#2F3A4E}
+.code pre{margin:0;padding:12px 14px;overflow:auto;color:var(--codefg);font-family:Consolas,"D2Coding","Nanum Gothic Coding",Menlo,monospace;font-size:13.5px;line-height:1.5;tab-size:4}
+.code pre .k{color:#FCD34D}.code pre .s{color:#86EFAC}.code pre .c{color:#8B9BB8;font-style:italic}.code pre .n{color:#93C5FD}.code pre .f{color:#F9A8D4}
+.out{margin:-8px 0 14px;border:1px dashed var(--lgray);border-top:none;border-radius:0 0 10px 10px;background:#FAFBFC;padding:10px 14px;font-size:13px}
+.out .lab{font-size:11px;font-weight:700;color:var(--gray);margin-bottom:4px}
+.out pre{margin:0;white-space:pre-wrap;font-family:Consolas,"D2Coding",Menlo,monospace;font-size:12.5px;color:#374151}
+.step{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:16px 20px 12px;margin:18px 0;position:relative}
+.step .sn{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--pcol);font-size:15px;margin-bottom:6px}
+.step .sn i{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--pcol);color:#fff;font-style:normal;font-size:13px}
+.step .why{background:var(--soft);border-radius:8px;padding:10px 14px;font-size:14px;margin:8px 0}
+.step .why b.l{color:var(--pcol)}
+.step details{margin-top:6px}
+.step summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:13px}
+.quiz{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:14px 18px;margin:14px 0}
+.quiz .q{font-weight:700;margin-bottom:8px}
+.quiz label{display:block;padding:6px 10px;border:1px solid var(--lgray);border-radius:8px;margin:5px 0;cursor:pointer;font-size:14px}
+.quiz label:hover{border-color:var(--accent)}
+.quiz label.right{border-color:var(--ok);background:#EAF7EF}.quiz label.wrong{border-color:var(--bad);background:#FBE9EE}
+.quiz .exp{display:none;margin-top:8px;font-size:13.5px;background:var(--soft);padding:8px 12px;border-radius:8px}
+.quiz .exp.show{display:block}
+.btn{font:inherit;font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--lgray);background:#fff;cursor:pointer;margin-top:6px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+figure{margin:14px 0;text-align:center}figure img{max-width:100%;border:1px solid var(--lgray);border-radius:8px;background:#fff}
+figure figcaption{font-size:12.5px;color:var(--gray);margin-top:6px}
+.kbd{font-family:Consolas,Menlo,monospace;background:var(--soft);border:1px solid var(--lgray);border-radius:5px;padding:0 6px;font-size:13px}
+code{font-family:Consolas,"D2Coding",Menlo,monospace;background:var(--soft);border:1px solid #E5E7EB;border-radius:4px;padding:0 5px;font-size:13px}
+.plan td:first-child{white-space:nowrap;font-weight:700;color:var(--navy)}
+footer{color:var(--gray);font-size:12.5px;text-align:center;padding:24px 0 40px}
+.toc{background:#fff;border:1px solid var(--lgray);border-radius:12px;padding:12px 18px;margin:16px 0}
+.toc a{display:inline-block;margin:3px 10px 3px 0;color:var(--accent);text-decoration:none;font-size:14px}
+.score{margin-left:auto;font-size:13px;color:var(--gray)}
+</style></head><body>
+<header><div class="wrap"><span class="chip">9주차 · 25–27차시</span><span class="chip" style="background:#0E8C86">2026-10-27</span><span class="chip" style="background:#D97706">2시간 (강의 + Colab 실습)</span>
+<h1>5회차 · 강화학습 기초</h1><div class="sub">2026 경기도 공유학교 · 인공지능 기초 · 김순찬 교수 &nbsp;|&nbsp; 성취기준 [인일 03-03] 기계 학습 모델 중 강화 학습의 특성과 알고리즘의 종류를 파악하여 보상 체계에 적합한 학습 알고리즘을 선정할 수 있다.</div></div></header>
+<div class="topbar"><div class="wrap"><a href="#top">▲ 처음</a><a href="#part1">P1 오늘 배우는 것 — 강화학습 개념 정리</a><a href="#part2">P2 예제 — 짧은 코드로 원리 확인</a><a href="#part3">P3 Colab 실습 — 5×5 미로에서 스스로 길을 찾는 AI 만들기</a><a href="#part4">P4 퀴즈 — 이해했는지 확인</a><a href="#part5">P5 정리 · 평가 기준 · 더 해보기</a><span class="score" id="score">퀴즈 0 / 0 정답</span></div></div>
+<main><div class="wrap" id="top">
+<div class="grid2"><div class="box"><h4>이 수업의 학습 목표</h4><ul><li>미로 게임에서 <b>에이전트·환경·상태·행동·보상·정책</b>을 찾아 말할 수 있다.</li><li>Q-learning이 <b>점수표(Q-table)를 고쳐 가며</b> 배우는 원리를 설명할 수 있다.</li><li><b>보상 체계를 직접 설계</b>하고, 보상이 바뀌면 AI의 행동이 어떻게 바뀌는지 실험으로 보일 수 있다.</li><li>가치 기반·정책 기반 등 강화학습 알고리즘의 큰 갈래를 알고, 문제에 맞는 갈래를 고를 수 있다.</li></ul></div>
+<div class="box"><h4>수업 흐름 (120분)</h4><table class="tb plan"><tbody><tr><td>0:00</td><td>지난 시간 복습 · 오늘의 목표</td><td>강의 5분</td></tr><tr><td>0:05</td><td>PART 1 강화학습이란 — 용어 · 탐험과 활용</td><td>강의 20분</td></tr><tr><td>0:25</td><td>PART 2 Q-learning 원리 · 보상 설계 · 알고리즘 종류</td><td>강의 20분</td></tr><tr><td>0:45</td><td>PART 3 Colab 실습 (셀 0~12)</td><td>실습 60분</td></tr><tr><td>1:45</td><td>결과 공유 · 퀴즈 · 정리</td><td>15분</td></tr></tbody></table></div></div>
+<div class="grid2"><div class="box"><h4>준비물 · 자료</h4><ul><li>슬라이드 <code>05_강화학습기초.pptx</code></li><li>Colab 노트북 <code>05_강화학습기초_실습_colab.ipynb</code></li><li>참고 데이터 <code>data/reward_design_results.csv</code> (보상 설계 4종 결과표)</li><li>구글 계정 · 크롬 브라우저 (설치 없음)</li></ul></div>
+<div class="box"><h4>탐구 과정(기능) · 평가</h4><ul><li><b>탐구과정:</b> 강화 학습 문제 구조를 분석하고, 보상 체계에 적합한 알고리즘을 선택하여 작동 원리를 검토</li><li><b>수업방법:</b> 강의 · 실습 · 질의응답</li><li><b>평가:</b> 실습 결과 평가 — 강화학습의 보상체계 디자인</li></ul></div></div>
+<div class="callout tip"><b class="t">실습 환경 — Google Colab</b><ol style="margin:4px 0 0 18px;padding:0"><li>구글 계정으로 로그인한 뒤 <a href="https://colab.research.google.com" target="_blank">colab.research.google.com</a> 에 접속합니다.</li><li><b>파일 → 노트 업로드</b>에서 선생님이 나눠 준 <code>.ipynb</code> 파일을 올립니다. (또는 <b>새 노트</b>를 만들고 이 페이지의 코드를 한 셀씩 복사해 붙여 넣어도 됩니다.)</li><li>셀 왼쪽의 ▶ 버튼을 누르거나 <span class="kbd">Shift</span>+<span class="kbd">Enter</span>로 <b>위에서부터 순서대로</b> 실행합니다.</li><li>처음 실행하면 "런타임 연결 중"이 잠깐 뜹니다. 오류가 나면 <b>런타임 → 런타임 다시 시작</b> 후 처음부터 다시 실행하세요.</li></ol></div>
+<div class="toc"><b>목차</b><br><a href="#part1">P1 오늘 배우는 것 — 강화학습 개념 정리</a><a href="#part2">P2 예제 — 짧은 코드로 원리 확인</a><a href="#part3">P3 Colab 실습 — 5×5 미로에서 스스로 길을 찾는 AI 만들기</a><a href="#part4">P4 퀴즈 — 이해했는지 확인</a><a href="#part5">P5 정리 · 평가 기준 · 더 해보기</a></div>
+<section class="part" id="part1" style="--pcol:#4F5BD5;--ptint:#4F5BD522"><h2><span class="pn">PART 1</span>오늘 배우는 것 — 강화학습 개념 정리</h2>
+<div class="pintro"><b>강화학습(Reinforcement Learning)</b>은 정답을 알려 주지 않고 <b>행동의 결과에 점수(보상)</b>만 주면서 스스로 좋은 행동을 찾게 하는 학습 방식입니다. 강아지 훈련, 게임 AI, 알파고, 로봇, ChatGPT의 답변 다듬기(RLHF)가 모두 이 원리를 씁니다.</div>
+<h3>1-1. 지도학습·비지도학습과 무엇이 다른가</h3>
+<table class="tb "><thead><tr><th></th><th>지도학습 (2·3회차)</th><th>비지도학습 (4회차)</th><th>강화학습 (오늘)</th></tr></thead><tbody><tr><td>무엇이 주어지나</td><td>입력 + <b>정답</b></td><td>입력만</td><td>입력 + <b>행동의 결과 점수(보상)</b></td></tr><tr><td>무엇을 배우나</td><td>입력→정답 규칙</td><td>데이터의 숨은 구조(군집)</td><td>점수를 많이 받는 <b>행동 규칙(정책)</b></td></tr><tr><td>데이터는 어디서</td><td>미리 모아 둔 표</td><td>미리 모아 둔 표</td><td><b>직접 행동하며</b> 만들어 냄</td></tr><tr><td>예시</td><td>사진 → 고양이/개</td><td>고객을 3그룹으로</td><td>게임 이기기 · 로봇 걷기 · 추천</td></tr></tbody></table>
+<p>지도학습이 "선생님이 답을 알려 주는 공부"라면, 강화학습은 "게임을 하면서 점수로 배우는 공부"입니다. 바둑의 다음 수처럼 <b>정답을 미리 적어 둘 수 없는 문제</b>에 강화학습을 씁니다.</p>
+<h3>1-2. 강아지는 어떻게 "앉아"를 배울까</h3>
+<ul><li>강아지가 이것저것 해 본다(짖기·눕기·앉기…) → 우연히 앉았을 때 <b>간식(보상)</b>을 준다 → "앉으면 좋은 일이 생긴다"를 기억한다 → 앉는 행동이 점점 자주 나온다.</li><li>정답 동작을 <b>보여 주지 않는다</b>는 점, 처음엔 <b>아무렇게나</b> 해 본다는 점, 좋았던 행동을 <b>더 자주</b> 하게 된다는 점이 강화학습의 세 가지 특징입니다. 이것을 <b>시행착오(trial and error)</b> 학습이라고 합니다.</li></ul>
+<h3>1-3. 여섯 가지 용어 — 에이전트·환경·상태·행동·보상·정책</h3>
+<figure><img src="figs/01_loop.png" alt="그림 1. 강화학습의 기본 루프. 에이전트가 행동하면 환경이 새 상태와 보상을 돌려준다." style="max-width:760px"><figcaption>그림 1. 강화학습의 기본 루프. 에이전트가 행동하면 환경이 새 상태와 보상을 돌려준다.</figcaption></figure>
+<table class="tb "><thead><tr><th>용어</th><th>뜻</th><th>5×5 미로에서는</th></tr></thead><tbody><tr><td>에이전트 (agent)</td><td>배우는 주체</td><td>미로 속 캐릭터</td></tr><tr><td>환경 (environment)</td><td>에이전트가 사는 세상</td><td>5×5 칸의 미로, 함정, 목표</td></tr><tr><td>상태 (state)</td><td>지금 상황</td><td>지금 있는 칸의 좌표 (행, 열) — 25가지</td></tr><tr><td>행동 (action)</td><td>고를 수 있는 선택</td><td>↑ ↓ ← → 네 가지 (벽 쪽이면 제자리)</td></tr><tr><td>보상 (reward)</td><td>행동 직후 받는 점수</td><td>목표 +10, 함정 ?, 한 걸음 ? (오늘 여러분이 설계)</td></tr><tr><td>정책 (policy)</td><td>"어떤 상태에서 어떤 행동을 할지"의 규칙 — <b>배우는 것</b></td><td>25개 칸마다 어느 방향 → 화살표 지도</td></tr><tr><td>에피소드 (episode)</td><td>게임 한 판</td><td>시작 → 목표·함정에 닿거나 50걸음이면 끝</td></tr></tbody></table>
+<div class="callout key"><b class="t">목표는 "한 판의 총 보상"을 크게 하는 것</b>한 번의 점수가 아니라 한 판 동안 받는 <b>보상의 합</b>을 크게 만드는 정책을 찾습니다. 지금 당장 −1이어도 나중에 +10이면 좋은 선택입니다. 그래서 "미래의 보상을 얼마나 중요하게 볼지"를 정하는 <b>할인율 γ</b>가 필요합니다.</div>
+<figure><img src="figs/02_gridworld.png" alt="그림 2. 오늘의 무대 5×5 GridWorld. S(0,0) 시작, G(4,4) 목표, X 함정 (1,3)·(2,1)·(3,3)." style="max-width:380px"><figcaption>그림 2. 오늘의 무대 5×5 GridWorld. S(0,0) 시작, G(4,4) 목표, X 함정 (1,3)·(2,1)·(3,3).</figcaption></figure>
+<h3>1-4. 배우지 않은 에이전트는 어떻게 될까</h3>
+<figure><img src="figs/09_random_vs_learned.png" alt="그림 3. 왼쪽: 무작위 행동은 5걸음 만에 함정. 오른쪽: Q-learning 후 8걸음 최단 경로로 도착." style="max-width:760px"><figcaption>그림 3. 왼쪽: 무작위 행동은 5걸음 만에 함정. 오른쪽: Q-learning 후 8걸음 최단 경로로 도착.</figcaption></figure>
+<p>무작위로 100판을 하면 성공률은 <b>2%</b>입니다(실습 셀 3에서 확인). 학습 후에는 8걸음(최단) 경로로 도착합니다. 둘의 차이는 <b>경험을 점수표에 기록했는가</b>뿐입니다. 그 점수표가 다음의 Q-table입니다.</p>
+<h3>1-5. 탐험(explore) vs 활용(exploit)</h3>
+<figure><img src="figs/04_explore_exploit.png" alt="그림 4. ε=0이면 처음 찾은 길을 고집하고, ε=0.2면 가끔 모험해 더 나은 길을 발견한다." style="max-width:760px"><figcaption>그림 4. ε=0이면 처음 찾은 길을 고집하고, ε=0.2면 가끔 모험해 더 나은 길을 발견한다.</figcaption></figure>
+<ul><li>늘 가던 식당(활용)만 가면 더 맛있는 집(탐험)을 영영 모릅니다. 그래서 <b>ε(입실론)의 확률로는 일부러 아무 행동</b>이나 해 봅니다. 이 규칙을 <b>ε-greedy</b>라고 합니다.</li><li>ε = 0.2 → 10번 중 2번은 무작위, 8번은 점수표에서 최고 점수 행동.</li><li>ε이 너무 작으면 처음 찾은 길에 갇히고, 너무 크면 배운 뒤에도 자꾸 헤맵니다. 실습 "직접 해보기 2"에서 직접 비교합니다.</li></ul>
+<h3>1-6. Q-table — "이 행동을 하면 앞으로 얼마나 좋을까" 점수표</h3>
+<figure><img src="figs/03_qtable.png" alt="그림 5. Q-table. 행 = 상태(칸), 열 = 행동, 값 = 그 행동 뒤 앞으로 받을 보상의 합(예상). 주황 = 가장 큰 값." style="max-width:760px"><figcaption>그림 5. Q-table. 행 = 상태(칸), 열 = 행동, 값 = 그 행동 뒤 앞으로 받을 보상의 합(예상). 주황 = 가장 큰 값.</figcaption></figure>
+<ul><li>크기: 25칸 × 4행동 = <b>100개의 숫자</b>. 처음엔 전부 0. 코드로는 <code>Q = np.zeros((5, 5, 4))</code> 한 줄.</li><li>학습 = 경험할 때마다 이 숫자를 조금씩 고치는 것. 다 배운 뒤엔 칸마다 <b>가장 큰 값의 행동</b>을 고르면 됩니다.</li><li>"Q"는 행동의 질(Quality)이라는 뜻입니다.</li></ul>
+<h3>1-7. Q-learning 갱신 규칙 — 딱 한 줄</h3>
+<div class="callout key"><b class="t">갱신식</b><div style="font-family:Cambria Math,serif;font-size:17px;text-align:center;margin:6px 0">Q(s, a) ← Q(s, a) + α · [ r + γ · max Q(s′, ·) − Q(s, a) ]</div>말로 풀면: <b>"지금 적힌 점수를 → (방금 받은 보상 + 다음 칸에서 기대되는 최고 점수) 쪽으로 α만큼 옮긴다."</b> 목표·함정처럼 게임이 끝나는 칸에 도착했으면 다음 칸이 없으므로 보상 r만 씁니다.</div>
+<table class="tb "><thead><tr><th>기호</th><th>이름</th><th>뜻</th><th>오늘 값</th><th>바꾸면?</th></tr></thead><tbody><tr><td>α (알파)</td><td>학습률</td><td>한 번에 얼마나 크게 고칠까 (0~1)</td><td>0.1</td><td>크면 빨리 배우지만 들쭉날쭉, 작으면 느리지만 안정</td></tr><tr><td>γ (감마)</td><td>할인율</td><td>미래 보상을 얼마나 중요하게 볼까</td><td>0.9</td><td>1에 가까울수록 멀리 봄, 0에 가까우면 눈앞 보상만</td></tr><tr><td>ε (입실론)</td><td>탐험 확률</td><td>얼마나 자주 모험할까</td><td>0.2</td><td>크면 많이 헤매고, 0이면 처음 길에 갇힘</td></tr></tbody></table>
+<figure><img src="figs/05_learning_curve.png" alt="그림 6. 학습 곡선. 처음엔 함정에 빠져 −10 근처, 1500판 뒤에는 +10 근처. 회색이 들쭉날쭉한 것은 ε 탐험 때문이므로 파란 이동 평균을 본다." style="max-width:760px"><figcaption>그림 6. 학습 곡선. 처음엔 함정에 빠져 −10 근처, 1500판 뒤에는 +10 근처. 회색이 들쭉날쭉한 것은 ε 탐험 때문이므로 파란 이동 평균을 본다.</figcaption></figure>
+<figure><img src="figs/06_policy.png" alt="그림 7. 학습된 정책. 칸마다 Q값이 가장 큰 행동을 화살표로, 화살표만 따라간 길을 주황 선으로." style="max-width:380px"><figcaption>그림 7. 학습된 정책. 칸마다 Q값이 가장 큰 행동을 화살표로, 화살표만 따라간 길을 주황 선으로.</figcaption></figure>
+<h3>1-8. 보상 설계가 행동을 바꾼다 — 그리고 보상 해킹</h3>
+<figure><img src="figs/07_reward_design.png" alt="그림 8. 같은 알고리즘, 다른 보상표 → 다른 행동. ④처럼 함정에 상을 주면 에이전트는 목표 대신 함정으로 직행한다." style="max-width:900px"><figcaption>그림 8. 같은 알고리즘, 다른 보상표 → 다른 행동. ④처럼 함정에 상을 주면 에이전트는 목표 대신 함정으로 직행한다.</figcaption></figure>
+<table class="tb "><thead><tr><th>설계</th><th>목표</th><th>함정</th><th>한 걸음</th><th>결과</th><th>해석</th></tr></thead><tbody><tr><td>① 목표만</td><td>+10</td><td>0</td><td>0</td><td>8걸음 도착</td><td>함정에 벌은 없지만 게임이 끝나므로 피하긴 함</td></tr><tr><td>② 함정 벌점</td><td>+10</td><td>−10</td><td>0</td><td>8걸음 도착</td><td>함정 옆을 덜 지나는 벽 쪽 길을 고르는 경향</td></tr><tr><td>③ + 걸음 비용</td><td>+10</td><td>−10</td><td>−0.1</td><td>8걸음 도착</td><td>오래 헤매면 손해 → 짧은 길 선호</td></tr><tr><td>④ 함정에 상</td><td>+10</td><td><b>+5</b></td><td>0</td><td><b>3걸음 함정행</b></td><td><b>보상 해킹</b> — 적힌 점수만 최대화</td></tr></tbody></table>
+<div class="callout warn"><b class="t">보상 해킹(reward hacking) 실제 사례</b><ul><li><b>보트 경주 게임</b>: 결승선 대신 코스 중간의 점수 아이템만 빙빙 돌며 먹음.</li><li><b>청소 로봇</b>: "쓰레기를 보면 벌점" → 카메라를 꺼 버림.</li><li><b>로봇 팔</b>: "물건을 잡은 것처럼 보이면 보상" → 카메라 앞에서 잡는 척.</li></ul>AI는 <b>내 의도</b>가 아니라 <b>내가 적은 점수</b>를 최대화합니다.</div>
+<div class="callout ok"><b class="t">좋은 보상표의 원칙</b><ol style="margin:4px 0 0 18px"><li><b>목표를 직접</b> 보상하라 (중간 과정 말고 결과).</li><li><b>부작용에 벌점</b>을 주라 (함정·위험·비용).</li><li><b>희소 보상</b>(끝에만 +10)은 배우기 느리다 → 걸음 비용이나 중간 보상으로 방향 힌트를 준다.</li><li>보상을 바꿨으면 <b>행동이 의도대로인지 반드시 확인</b>한다.</li></ol></div>
+<h3>1-9. 강화학습 알고리즘의 큰 두 갈래</h3>
+<figure><img src="figs/08_algo_tree.png" alt="그림 9. 가치 기반(각 행동의 점수를 배움: Q-learning, DQN)과 정책 기반(행동 확률을 바로 배움: REINFORCE, PPO)." style="max-width:760px"><figcaption>그림 9. 가치 기반(각 행동의 점수를 배움: Q-learning, DQN)과 정책 기반(행동 확률을 바로 배움: REINFORCE, PPO).</figcaption></figure>
+<table class="tb "><thead><tr><th>문제 상황</th><th>어울리는 갈래</th><th>이유</th></tr></thead><tbody><tr><td>상태·행동이 적다 (미로·틱택토)</td><td><b>표 기반 Q-learning</b></td><td>25×4 크기의 표면 충분</td></tr><tr><td>화면 이미지처럼 상태가 아주 많다</td><td><b>DQN</b> (Q-table 대신 신경망)</td><td>상태가 수백만 개면 표를 만들 수 없음</td></tr><tr><td>행동이 연속적 (핸들 각도·힘의 세기)</td><td><b>정책 기반</b> (PPO 등)</td><td>네 방향처럼 셀 수 없는 행동</td></tr><tr><td>사람이 좋아하는 답으로 다듬기</td><td>RLHF (PPO 활용)</td><td>ChatGPT류 모델의 마무리 학습</td></tr></tbody></table>
+<div class="callout key"><b class="t">성취기준 연결 — "보상 체계에 적합한 알고리즘 선정"</b>오늘 미로는 상태 25개·행동 4개이므로 <b>표 기반 Q-learning이 충분</b>합니다. 같은 보상 체계라도 상태가 많아지면 DQN, 행동이 연속이면 정책 기반으로 갈아탑니다. 알고리즘 선택의 기준은 <b>상태·행동의 크기와 종류</b>입니다.</div>
+</section>
+<section class="part" id="part2" style="--pcol:#0E8C86;--ptint:#0E8C8622"><h2><span class="pn">PART 2</span>예제 — 짧은 코드로 원리 확인</h2>
+<div class="pintro">실습 전에 세 가지 원리를 아주 짧은 코드로 확인합니다. 각 예제는 Colab 새 셀에 붙여 넣으면 바로 실행됩니다.</div>
+<h3>예제 1. ε-greedy: 1000번 고르면 몇 번이나 모험할까</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>예제 1</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import numpy as np
+rng = np.random.default_rng(0)
+scores = np.array([0.0, 2.0, 0.0, 5.0])      # 어떤 칸의 [↑ ↓ ← →] 점수. → 가 최고
+eps = 0.2
+picks = []
+for _ in range(1000):
+    if rng.random() &lt; eps:                  # 20%: 아무 행동
+        picks.append(int(rng.integers(4)))
+    else:                                   # 80%: 최고 점수 행동
+        picks.append(int(np.argmax(scores)))
+print('선택 횟수 [↑ ↓ ← →]:', np.bincount(picks, minlength=4))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>선택 횟수 [↑ ↓ ← →]: [ 45  54  52 849]</pre></div>
+<p>→(최고 점수)가 약 850번, 나머지 세 방향이 약 50번씩. 20% 탐험 중에도 1/4은 우연히 →를 고르므로 →는 80% + 5% ≈ 85%가 됩니다.</p>
+<h3>예제 2. Q-learning 갱신 한 번을 손으로 따라가기</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>예제 2</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">alpha, gamma = 0.1, 0.9
+Q_now   = 0.0          # 지금 칸에서 → 행동의 점수 (아직 0)
+r       = 0.0          # 한 걸음 옮겼더니 보상 0 (아직 목표 아님)
+Q_next  = 8.0          # 옮겨 간 칸에서 가장 큰 점수가 8.0 이라고 하자
+target  = r + gamma * Q_next                 # 목표값 = 0 + 0.9 × 8 = 7.2
+Q_new   = Q_now + alpha * (target - Q_now)   # 0 + 0.1 × (7.2 − 0) = 0.72
+print('목표값 =', target, '/ 갱신 후 Q =', round(Q_new, 2))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>목표값 = 7.2 / 갱신 후 Q = 0.72</pre></div>
+<p>보상은 0이었지만 <b>다음 칸이 좋은 칸(8.0)</b>이므로 지금 칸의 점수도 0.72만큼 올랐습니다. 이렇게 목표의 "좋음"이 한 칸씩 뒤로 번져 가며 시작 칸까지 퍼집니다. 같은 경험을 여러 번 하면 0.72 → 1.37 → 1.95 → … → 7.2에 가까워집니다.</p>
+<h3>예제 3. 할인율 γ: 10걸음 뒤의 +10은 지금 얼마짜리인가</h3>
+<div class="code"><div class="bar"><span class="lang">python</span><span>예제 3</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">for gamma in [0.5, 0.9, 0.99]:
+    print(f'γ={gamma}: 1걸음 뒤 {10*gamma:.2f}, 5걸음 뒤 {10*gamma**5:.2f}, 10걸음 뒤 {10*gamma**10:.2f}')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>γ=0.5: 1걸음 뒤 5.00, 5걸음 뒤 0.31, 10걸음 뒤 0.01
+γ=0.9: 1걸음 뒤 9.00, 5걸음 뒤 5.90, 10걸음 뒤 3.49
+γ=0.99: 1걸음 뒤 9.90, 5걸음 뒤 9.51, 10걸음 뒤 9.04</pre></div>
+<p>γ=0.5면 10걸음 뒤의 보상은 거의 0이라 "멀리 있는 목표"를 못 봅니다. γ=0.9는 10걸음 뒤도 3.49로 남아 있어 5×5 미로(최단 8걸음)에 알맞습니다. 미로가 커지면 γ를 0.99처럼 키워야 합니다.</p>
+</section>
+<section class="part" id="part3" style="--pcol:#D97706;--ptint:#D9770622"><h2><span class="pn">PART 3</span>Colab 실습 — 5×5 미로에서 스스로 길을 찾는 AI 만들기</h2>
+<div class="pintro">노트북 <code>05_강화학습기초_실습_colab.ipynb</code>의 셀을 순서대로 설명합니다. 각 단계에는 <b>무엇을 하는지 · 코드의 어느 줄이 핵심인지 · 출력을 어떻게 읽는지 · 흔한 오류</b>를 적었습니다. 예상 출력은 실제로 실행한 결과입니다(그림은 Colab에서 표시됩니다).</div>
+<div class="step"><div class="sn"><i>0</i>도구 불러오기와 한글 폰트</div><div class="why"><b>무엇을:</b> numpy(숫자 계산)·matplotlib(그림)·pandas(표)를 불러오고, 그래프의 한글이 □□로 깨지지 않게 나눔 글꼴을 설치합니다.<br><b>핵심 줄:</b> <code>subprocess.run(['apt-get', ...])</code>는 Colab 컴퓨터에 글꼴을 설치하는 명령입니다. 10초쯤 걸리고 화면에는 거의 아무것도 안 나옵니다.<br><b>출력 읽기:</b> 마지막에 "준비 완료!"와 numpy 버전이 나오면 성공. 버전 숫자는 달라도 됩니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 0</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">import matplotlib.pyplot as plt, matplotlib as mpl, numpy as np, pandas as pd
+import subprocess, sys
+try:
+    subprocess.run(['apt-get','-qq','install','-y','fonts-nanum'], check=False, capture_output=True)   # Colab 한글 폰트
+    import matplotlib.font_manager as fm; fm.fontManager.addfont('/usr/share/fonts/truetype/nanum/NanumGothic.ttf'); plt.rcParams['font.family']='NanumGothic'
+except Exception:
+    plt.rcParams['font.family'] = 'Noto Sans CJK JP'   # 로컬 검증용
+plt.rcParams['axes.unicode_minus'] = False
+print('준비 완료! numpy', np.__version__)</pre></div><div class="out"><div class="lab">예상 출력</div><pre>준비 완료! numpy 2.4.3</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>"준비 완료!"가 보이나요? 셀 왼쪽의 [ ] 안에 숫자(실행 순서)가 들어갔나요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><b>ModuleNotFoundError</b>: 런타임이 연결되기 전에 실행됨 → 잠시 후 다시 실행. <b>그래프 한글이 □로 나옴</b>: 이 셀을 다시 실행한 뒤 <b>런타임 → 런타임 다시 시작</b> 후 처음부터.</div></details></div>
+<div class="step"><div class="sn"><i>1</i>GridWorld 환경 클래스와 미로 그리기</div><div class="why"><b>무엇을:</b> 미로 환경을 만드는 설계도(클래스)입니다. 처음 보는 <code>class</code> 문법이라도 겁먹지 마세요. 쓰는 방법은 두 가지뿐입니다.<ul><li><code>env.reset()</code> — 새 판 시작. 캐릭터를 시작 칸 (0,0)에 놓고 위치를 돌려줍니다.</li><li><code>env.step(a)</code> — 행동 a(0상 1하 2좌 3우)를 한 번 실행하고 <b>(새 위치, 보상, 끝났는지)</b> 세 값을 돌려줍니다.</li></ul><b>핵심 줄:</b> <code>if self.pos == self.goal: reward += self.r_goal; done = True</code> — 목표에 닿으면 보상을 주고 판을 끝냅니다. 함정도 같은 구조입니다. <code>r_goal, r_trap, r_step</code> 세 값이 <b>보상표</b>이며, <code>GridWorld(r_goal=10, r_trap=-10, r_step=-0.1)</code>처럼 만들 때 정합니다.<br><b>draw_grid:</b> 미로를 그리는 도우미. <code>Q=</code>를 주면 칸마다 최고 점수 행동을 화살표로, <code>path=</code>를 주면 지나간 길을 주황 선으로 그립니다.<br><b>출력 읽기:</b> 그림에서 S가 왼쪽 위, G가 오른쪽 아래, X가 세 개인지 확인합니다. 좌표는 (행, 열)이고 행은 위에서 아래로 0,1,2,3,4입니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 1</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">class GridWorld:
+    def __init__(self, n=5, start=(0, 0), goal=(4, 4), traps=((1, 3), (2, 1), (3, 3)), walls=(),
+                 r_goal=10.0, r_trap=0.0, r_step=0.0, max_steps=50):
+        self.n = n; self.start = start; self.goal = goal
+        self.traps = set(traps); self.walls = set(walls)
+        self.r_goal, self.r_trap, self.r_step, self.max_steps = r_goal, r_trap, r_step, max_steps
+        self.actions = [(-1, 0), (1, 0), (0, -1), (0, 1)]   # 0=상, 1=하, 2=좌, 3=우  (행 변화, 열 변화)
+        self.arrows = ['↑', '↓', '←', '→']
+        self.reset()
+
+    def reset(self):                       # 새 게임 시작: 시작 칸으로
+        self.pos = self.start; self.t = 0
+        return self.pos
+
+    def step(self, a):                     # 행동 a를 한 번 실행
+        dr, dc = self.actions[a]
+        r, c = self.pos[0] + dr, self.pos[1] + dc
+        if 0 &lt;= r &lt; self.n and 0 &lt;= c &lt; self.n and (r, c) not in self.walls:
+            self.pos = (r, c)              # 미로 안이고 벽이 아니면 이동
+        self.t += 1
+        reward = self.r_step; done = False # 한 걸음 비용(0이면 없음)
+        if self.pos == self.goal:  reward += self.r_goal; done = True   # 목표 도착
+        elif self.pos in self.traps: reward += self.r_trap; done = True # 함정
+        if self.t &gt;= self.max_steps: done = True                        # 너무 오래 헤매면 강제 종료
+        return self.pos, reward, done
+
+
+def draw_grid(ax, env, Q=None, path=None, title=None):
+    """미로 그리기. Q를 주면 각 칸의 최선 행동을 화살표로, path를 주면 지나간 길을 주황 선으로."""
+    n = env.n; img = np.ones((n, n, 3))
+    for (r, c) in env.traps: img[r, c] = (0.98, 0.80, 0.82)
+    for (r, c) in env.walls: img[r, c] = (0.55, 0.55, 0.55)
+    img[env.goal] = (0.80, 0.94, 0.85); img[env.start] = (0.85, 0.88, 0.98)
+    ax.imshow(img, extent=(-0.5, n - 0.5, n - 0.5, -0.5))
+    ax.set_xticks(np.arange(-0.5, n, 1)); ax.set_yticks(np.arange(-0.5, n, 1))
+    ax.set_xticklabels([]); ax.set_yticklabels([]); ax.grid(True, color='#9CA3AF'); ax.tick_params(length=0)
+    ax.text(env.start[1], env.start[0], 'S', ha='center', va='center', fontsize=14, fontweight='bold', color='#1B2A4A')
+    ax.text(env.goal[1], env.goal[0], 'G', ha='center', va='center', fontsize=14, fontweight='bold', color='#0E8C86')
+    for (r, c) in env.traps: ax.text(c, r, 'X', ha='center', va='center', fontsize=14, fontweight='bold', color='#C0395F')
+    if Q is not None:
+        for r in range(n):
+            for c in range(n):
+                if (r, c) in env.traps or (r, c) == env.goal or (r, c) in env.walls or np.all(Q[r, c] == 0): continue
+                dr, dc = env.actions[int(np.argmax(Q[r, c]))]
+                ax.annotate('', xy=(c + dc * 0.32, r + dr * 0.32), xytext=(c - dc * 0.15, r - dr * 0.15),
+                            arrowprops=dict(arrowstyle='-&gt;', lw=2, color='#4F5BD5'))
+    if path:
+        ax.plot([p[1] for p in path], [p[0] for p in path], '-', color='#D97706', lw=3, alpha=.7)
+    if title: ax.set_title(title)
+
+env = GridWorld()
+fig, ax = plt.subplots(figsize=(4, 4)); draw_grid(ax, env, title='우리의 미로 (S 시작, G 목표, X 함정)'); plt.show()
+print('시작 위치:', env.reset(), '/ 목표:', env.goal, '/ 함정:', sorted(env.traps))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그림이 표시됩니다]
+시작 위치: (0, 0) / 목표: (4, 4) / 함정: [(1, 3), (2, 1), (3, 3)]</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>함정 (1,3)은 그림에서 몇 번째 줄, 몇 번째 칸인가요? (위에서 2번째 줄, 왼쪽에서 4번째 칸)</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><b>IndentationError</b>: 복사해 붙일 때 들여쓰기가 흐트러짐 → 노트북 원본 셀을 다시 복사. <b>NameError: np</b>: 셀 0을 먼저 실행하지 않음.</div></details></div>
+<div class="step"><div class="sn"><i>2</i>무작위 에이전트 한 판 — 상태·행동·보상의 흐름 보기</div><div class="why"><b>무엇을:</b> 배우지 않은 에이전트가 주사위 던지듯 움직이는 한 판을 한 걸음씩 출력합니다.<br><b>핵심 줄:</b> <code>a = int(rng.integers(4))</code>는 0~3 중 아무 숫자(행동), <code>s, r, done = env.step(a)</code>는 그 행동의 결과입니다. <code>rng = np.random.default_rng(2)</code>의 2는 난수 씨앗(seed)으로, 같은 씨앗이면 누구나 같은 결과가 나옵니다.<br><b>출력 읽기:</b> 표의 각 줄이 <b>한 걸음</b>입니다. "행동" 열이 행동, "새 위치"가 상태, "보상"이 보상입니다. 5걸음째 (2,1) 함정에 빠져 −10을 받고 끝(True)났습니다. 같은 칸 사이를 왔다 갔다(↑↓) 하는 것도 보이죠 — 배우지 않았기 때문입니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 2</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">rng = np.random.default_rng(2)             # 난수 생성기 (씨앗 고정 → 매번 같은 결과)
+env = GridWorld(r_goal=10, r_trap=-10, r_step=0)
+s = env.reset(); path = [s]; done = False; total = 0
+print('걸음 | 행동 | 새 위치 | 보상 | 끝?')
+while not done:
+    a = int(rng.integers(4))               # 0~3 중 아무 행동
+    s, r, done = env.step(a)               # 한 걸음
+    path.append(s); total += r
+    print(f'{env.t:&gt;3}  | {env.arrows[a]}    | {s}  | {r:+.0f}   | {done}')
+print('총 보상 =', total, '/ 도착:', s == env.goal, '/ 함정:', s in env.traps)
+fig, ax = plt.subplots(figsize=(4, 4)); draw_grid(ax, env, path=path, title=f'무작위 에이전트의 길 ({len(path)-1}걸음)'); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>걸음 | 행동 | 새 위치 | 보상 | 끝?
+  1  | →    | (0, 1)  | +0   | False
+  2  | ↓    | (1, 1)  | +0   | False
+  3  | ↑    | (0, 1)  | +0   | False
+  4  | ↓    | (1, 1)  | +0   | False
+  5  | ↓    | (2, 1)  | -10   | True
+총 보상 = -10 / 도착: False / 함정: True
+
+[그림이 표시됩니다]</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>출력에서 상태·행동·보상은 각각 어느 열인가요? 이 판의 총 보상은 얼마인가요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">씨앗을 바꾸면(예: 5) 다른 판이 나옵니다. 여러 번 실행해도 결과가 같은 것은 씨앗 때문이니 정상입니다.</div></details></div>
+<div class="step"><div class="sn"><i>3</i>무작위 에이전트 100판 — 기준선 만들기</div><div class="why"><b>무엇을:</b> 한 판은 운에 좌우되므로 100판을 돌려 <b>성공률</b>과 평균 걸음 수를 잽니다. 이 숫자가 오늘 학습이 이겨야 할 기준선입니다.<br><b>핵심 줄:</b> <code>wins += (s == env.goal)</code> — 판이 끝났을 때 위치가 목표면 1을 더합니다(참=1, 거짓=0).<br><b>출력 읽기:</b> 성공률 2%, 평균 14.9걸음. 함정 세 개가 길목에 있어 무작위로는 거의 못 갑니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 3</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">def play_random(env, n_games=100, seed=0):
+    rng = np.random.default_rng(seed); wins = 0; steps = []
+    for g in range(n_games):
+        s = env.reset(); done = False
+        while not done:
+            s, r, done = env.step(int(rng.integers(4)))
+        wins += (s == env.goal); steps.append(env.t)
+    return wins / n_games, np.mean(steps)
+
+win_rate, avg_steps = play_random(GridWorld(r_goal=10, r_trap=-10))
+print(f'무작위 에이전트: 성공률 {win_rate:.0%}, 평균 {avg_steps:.1f}걸음 만에 게임 종료')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>무작위 에이전트: 성공률 2%, 평균 14.9걸음 만에 게임 종료</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>함정을 하나로 줄이면 성공률이 오를까요? (GridWorld(traps=((2,1),)) 로 바꿔 시험)</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><code>n_games</code>를 1000으로 키워도 몇 초면 끝납니다.</div></details></div>
+<div class="step"><div class="sn"><i>4</i>Q-table 만들기</div><div class="why"><b>무엇을:</b> 5×5칸 × 4행동 크기의 3차원 배열을 0으로 채웁니다. 이것이 에이전트의 "점수표"입니다.<br><b>핵심 줄:</b> <code>np.zeros((5, 5, 4))</code>. <code>Q[r, c]</code>는 (r,c)칸의 네 행동 점수 네 개, <code>Q[r, c, a]</code>는 그중 행동 a의 점수 하나입니다.<br><b>출력 읽기:</b> 크기 (5, 5, 4), 숫자 100개, 시작 칸의 점수 [0. 0. 0. 0.].</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 4</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">Q = np.zeros((5, 5, 4))                    # (행, 열, 행동) → 점수
+print('Q-table 크기:', Q.shape, '→ 숫자 개수:', Q.size)
+print('시작 칸 (0,0)의 네 행동 점수 [↑ ↓ ← →]:', Q[0, 0])
+print('아직 아무것도 배우지 않아서 전부 0 입니다.')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>Q-table 크기: (5, 5, 4) → 숫자 개수: 100
+시작 칸 (0,0)의 네 행동 점수 [↑ ↓ ← →]: [0. 0. 0. 0.]
+아직 아무것도 배우지 않아서 전부 0 입니다.</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>6×6 미로라면 Q-table 크기는? (6, 6, 4) → 숫자 144개</div></div>
+<div class="step"><div class="sn"><i>5</i>ε-greedy 행동 선택 함수</div><div class="why"><b>무엇을:</b> "ε 확률로 탐험, 아니면 최고 점수 행동"을 함수로 만듭니다.<br><b>핵심 줄:</b> <code>if rng.random() < eps</code> — 0~1 사이 난수가 ε보다 작으면(=ε 확률) 아무 행동. <code>np.flatnonzero(q == q.max())</code>는 최고 점수가 여러 개(동점)일 때 그 후보들의 번호를 모두 구해 <code>rng.choice</code>로 하나 뽑습니다. 처음엔 전부 0점이라 동점이므로 이 처리가 없으면 늘 ↑(0번)만 고르게 됩니다.<br><b>출력 읽기:</b> 테스트용 점수 [0,2,0,5]로 1000번 골랐더니 →(3번)가 849번. 예제 1과 같은 결과입니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 5</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">def choose_action(Q, s, eps, rng):
+    if rng.random() &lt; eps:                 # eps 확률로 탐험: 아무 행동
+        return int(rng.integers(4))
+    q = Q[s]                               # 활용: 점수가 가장 큰 행동 (동점이면 무작위)
+    best = np.flatnonzero(q == q.max())
+    return int(rng.choice(best))
+
+rng = np.random.default_rng(0)
+Q_test = np.zeros((5, 5, 4)); Q_test[0, 0] = [0, 2, 0, 5]    # (0,0)에서 → 가 5점으로 최고라고 가정
+picks = [choose_action(Q_test, (0, 0), eps=0.2, rng=rng) for _ in range(1000)]
+counts = np.bincount(picks, minlength=4)
+print('1000번 고른 결과 [↑ ↓ ← →]:', counts, '→ 대부분 →(3) 이지만 가끔 다른 행동도 시도')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>1000번 고른 결과 [↑ ↓ ← →]: [ 45  54  52 849] → 대부분 →(3) 이지만 가끔 다른 행동도 시도</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>eps=0으로 바꾸면 결과가 [0 0 0 1000]이 될까요? 직접 확인해 보세요.</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><b>TypeError: rng</b>: <code>rng = np.random.default_rng(0)</code> 줄이 빠짐.</div></details></div>
+<div class="step"><div class="sn"><i>6</i>Q-learning 함수와 greedy_path 함수</div><div class="why"><b>무엇을:</b> 갱신 규칙을 여러 판 반복하는 <code>q_learning</code>과, 배운 점수표대로만(탐험 없이) 걷는 <code>greedy_path</code>를 만듭니다. 이 셀은 <b>정의만</b> 하므로 "함수 준비 완료"만 출력됩니다.<br><b>핵심 줄(번호 ①~④는 코드 주석과 같음):</b><ol style="margin:4px 0 0 18px"><li><code>a = choose_action(Q, s, eps, rng)</code> — 행동 고르기</li><li><code>s2, r, done = env.step(a)</code> — 환경에서 한 걸음</li><li><code>target = r if ended else r + gamma * Q[s2].max()</code> — 목표값. 판이 끝나는 칸이면 보상만, 아니면 보상 + γ×다음 칸 최고 점수</li><li><code>Q[s][a] += alpha * (target - Q[s][a])</code> — <b>점수표 갱신 (오늘의 핵심 한 줄)</b></li></ol><code>history</code>에는 판마다 총 보상을 기록해 학습 곡선을 그립니다.<br><b>인자 뜻:</b> episodes(판 수), alpha(학습률), gamma(할인율), eps(탐험 확률), seed(난수 씨앗).</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 6</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">def q_learning(env, episodes=1500, alpha=0.1, gamma=0.9, eps=0.2, seed=0):
+    rng = np.random.default_rng(seed)
+    Q = np.zeros((env.n, env.n, 4)); history = []
+    for ep in range(episodes):
+        s = env.reset(); done = False; total = 0.0
+        while not done:
+            a = choose_action(Q, s, eps, rng)              # ① 행동 고르기 (ε-greedy)
+            s2, r, done = env.step(a)                      # ② 환경에서 한 걸음
+            ended = done and (s2 == env.goal or s2 in env.traps)
+            target = r if ended else r + gamma * Q[s2].max()   # ③ 목표값: 보상 + 미래 기대치
+            Q[s][a] += alpha * (target - Q[s][a])          # ④ 점수표 갱신 (핵심 한 줄!)
+            s = s2; total += r
+        history.append(total)                              # 이 판의 총 보상 기록
+    return Q, np.array(history)
+
+def greedy_path(env, Q, limit=30):
+    """배운 점수표대로만(탐험 없이) 움직였을 때의 길"""
+    s = env.reset(); path = [s]; done = False
+    while not done and len(path) &lt; limit:
+        s, r, done = env.step(int(np.argmax(Q[s]))); path.append(s)
+    return path
+
+print('함수 준비 완료')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>함수 준비 완료</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>④의 괄호 안 <code>target - Q[s][a]</code>가 0이면 점수표는 어떻게 될까요? (더 이상 바뀌지 않음 = 다 배웠다는 뜻)</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><b>SyntaxError</b>: 따옴표 세 개(""")가 짝이 안 맞게 복사됨 → 노트북 원본 셀 사용.</div></details></div>
+<div class="step"><div class="sn"><i>7</i>1500판 학습시키고 학습 곡선 보기</div><div class="why"><b>무엇을:</b> 보상표(목표 +10, 함정 −10, 걸음 −0.1)로 환경을 만들고 1500판 학습합니다. 몇 초면 끝납니다.<br><b>핵심 줄:</b> <code>Q, hist = q_learning(env, episodes=1500, ...)</code> — Q는 배운 점수표, hist는 판마다 총 보상.<br><b>그래프 읽기:</b> 회색 선은 판마다 총 보상(탐험 때문에 들쭉날쭉), 파란 선은 50판 이동 평균. <b>왼쪽(처음)</b>은 −10 근처(함정), <b>오른쪽</b>으로 갈수록 +8~9 근처로 올라야 합니다. 마지막 100판 평균이 +4.9인 이유는 ε=0.2로 여전히 탐험하다 가끔 함정에 빠지고, 걸음마다 −0.1이 빠지기 때문입니다(배운 뒤의 실력은 다음 셀에서 확인).</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 7</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">env = GridWorld(r_goal=10, r_trap=-10, r_step=-0.1)
+Q, hist = q_learning(env, episodes=1500, alpha=0.1, gamma=0.9, eps=0.2, seed=0)
+
+fig, ax = plt.subplots(figsize=(8, 3.5))
+ax.plot(hist, color='#D1D5DB', lw=.8, label='판마다 총 보상')
+ax.plot(pd.Series(hist).rolling(50).mean(), color='#4F5BD5', lw=2.5, label='50판 이동 평균')
+ax.set_xlabel('에피소드(판)'); ax.set_ylabel('총 보상'); ax.legend(); ax.set_title('학습 곡선'); plt.show()
+print(f'처음 100판 평균 보상: {hist[:100].mean():+.2f}   마지막 100판 평균 보상: {hist[-100:].mean():+.2f}')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그림이 표시됩니다]
+처음 100판 평균 보상: -0.29   마지막 100판 평균 보상: +4.90</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>처음 100판 평균과 마지막 100판 평균의 차이는 얼마인가요? 이 차이가 "배운 양"입니다.</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><b>곡선이 안 오름</b>: eps가 1.0이거나 alpha가 0이 아닌지 확인. <b>너무 느림</b>: episodes를 500으로 줄여 시험.</div></details></div>
+<div class="step"><div class="sn"><i>8</i>배운 정책 보기 — 화살표 지도와 경로</div><div class="why"><b>무엇을:</b> 점수표에서 칸마다 최고 점수 행동을 화살표로 그리고, 화살표만 따라간 길(주황)을 봅니다.<br><b>핵심 줄:</b> <code>greedy_path(env, Q)</code>는 탐험 없이 <code>np.argmax(Q[s])</code>(최고 점수 행동)만 골라 걷습니다.<br><b>출력 읽기:</b> 길 (0,0)→(0,1)→(0,2)→(1,2)→(2,2)→(3,2)→(4,2)→(4,3)→(4,4), 8걸음 도착. 최단 거리(오른쪽 4 + 아래 4 = 8)입니다. 시작 칸의 점수 [3.69 4.19 3.69 4.21]에서 →(4.21)와 ↓(4.19)가 비슷하게 높은 것은 두 방향 모두 목표로 가는 길이 있기 때문입니다. 화살표가 함정을 <b>피해서</b> 흐르는지 확인하세요.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 8</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">path = greedy_path(env, Q)
+fig, ax = plt.subplots(figsize=(4.5, 4.5)); draw_grid(ax, env, Q=Q, path=path, title='학습된 정책과 길'); plt.show()
+print('길:', path)
+print(f'걸음 수: {len(path)-1}, 도착 여부: {path[-1] == env.goal}')
+print('시작 칸 (0,0)의 점수 [↑ ↓ ← →]:', np.round(Q[0, 0], 2))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그림이 표시됩니다]
+길: [(0, 0), (0, 1), (0, 2), (1, 2), (2, 2), (3, 2), (4, 2), (4, 3), (4, 4)]
+걸음 수: 8, 도착 여부: True
+시작 칸 (0,0)의 점수 [↑ ↓ ← →]: [3.69 4.19 3.69 4.21]</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>한 번도 가 보지 않은 칸(화살표 없음)이 있나요? 왜 그럴까요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">화살표가 없는 칸은 Q값이 전부 0(가 본 적 없음)이라 그리지 않습니다. 정상입니다.</div></details></div>
+<div class="step"><div class="sn"><i>9</i>★ 보상 체계 4종 비교 — 오늘의 핵심 실험</div><div class="why"><b>무엇을:</b> 알고리즘·미로는 그대로 두고 <b>보상표만</b> 네 가지로 바꿔 각각 학습시킨 뒤 정책 그림과 표를 비교합니다.<br><b>핵심 줄:</b> <code>designs</code> 목록의 <code>dict(r_goal=..., r_trap=..., r_step=...)</code>가 보상표이고, <code>GridWorld(**kw)</code>는 그 표로 환경을 만듭니다. for 문이 네 설계를 차례로 학습·기록합니다.<br><b>표 읽기:</b><ul><li>①②③ 모두 8걸음 도착이지만 <b>지나는 길이 다릅니다</b>. 8걸음짜리 길이 여러 개라 어느 길을 고르는지는 보상표와 탐험 중 먼저 발견한 길에 따라 달라집니다. ②는 함정 옆을 덜 지나는 벽 쪽 길을 고르는 경향이 보입니다.</li><li><code>마지막100판평균</code>이 ①(8.6) > ②(6.6) > ③(4.9)로 낮아지는 것은 실력이 나빠서가 아니라 <b>보상표 자체가 달라서</b>입니다(②는 탐험 중 함정에 빠지면 −10, ③은 걸음마다 −0.1). 서로 다른 보상표의 점수는 직접 비교하지 말고 <b>행동(길)</b>을 비교하세요.</li><li>④는 함정에 +5를 줬더니 3걸음 만에 <b>함정행</b>. 이것이 <b>보상 해킹</b>입니다.</li></ul></div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 9</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">designs = [
+    ('① 목표만 +10',      dict(r_goal=10, r_trap=0,   r_step=0)),
+    ('② 함정 -10 추가',    dict(r_goal=10, r_trap=-10, r_step=0)),
+    ('③ 걸음마다 -0.1',    dict(r_goal=10, r_trap=-10, r_step=-0.1)),
+    ('④ 함정 +5 (실수)',   dict(r_goal=10, r_trap=5,   r_step=0)),
+]
+rows = []
+fig, axes = plt.subplots(1, 4, figsize=(15, 4))
+for ax, (name, kw) in zip(axes, designs):
+    e = GridWorld(**kw)
+    Qd, hd = q_learning(e, episodes=1500, seed=0)
+    p = greedy_path(e, Qd)
+    result = '도착' if p[-1] == e.goal else ('함정!' if p[-1] in e.traps else '실패')
+    rows.append({'설계': name, **kw, '걸음수': len(p) - 1, '결과': result, '마지막100판평균': round(hd[-100:].mean(), 2)})
+    draw_grid(ax, e, Q=Qd, path=p, title=f'{name}\n{len(p)-1}걸음 · {result}')
+plt.show()
+results = pd.DataFrame(rows); results</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그림이 표시됩니다]
+             설계  r_goal  r_trap  r_step  걸음수   결과  마지막100판평균
+0     ① 목표만 +10      10       0     0.0    8   도착        8.6
+1   ② 함정 -10 추가      10     -10     0.0    8   도착        6.6
+2   ③ 걸음마다 -0.1      10     -10    -0.1    8   도착        4.9
+3  ④ 함정 +5 (실수)      10       5     0.0    3  함정!        5.0</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>걸음 비용을 −1로 키우면, 함정 벌점을 −1로 줄이면 각각 어떻게 될지 예상한 뒤 값을 바꿔 확인해 보세요.</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><b>그림 4개가 겹쳐 보임</b>: 브라우저 폭이 좁아서. 그림을 클릭하면 크게 볼 수 있습니다. <b>KeyError</b>: dict 키 이름(r_goal 등) 오타.</div></details></div>
+<div class="step"><div class="sn"><i>10</i>🧩 직접 해보기 1 — 함정 위치 바꾸기</div><div class="why"><b>무엇을:</b> <code>my_traps</code>의 좌표를 바꿔 에이전트가 어떻게 돌아가는지 봅니다. 좌표는 (행, 열), 0~4. 시작 (0,0)과 목표 (4,4)는 피하세요.<br><b>해 볼 것:</b> 최단 경로 위에 놓기(예: <code>((0,2),(2,2),(4,2))</code>), 가운데 세로줄을 완전히 막기(길이 없어져 학습 곡선이 안 오름 — "환경에 답이 없으면 못 찾는다").<br><b>출력 읽기:</b> 도착 여부와 걸음 수. 함정 때문에 8걸음보다 길어질 수 있습니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 10</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">my_traps = ((1, 3), (2, 1), (3, 3))        # TODO: 함정 좌표를 바꿔 보세요. 예: ((0, 2), (2, 2), (4, 2))
+e = GridWorld(traps=my_traps, r_goal=10, r_trap=-10, r_step=-0.1)
+Qm, hm = q_learning(e, episodes=1500, seed=0); pm = greedy_path(e, Qm)
+fig, ax = plt.subplots(figsize=(4.5, 4.5)); draw_grid(ax, e, Q=Qm, path=pm, title=f'내 미로: {len(pm)-1}걸음'); plt.show()
+print('도착:', pm[-1] == e.goal, '/ 마지막 100판 평균 보상:', round(hm[-100:].mean(), 2))</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그림이 표시됩니다]
+도착: True / 마지막 100판 평균 보상: 4.9</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>내 미로에서 최단 걸음 수는 몇일까요? 에이전트가 그 길을 찾았나요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why"><b>TypeError: traps</b>: 좌표 하나만 넣을 때는 <code>((2,2),)</code>처럼 쉼표를 꼭 붙이세요.</div></details></div>
+<div class="step"><div class="sn"><i>11</i>🧩 직접 해보기 2 — 탐험 확률 ε 비교</div><div class="why"><b>무엇을:</b> ε을 0, 0.05, 0.2, 0.5로 바꿔 학습 곡선을 한 그래프에 겹쳐 그립니다.<br><b>그래프 읽기:</b> 범례의 "마지막100판" 값은 <b>학습 중</b> 받은 점수입니다. ε=0.5는 절반을 모험하니 학습 중 점수는 낮지만(−2.2 근처), 점수표는 잘 배워서 탐험을 끄고 걸으면 8걸음에 도착합니다. ε=0은 이번 씨앗에선 운 좋게 잘 배웠지만 씨앗을 바꾸면 처음 찾은 길에 갇힐 수 있습니다. <b>"학습 중 점수"와 "배운 뒤 실력"은 다르다</b>는 점이 핵심입니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 11</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">eps_list = [0.0, 0.05, 0.2, 0.5]           # TODO: 값을 바꿔 보세요
+env = GridWorld(r_goal=10, r_trap=-10, r_step=-0.1)
+fig, ax = plt.subplots(figsize=(8, 3.5))
+for eps in eps_list:
+    Qe, he = q_learning(env, episodes=1500, eps=eps, seed=0)
+    ax.plot(pd.Series(he).rolling(50).mean(), lw=2, label=f'ε = {eps}  (마지막100판 {he[-100:].mean():+.1f})')
+ax.set_xlabel('에피소드'); ax.set_ylabel('총 보상 (50판 이동 평균)'); ax.legend(); ax.set_title('탐험 확률에 따른 학습 곡선'); plt.show()</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그림이 표시됩니다]</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>seed를 1, 2로 바꿔도 ε=0이 계속 잘 배우나요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">범례가 그래프를 가리면 <code>ax.legend(loc='lower right')</code>로 위치를 옮기세요.</div></details></div>
+<div class="step"><div class="sn"><i>12</i>(선택) gymnasium FrozenLake</div><div class="why"><b>무엇을:</b> 연구자용 환경 모음 gymnasium의 4×4 얼음판 게임에 우리 Q-learning을 그대로 적용합니다. 상태가 좌표 대신 0~15 번호인 점, 행동 번호가 0좌 1하 2우 3상인 점만 다릅니다. <code>is_slippery=False</code>는 미끄러지지 않는 쉬운 버전입니다.<br><b>핵심 줄:</b> <code>s2, r, term, trunc, _ = fl.step(a)</code> — gymnasium은 다섯 값을 돌려줍니다(끝남이 term/trunc 둘로 나뉨).<br><b>출력 읽기:</b> 마지막 200판 성공률 76%(ε=0.2 탐험 중이라 100%가 아님), 4×4 화살표 정책. 구멍(H) 자리의 화살표는 의미가 없습니다.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 12</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">try:
+    import gymnasium as gym
+    fl = gym.make('FrozenLake-v1', is_slippery=False)
+    nS, nA = fl.observation_space.n, fl.action_space.n
+    Qf = np.zeros((nS, nA)); rng = np.random.default_rng(0); wins = []
+    for ep in range(2000):
+        s, _ = fl.reset(seed=int(rng.integers(1_000_000))); done = False
+        while not done:
+            a = int(rng.integers(nA)) if rng.random() &lt; 0.2 else int(rng.choice(np.flatnonzero(Qf[s] == Qf[s].max())))
+            s2, r, term, trunc, _ = fl.step(a); done = term or trunc
+            Qf[s, a] += 0.1 * ((r if term else r + 0.9 * Qf[s2].max()) - Qf[s, a]); s = s2
+        wins.append(r)
+    print(f'FrozenLake 4x4: 상태 {nS}개, 행동 {nA}개 / 마지막 200판 성공률 {np.mean(wins[-200:]):.0%}')
+    arrows = np.array(['←', '↓', '→', '↑'])[Qf.argmax(1)].reshape(4, 4)   # FrozenLake 행동 번호: 0좌 1하 2우 3상
+    print('배운 정책 (H=구멍 자리 포함):'); print('\n'.join(' '.join(row) for row in arrows))
+except ImportError:
+    print('gymnasium이 없습니다. Colab에서는 셀 맨 위에  !pip install gymnasium  을 추가한 뒤 다시 실행하세요.')</pre></div><div class="out"><div class="lab">예상 출력</div><pre>FrozenLake 4x4: 상태 16개, 행동 4개 / 마지막 200판 성공률 76%
+배운 정책 (H=구멍 자리 포함):
+↓ ← ← ←
+↓ ← ↑ ←
+→ → ↓ ←
+← → → ←</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b><code>is_slippery=True</code>로 바꾸면 성공률이 어떻게 될까요? (미끄러져서 크게 떨어짐 — 확률적 환경의 어려움)</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">Colab에서 <b>ImportError</b>가 나면 셀 맨 위에 <code>!pip install gymnasium</code>을 추가하고 다시 실행.</div></details></div>
+<div class="step"><div class="sn"><i>13</i>📝 오늘의 결과물 — 나의 보상표 설계 제출</div><div class="why"><b>무엇을:</b> 이름·학번·보상표 세 값·설계 이유를 적고 실행하면 학습 결과와 정책 그림, 요약이 나옵니다. 그림과 출력을 <b>캡처해 제출</b>합니다.<br><b>설계 힌트:</b> 함정 벌점을 크게 → 안전한 길, 걸음 비용을 키움 → 짧은 길, 목표 보상을 작게 → 학습이 느려짐. 값을 정했으면 "왜"를 한두 문장으로. 의도대로 안 나왔다면 <b>그 이유를 설명</b>하는 것이 더 좋은 답입니다.<br><b>평가 기준:</b> ① 세 값이 의도에 맞게 설계되었는가 ② 결과 정책이 의도대로인가(아니면 이유를 설명했는가) ③ 상태·행동·보상·정책 용어를 바르게 썼는가.</div>
+<div class="code"><div class="bar"><span class="lang">python</span><span>Colab 셀 13</span><button onclick="copyCode(this)">복사</button></div><pre data-lang="python">이름 = '홍길동'            # TODO
+학번 = '10101'             # TODO
+나의_보상표 = dict(r_goal=10, r_trap=-10, r_step=-0.1)    # TODO: 세 값을 직접 설계
+설계_이유 = '함정은 크게 벌주고, 오래 헤매면 조금씩 손해를 줘서 안전하고 짧은 길을 배우게 하려고.'   # TODO
+
+e = GridWorld(**나의_보상표)
+Qs, hs = q_learning(e, episodes=1500, seed=0); ps = greedy_path(e, Qs)
+result = '도착' if ps[-1] == e.goal else ('함정!' if ps[-1] in e.traps else '실패')
+fig, ax = plt.subplots(figsize=(4.5, 4.5)); draw_grid(ax, e, Q=Qs, path=ps, title=f'{이름}의 보상표 → {len(ps)-1}걸음 · {result}'); plt.show()
+print('=' * 50); print(f'{이름} ({학번}) · 5회차 강화학습 결과물'); print('보상표:', 나의_보상표)
+print('설계 이유:', 설계_이유)
+print(f'결과: {result}, {len(ps)-1}걸음 / 마지막 100판 평균 보상 {hs[-100:].mean():+.2f} / 처음 100판 {hs[:100].mean():+.2f}')
+print('길:', ps); print('=' * 50)</pre></div><div class="out"><div class="lab">예상 출력</div><pre>[그림이 표시됩니다]
+==================================================
+홍길동 (10101) · 5회차 강화학습 결과물
+보상표: {'r_goal': 10, 'r_trap': -10, 'r_step': -0.1}
+설계 이유: 함정은 크게 벌주고, 오래 헤매면 조금씩 손해를 줘서 안전하고 짧은 길을 배우게 하려고.
+결과: 도착, 8걸음 / 마지막 100판 평균 보상 +4.90 / 처음 100판 -0.29
+길: [(0, 0), (0, 1), (0, 2), (1, 2), (2, 2), (3, 2), (4, 2), (4, 3), (4, 4)]
+==================================================</pre></div>
+<div class="callout ok"><b class="t">✔ 확인해 보기</b>내 보상표로 학습한 정책이 내 의도와 맞나요? 맞지 않다면 어떤 값을 어떻게 바꿔야 할까요?</div><details><summary>막혔을 때 · 자주 나는 오류</summary><div class="why">한글 변수 이름(이름, 학번)은 파이썬에서 정상 동작합니다. 따옴표 안의 값만 바꾸세요.</div></details></div>
+</section>
+<section class="part" id="part4" style="--pcol:#C0395F;--ptint:#C0395F22"><h2><span class="pn">PART 4</span>퀴즈 — 이해했는지 확인</h2>
+<div class="pintro">보기를 고르면 바로 정답과 해설이 나옵니다. 위 상단 막대에 점수가 표시됩니다.</div>
+<div class="quiz"><div class="q">Q1. 미로 게임에서 "에이전트의 현재 좌표 (2,3)"은 다음 중 무엇인가?</div><label onclick="pick(this,1,0)">① 행동</label><label onclick="pick(this,1,1)">② 상태</label><label onclick="pick(this,1,2)">③ 보상</label><label onclick="pick(this,1,3)">④ 정책</label><div class="exp"><b>정답: ②</b> — 상태 = 지금 상황. 좌표를 바꾸는 선택(↑↓←→)이 행동, 그 결과 받는 점수가 보상, 칸마다 어느 방향을 고를지의 규칙이 정책입니다.</div></div>
+<div class="quiz"><div class="q">Q2. ε-greedy에서 ε = 0.3의 뜻은?</div><label onclick="pick(this,1,0)">① 30%는 최고 점수 행동, 70%는 무작위</label><label onclick="pick(this,1,1)">② 30%는 무작위(탐험), 70%는 최고 점수 행동(활용)</label><label onclick="pick(this,1,2)">③ 학습률이 0.3</label><label onclick="pick(this,1,3)">④ 보상의 30%만 반영</label><div class="exp"><b>정답: ②</b> — ε은 탐험 확률입니다. 학습률은 α, 할인율은 γ.</div></div>
+<div class="quiz"><div class="q">Q3. Q-learning 갱신식에서 "r + γ · max Q(s′,·)"는 무엇인가?</div><label onclick="pick(this,1,0)">① 지금 칸의 점수</label><label onclick="pick(this,1,1)">② 점수를 옮겨 갈 목표값 (보상 + 다음 칸 기대치)</label><label onclick="pick(this,1,2)">③ 탐험 확률</label><label onclick="pick(this,1,3)">④ 한 판의 총 보상</label><div class="exp"><b>정답: ②</b> — 지금 점수를 이 목표값 쪽으로 α만큼 옮깁니다. 판이 끝나는 칸이면 다음 칸이 없어 r만 씁니다.</div></div>
+<div class="quiz"><div class="q">Q4. 함정에 +5 보상을 줬더니 AI가 목표 대신 함정으로 직행했다. 이 현상의 이름과 교훈은?</div><label onclick="pick(this,1,0)">① 과적합 — 데이터를 더 모은다</label><label onclick="pick(this,1,1)">② 보상 해킹 — 보상표를 의도에 맞게 고치고 행동을 다시 확인한다</label><label onclick="pick(this,1,2)">③ 탐험 부족 — ε을 키운다</label><label onclick="pick(this,1,3)">④ 할인율 문제 — γ를 줄인다</label><div class="exp"><b>정답: ②</b> — AI는 의도가 아니라 적힌 점수를 최대화합니다. 보상표를 고치고 행동을 다시 확인하는 것이 해결책입니다.</div></div>
+<div class="quiz"><div class="q">Q5. 상태가 게임 화면 이미지처럼 수백만 가지인 문제에 어울리는 알고리즘은?</div><label onclick="pick(this,1,0)">① 표 기반 Q-learning</label><label onclick="pick(this,1,1)">② DQN (Q-table 대신 신경망)</label><label onclick="pick(this,1,2)">③ k-means</label><label onclick="pick(this,1,3)">④ 선형 회귀</label><div class="exp"><b>정답: ②</b> — 상태가 너무 많으면 표를 만들 수 없으므로 Q값을 신경망으로 근사하는 DQN을 씁니다. 5×5 미로처럼 작은 문제는 표 기반이 충분합니다.</div></div>
+</section>
+<section class="part" id="part5" style="--pcol:#1B2A4A;--ptint:#1B2A4A22"><h2><span class="pn">PART 5</span>정리 · 평가 기준 · 더 해보기</h2>
+<h3>핵심 정리 세 줄</h3>
+<ol><li><b>강화학습은 정답 대신 보상으로 배운다.</b> 에이전트가 환경에서 행동 → 상태·보상을 겪으며, 보상의 합을 크게 하는 정책을 찾는다.</li><li><b>Q-learning은 점수표(Q-table)를 한 줄 규칙으로 고쳐 가며 배운다.</b> 지금 점수 → (보상 + 다음 칸 기대치) 쪽으로 α만큼. ε으로 탐험과 활용을 섞는다.</li><li><b>AI가 무엇을 배우느냐는 알고리즘이 아니라 보상표가 정한다.</b> 함정 벌점·걸음 비용으로 행동이 바뀌고, 잘못된 보상은 보상 해킹을 부른다 → 설계 후 반드시 행동 확인.</li></ol>
+<h3>실습 결과 평가 기준 (보상 체계 디자인)</h3>
+<table class="tb "><thead><tr><th>항목</th><th>우수</th><th>보통</th><th>미흡</th></tr></thead><tbody><tr><td>보상 체계 디자인</td><td>세 값의 의도가 분명하고 설명과 일치</td><td>값은 바꿨으나 이유가 막연</td><td>기본값 그대로</td></tr><tr><td>결과 해석</td><td>정책 그림을 근거로 의도 달성 여부 설명</td><td>결과만 보고</td><td>해석 없음</td></tr><tr><td>용어·원리</td><td>상태·행동·보상·정책·Q-table 바르게 사용</td><td>일부 혼동</td><td>사용 안 함</td></tr><tr><td>탐구 태도</td><td>직접 해보기 1·2 모두 시도, 비교 기록</td><td>하나만 시도</td><td>시도 안 함</td></tr></tbody></table>
+<h3>더 해보기 (심화)</h3>
+<ul><li><b>미로 키우기</b>: <code>GridWorld(n=8, goal=(7,7), traps=(...))</code>. 최단 경로가 길어지면 γ를 0.95~0.99로 키워야 하는지 확인해 보세요.</li><li><b>벽 추가</b>: <code>walls=((1,1),(1,2),(2,2))</code>처럼 지나갈 수 없는 칸을 만들어 보세요.</li><li><b>ε 줄여 가기</b>: 처음엔 ε=0.5, 판이 갈수록 0.01까지 줄이는 방식(ε-decay)을 구현하면 학습 곡선이 어떻게 달라질까요?</li><li><b>FrozenLake 미끄러운 버전</b>: <code>is_slippery=True</code>에서 성공률을 70% 이상으로 올리려면 episodes·γ를 어떻게 바꿔야 할까요?</li><li><b>읽을거리</b>: 알파고(2016)는 지도학습으로 사람 기보를 배운 뒤 강화학습으로 자기 자신과 수백만 판을 두어 사람을 넘어섰습니다. ChatGPT의 RLHF는 "사람이 더 좋아한 답"을 보상으로 씁니다.</li></ul>
+<div class="callout ok"><b class="t">과정 마무리</b>5회차로 "인공지능 기초" 과정을 마칩니다. 데이터(1) → 지도학습(2·3) → 비지도학습(4) → 강화학습(5). 세 가지 학습 방식의 차이를 한 문장씩 말할 수 있으면 목표 달성입니다.</div>
+</section></div></main><footer>2026 경기도 공유학교 · 인공지능 기초 · 5회차 강화학습 기초 · 김순찬 교수 · 이 페이지는 오프라인에서도 열립니다(외부 연결 없음).</footer>
+<script>
+function copyCode(btn){var pre=btn.closest('.code').querySelector('pre');var t=pre.innerText;
+ function done(){btn.textContent='복사됨 ✓';setTimeout(function(){btn.textContent='복사'},1500);}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fallback()});}else{fallback();}
+ function fallback(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(ta);}}
+function hl(){document.querySelectorAll('.code pre[data-lang="python"]').forEach(function(pre){
+ var s=pre.textContent; var out='';var i=0;
+ var kw=/^(import|from|as|def|return|if|elif|else|for|while|in|not|and|or|is|None|True|False|class|with|try|except|lambda|print|break|continue|pass|yield|global|del|range|len)\b/;
+ while(i<s.length){var ch=s[i];
+  if(ch==='#'){var j=s.indexOf('\n',i);if(j<0)j=s.length;out+='<span class="c">'+esc(s.slice(i,j))+'</span>';i=j;continue;}
+  if(ch==='"'||ch==="'"){var q=ch;var j=i+1;if(s.substr(i,3)===q+q+q){j=s.indexOf(q+q+q,i+3);j=j<0?s.length:j+3;}else{while(j<s.length&&s[j]!==q&&s[j]!=='\n'){if(s[j]==='\\')j++;j++;}j++;}out+='<span class="s">'+esc(s.slice(i,j))+'</span>';i=j;continue;}
+  if(/[A-Za-z_]/.test(ch)){var j=i;while(j<s.length&&/[A-Za-z0-9_]/.test(s[j]))j++;var w=s.slice(i,j);
+   if(kw.test(w)&&kw.exec(w)[0]===w){out+='<span class="k">'+w+'</span>';}else if(s[j]==='('){out+='<span class="f">'+w+'</span>';}else{out+=w;}i=j;continue;}
+  if(/[0-9]/.test(ch)){var j=i;while(j<s.length&&/[0-9.]/.test(s[j]))j++;out+='<span class="n">'+s.slice(i,j)+'</span>';i=j;continue;}
+  out+=esc(ch);i++;}
+ pre.innerHTML=out;});}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+var SCORE={ok:0,n:0};
+function pick(lbl,ans,idx){var q=lbl.closest('.quiz');if(q.dataset.done)return;q.dataset.done=1;SCORE.n++;
+ q.querySelectorAll('label').forEach(function(l,k){if(k===ans)l.classList.add('right');else if(k===idx)l.classList.add('wrong');});
+ if(idx===ans)SCORE.ok++;q.querySelector('.exp').classList.add('show');
+ var sc=document.getElementById('score');if(sc)sc.textContent='퀴즈 '+SCORE.ok+' / '+SCORE.n+' 정답';}
+document.addEventListener('DOMContentLoaded',hl);
+</script></body></html>
